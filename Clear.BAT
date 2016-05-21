@@ -8,3 +8,4 @@ del key.obj
 del disp.obj
 del bmp.obj
 del graphic.obj
+del *.bak

@@ -3153,6 +3153,10 @@ void Dispbar3d(int x,int y,int x1,int y1,int color,int flag,int stx,int w,char *
 char DispF7(int flag)
 {
     int j;
+    
+    if(sl5==1){}
+    else {currents[1][0]=100;}
+    
     if(flag==0)
     {
         getimage(F9X,F9Y,F9X+259,F9Y+170+7,BMP);
@@ -3175,6 +3179,11 @@ char DispF7(int flag)
     }
     if(flag==1)
     {
+    		if(iCurrent>currents[cMaterial-1][cShape-1])
+				{
+	    		ShowMess(15);
+	    		return 1;
+				}
         if(lDeep!=0x7fffffff&&iCurrent!=0x7fff&&iAcreage!=0x7fff&&
                 cEffect!=0x7f&&cMaterial!=0x7f&&cShape!=0x7f)
         {
@@ -3200,7 +3209,7 @@ char DispF7(int flag)
         }
         else
         {
-            Dispcbar(F7X+150,F7Y+5+18,F7X+249,F7Y+5+18+16,0,7,1,"ÎÞÐ§²Ù×÷");
+            ShowMess(15);
             return 1;
         }
         ShowTable(0);

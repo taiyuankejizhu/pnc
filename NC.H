@@ -78,7 +78,8 @@ char Elect_speed=50;
 char Elect_speed1=8;   /*放电时机头上下的速度*/
 int soundV=5;
 int lightM=5;
-unsigned char buf[0x200];
+unsigned char buf[0x100];
+unsigned char currents[3][3]= {{95,63,31},{191,95,63},{31,31,31}};
 char SWF_flag=1;
 char SWF_K=0;
 char PUMP_K=0;
