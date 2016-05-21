@@ -118,7 +118,7 @@ void main(int argc,char *argv[])
             }
             if(DIS_OK!=1&&!P[9])
             {
- /*               ShowMess(33);*/
+                ShowMess(33);
                 if(Dis_flag)
                 {
                     F11();
