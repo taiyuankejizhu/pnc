@@ -381,6 +381,7 @@ extern int SMessage;
 extern int Initsystem;
 extern char oldpage;
 extern unsigned char buf[];
+extern unsigned char currents[3][3];
 extern int ExitTime;
 extern long ox,oy,oz,origin_z,origin_x,origin_y,diff_oz,diff_ox,diff_oy,lpz,s_OZh,s_OZl,F_positionz;
 extern char ORgin;

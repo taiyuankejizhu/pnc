@@ -16,9 +16,11 @@ char select[80];
 double CNC_atof(const char *str){  /*字符串到浮点数的转换*/
   double l=0;
   char *temp,*temp1,*s;
+  char *zz,*yy;
   int k=10;
   s=(char *) malloc(sizeof(strlen(str)+1));
   temp=(char *) malloc(sizeof(strlen(str)+1));
+  zz=s;yy=temp;
   strcpy(s,str);
   while(!('+'==*s||'-'==*s||*s>='0'&&*s<='9'||'.'==*s))
     if(0==*s||'\0'==*s)
@@ -46,6 +48,8 @@ double CNC_atof(const char *str){  /*字符串到浮点数的转换*/
               k*=10;
             }
        }
+       free(zz);
+    	 free(yy);
        return l;
 }
 

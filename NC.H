@@ -75,6 +75,7 @@ char Profile_flag=0; /*运行Profile操作时置1，运行完毕后置0*/
 char Elect_speed1=8;   /*放电时机头上下的速度*/
 int soundV=5;
 unsigned char buf[0x200];
+unsigned char currents[3][3]= {{95,63,31},{191,63,31},{31,31,31}};
 char SWF_flag=1;
 char SWF_K=0;
 char UP_K=0;

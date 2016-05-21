@@ -1603,6 +1603,11 @@ void ShowAuto(int value)
         "形状——平面 清角 深孔",
         "制程——粗 精"
     };
+    
+    if(sl5==1){current[0][0]=75;current[1][0]=75;}
+    else {current[0][0]=35;current[0][1]=35;
+    current[1][0]=35;current[1][1]=35;}
+        
     itoa(current[cMaterial-1][cShape-1],cur,10);
     for(i=0; i<5; i++)
     {
@@ -1639,6 +1644,10 @@ void ShowAuto(int value)
 
 char DispF7(int flag){
     int j;
+    if(sl5==1){currents[0][0]=75;currents[1][0]=75;}
+    else {currents[0][0]=35;currents[0][1]=35;
+    currents[1][0]=35;currents[1][1]=35;}
+    
     if(flag==0){
         /*getimage(F9X,F9Y,F9X+259,F9Y+173,BMP);*/
         setcolor(0);
@@ -1666,6 +1675,11 @@ char DispF7(int flag){
         ShowF7(0);
     }
     if(flag==1){
+    		if(iCurrent>currents[cMaterial-1][cShape-1])
+				{
+	    		ShowMess(17);
+	    		return 1;
+				}
         if(lDeep!=0x7fffffff&&iAcreage!=0x7fff&&iCurrent!=0x7fff&&
         cEffect!=0x7f&&cMaterial!=0x7f&&cShape!=0x7f){
         ProcessTable(lDeep,cMaterial,iCurrent,iAcreage,cEffect,cShape,cProcess,-1);
@@ -1676,8 +1690,8 @@ char DispF7(int flag){
         flag+=2;
         }
         else{
-        Dispcbar(F7X+150,F7Y+5+18,F7X+249,F7Y+5+18+16,0,7,1,"无效操作");
-        return 1;
+        	ShowMess(17);
+        	return 1;
         }
     }
     if(flag>=2){
@@ -1707,6 +1721,11 @@ void ShowF7(int lines){
         Dispcbar(F7X+5,F7Y-6+20*5,F7X+105,F7Y+5+20*5+10,0,color,1,"制程 Process: ");
         lines++;
     }
+    
+    if(sl5==1){current[0][0]=75;current[1][0]=75;}
+    else {current[0][0]=35;current[0][1]=35;
+    current[1][0]=35;current[1][1]=35;}
+    
     switch(lines){
         case 1:MaxL=7;MinN=-9999999;MaxN=9999999;break;
         case 6:MaxL=3;MinN=1;MaxN=current[cMaterial-1][cShape-1];break;
