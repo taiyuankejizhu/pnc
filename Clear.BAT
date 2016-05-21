@@ -1,0 +1,11 @@
+del nc.exe
+del main.obj
+del nc.map
+del nc.obj
+del svga256.obj
+del table.obj
+del key.obj
+del disp.obj
+del bmp.obj
+del graphic.obj
+del *.bak
