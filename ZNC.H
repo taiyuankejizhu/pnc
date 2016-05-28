@@ -189,6 +189,7 @@ extern struct Tab
     extern int Elect_time;
     extern char Elect_speed;
     extern int soundV;  /*调节音量*/
+    extern int lightM;  /*亮度调节*/
     extern char Elect_speed;   /*放电时机头上下的速度*/
     extern char Elect_speed1;   /*放电时机头上下的速度*/
     extern char AI_Flag;       /*人工智能标志*/
@@ -486,6 +487,8 @@ void ListStr3(int x,int y,char flag);
 void ListStr4(int x,int y,char flag);
 void ListStr5(int x,int y,char flag);
 void ListStr6(int x,int y,char flag);
+void ListStrSound(int x,int y,char flag);
+void ListStrLight(int x,int y,char flag);
 void ListStr10(int x,int y,char flag);
 void ListStr20(int x,int y,char flag);
 void ListStr30(int x,int y,char flag);
@@ -511,6 +514,7 @@ extern unsigned DZC;
 extern unsigned Pid_kp,Pid_ki,Pid_kd,Pid_st;
 extern unsigned xPid_kp,xPid_ki,xPid_kd,xPid_st;
 extern void Opens_V(unsigned v);
+extern void Opens_M(unsigned v);
 extern void Show_origin(long l1);
 extern long origin;
 long Read_Velocity_x(char flag);

@@ -93,8 +93,8 @@ void main(int argc,char *argv[])
     Read_Table(Group);
     CheckTab();
     SetTable(Dis_lines);
-    InitScr256(4);
-/*    InitScr256(3);    */
+/*    InitScr256(4);*/
+    InitScr256(3);
     Disp();
     F2();
     ShowKey(1,1);
@@ -369,6 +369,14 @@ void Opens_V(unsigned v){       /*声音大小*/
         }
     ProtectTime=0;
     if(Scr_flag){OpenScr();}
+}
+void Opens_M(unsigned v)        /*亮度高低*/
+{
+    ProtectTime=0;
+    if(Scr_flag)
+    {
+        OpenScr();
+    }
 }
 void CloseSound(void){      /*关闭声音*/
           outb(IO+0,IO0&=0xf7);Sound_flag=0;
@@ -690,7 +698,7 @@ void F9(void){
     unsigned long gg;
     if(!F[8]){
     if(Dis_flag||K[3]){ShowMess(17);return;}
-    ClearKey(0);ShowMess(20);MaxL=2;MaxN=99;MinN=1;F[8]=1;}
+    ClearKey(0);ShowMess(20);MaxL=2;MaxN=50;MinN=1;F[8]=1;}
     else {
         if(KeyN!=0x7fffffff&&KeyN!=Group){Group=(char)KeyN;
         Dis_start=Dis_end=0;Read_Table(Group);ShowTable(0);
@@ -1985,6 +1993,13 @@ void Init_coordinate(void)
     if(soundV>7)
     soundV=0;
     Opens_V(soundV);
+    
+    lightM=ReadSPI(0x1d);
+    if(lightM>7)
+    {
+        lightM=7;
+    }
+    Opens_M(lightM);    
 
     full=ReadSPI(0x0f);
     outb(OSC,0x30);

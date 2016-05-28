@@ -379,8 +379,10 @@ long CNC_atol(const char *str) /*字符串到长整的转换*/
     char *zheng;
     char *xiao;
     char *cur;
+    char *zz,*yy;
     zheng=(char *) malloc(sizeof(strlen(str)+1));
     xiao=(char *) malloc(sizeof(strlen(str)+1));
+    zz=zheng;yy=xiao;
     cur=zheng;
     while(*str!='\0')
     {
@@ -400,6 +402,8 @@ long CNC_atol(const char *str) /*字符串到长整的转换*/
     l*=1000;
     i=atoi(xiao);
     l+=i;
+    free(zz);
+    free(yy);
     return l;
 }
 void ProcessTable(long lDeep,char cMaterial,int iCurrent,int iAcreage,char cEffect,char cShape,char cProcess,int mCurrent)
@@ -538,7 +542,16 @@ void ProcessTable(long lDeep,char cMaterial,int iCurrent,int iAcreage,char cEffe
         }
         if(stTemp.Index[i]!=1)
             i=i-1;
-        StrTable.Shendu[5]=0;
+        if(K[8])
+        {
+            StrTable.Shendu[5]=CNC_atol(tabprocon[select[0]].b_ofs)/DZC;
+        }
+        else
+        {
+            StrTable.Shendu[5]=CNC_atol(tabprocon[select[0]].b_ofs)/DZC;
+            StrTable.Shendu[5]=0-StrTable.Shendu[5];
+        }
+        StrTable.Index[5]=1;
         StrTable.Jixin[5]=stTemp.Jixin[i];
         StrTable.Dianliu[5]=stTemp.Dianliu[i];
         StrTable.Maikuan[5]=stTemp.Maikuan[i];

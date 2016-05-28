@@ -837,7 +837,7 @@ void ShowMess(int value){
     "ÎŞĞ§²Ù×÷",
     "ÌøÉı¸ß¶È 1~99(mm)",
     "ÌøÉı´ÎÊı 1~99",
-    "×é 1~99",                    /* 20 */
+    "×é 1~50",                    /* 20 */
     "ÉÏÉı 1~99(mm)",
     "¸ÖÊ´¸Ö 1~99",
     "ĞŞµ×!",
@@ -868,6 +868,9 @@ void ShowMess(int value){
     "ZÖáÒÑ±»ÒÆ¶¯£¬ÇëÖØÆô»úÆ÷ºóÔÙ¹éÔ­µã",
     "½âËø³É¹¦,ÕıÔÚÖØĞÂÆô¶¯..",
     "35A/75A",                    /* 50 */
+    "",
+    "ÒôÁ¿0~7",
+    "ÁÁ¶È0~7"
      };
      char * showinput1[9]={
     "",
@@ -979,11 +982,11 @@ void CheckTab(){
 void Read_Table(unsigned char group){ /*°ÑgroupËùÖ¸¶¨×é±ğµÄÊı¾İ´ÓSRAM´«µİ¸øÈ«¾Ö±äÁ¿Table*/
     char far *pi;
     int i,j;
-    j=0x100+group*0x100;
+    j=0x100+group*0x200;
     pi=(char far * )&Table;
     for(i=0;i<sizeof(Table);i++)
     *pi++=ReadSPI(j++);
-    for(i=0;i<10;i++){
+    for(i=0;i<15;i++){
         if(!Table.Index[i]){
             Table.Shendu[i]=StrTable.Shendu[2];
             Table.Jixin[i]=StrTable.Jixin[2];
@@ -999,18 +1002,20 @@ void Read_Table(unsigned char group){ /*°ÑgroupËùÖ¸¶¨×é±ğµÄÊı¾İ´ÓSRAM´«µİ¸øÈ«¾Ö±
             Table.PP[i]=StrTable.PP[2];
             Table.WcLc[i]=StrTable.WcLc[2];
         }
-    }CheckTab();
+    }
+    CheckTab();
 }
 void Write_Table(unsigned char group){ /*°ÑgroupËùÖ¸¶¨×é±ğµÄÊı¾İ´ÓSRAM´«µİ¸øÈ«¾Ö±äÁ¿Table*/
     char far *pi;
     char a;
     int i,j;
-    j=0x100+group*0x100;
+    j=0x100+group*0x200;
     pi=(char far * )&Table;
     for(i=0;i<sizeof(Table);i++){
         a=*pi;
         pi++;
-        WriteSPI(j++,a);}
+        WriteSPI(j++,a);
+    }
 }
 
 void ResetXYZ(){
@@ -1698,9 +1703,8 @@ char DispF7(int flag){
         /*setviewport(0,0,639,479,0);*/
         /*putimage(F9X,F9Y,BMP,0);*/
         setfillstyle(1,BKCOLORB);
-                bar(BX0+1,BY0+1,BX1-1,BY1-1);
-                rectangle(BX0,BY0,BX1,BY1);
-                
+        bar(BX0+1,BY0+1,BX1-1,BY1-1);
+        rectangle(BX0,BY0,BX1,BY1);
         ShowTable(0);
     }
     if(flag>2)ShowTable(0);
@@ -1711,6 +1715,7 @@ void ShowF7(int lines){
     int color=7;
     register j;
     if(!lines){
+    		Dispcbar(F7X+85,F7Y-12+20*0,F7X+185,F7Y+20*0+4,0,color,1,"×Ô¶¯Éú³É±í");
         Dispcbar(F7X+5,F7Y+5+20*0,F7X+255,F7Y+5+20*0+5,0,0x1,1,"");
         Dispcbar(F7X+5,F7Y-6+20*1,F7X+105,F7Y+5+20*1+10,0,color,1,"Éî¶È Deep:   ");
         Dispcbar(F7X+5,F7Y-6+20*6,F7X+105,F7Y+5+20*6+10,0,color,1,"µçÁ÷ Current:");
@@ -1784,31 +1789,37 @@ void DispF8(int flag){
 /*ĞŞ¸Äu£¨µ¥Î»£©,¼ÆÊı·½Ïò*/
 char DispF9(int flag){
     if(flag==0){
-        getimage(F9X,F9Y,F9X+259,F9Y+159,BMP);
+/*        getimage(F9X-20,F9Y,F9X+259+20,F9Y+159,pBMP);*/
         setcolor(0);
-        rectangle(F9X+1,F9Y+1,F9X+257,F9Y+157);
-        rectangle(F9X+2,F9Y+2,F9X+258,F9Y+158);
+        rectangle(F9X+1-20,F9Y+1,F9X+257+20,F9Y+157);
+        rectangle(F9X+2-20,F9Y+2,F9X+258+20,F9Y+158);
         setcolor(0xb);
-        rectangle(F9X+0,F9Y+0,F9X+259,F9Y+159);
-        rectangle(F9X+3,F9Y+3,F9X+257,F9Y+157);
+        rectangle(F9X+0-20,F9Y+0,F9X+259+20,F9Y+159);
+        rectangle(F9X+3-20,F9Y+3,F9X+257+20,F9Y+157);
         setfillstyle(1,0x7);
-        bar(F9X+4,F9Y+4,F9X+256,F9Y+156);
+        bar(F9X+4-20,F9Y+4,F9X+256+20,F9Y+156);
         ListStr1(6,0,1);
         ListStr2(6,1,0);
         ListStr3(6,2,0);
         ListStr4(6,3,0);
         ListStr5(6,4,0);
-        ListStr6(6,5,0);
+        ListStr6(17,0,0);
+        ListStrSound(17,0,0);
+        ListStrLight(17,1,0);
         ShowMess(40);
         ShowF8(0);
         flag=1;
         setline=0;
     }
     if(flag==1){
-        }
+    }
     if(flag>=2){
-        setviewport(0,0,639,479,0);
-        putimage(F9X,F9Y,BMP,0);
+    	  setfillstyle(1,BKCOLORB);
+        bar(BX0+1,BY0+1,BX1-1,BY1-1);
+        rectangle(BX0,BY0,BX1,BY1);
+        ShowTable(0);
+/*        setviewport(0,0,639,479,0);*/
+/*        putimage(F9X-20,F9Y,pBMP,0);*/
     }
     if(flag>2)ShowTable(0);
     return 0;
@@ -1816,14 +1827,16 @@ char DispF9(int flag){
 void ShowF8(int lines){
     int color=7;
     if(!lines){
-    Dispcbar(F9X+5+40,F9Y+5+20*0,F9X+100,F9Y+5+18*0+16,0,color,1,"    ÏµÍ³²ÎÊıÉèÖÃ");
-    Dispcbar(F9X+5,   F9Y+5+20*1,F9X+255,F9Y+5+18*1+5,0,0x1,1,"");
-    Dispcbar(F9X+5+40,F9Y-10+21*2,F9X+100,F9Y+5+18*2+20,0,color,1,"   ·Ö ±æ ÂÊ:");
-    Dispcbar(F9X+5+40,F9Y-10+21*3,F9X+100,F9Y+5+18*3+20,0,color,1,"   X Öá·½Ïò:");
-    Dispcbar(F9X+5+40,F9Y-10+21*4,F9X+100,F9Y+5+18*4+20,0,color,1,"   Y Öá·½Ïò:");
-    Dispcbar(F9X+5+40,F9Y-10+21*5,F9X+100,F9Y+5+18*5+20,0,color,1,"   Z Öá·½Ïò:");
-    Dispcbar(F9X+5+40,F9Y-10+21*6,F9X+100,F9Y+5+18*6+20,0,color,1,"   Ô­µãÇåÁã:");
-    Dispcbar(F9X+5+40,F9Y-10+21*7,F9X+100,F9Y+5+18*7+20,0,color,1,"   µç    Á÷:");
+    	Dispcbar(F9X+5+40+50,F9Y+5+20*0,F9X+100+50,F9Y+5+18*0+16,0,color,1,"ÏµÍ³²ÎÊıÉèÖÃ");
+    	Dispcbar(F9X+5-20,   F9Y+5+20*1,F9X+255+20,F9Y+5+18*1+5,0,0x1,1,"");
+    	Dispcbar(F9X+5-20,F9Y-10+21*2,F9X+40,F9Y+5+18*2+20,0,color,1," ·Ö ±æ ÂÊ:");
+    	Dispcbar(F9X+5-20,F9Y-10+21*3,F9X+40,F9Y+5+18*3+20,0,color,1," X Öá·½Ïò:");
+    	Dispcbar(F9X+5-20,F9Y-10+21*4,F9X+40,F9Y+5+18*4+20,0,color,1," Y Öá·½Ïò:");
+    	Dispcbar(F9X+5-20,F9Y-10+21*5,F9X+40,F9Y+5+18*5+20,0,color,1," Z Öá·½Ïò:");
+    	Dispcbar(F9X+5-20,F9Y-10+21*6,F9X+40,F9Y+5+18*6+20,0,color,1," Ô­µãÇåÁã:");
+    	Dispcbar(F9X+5-20+160,F9Y-10+21*2,F9X+40+160,F9Y+5+18*2+20,0,color,1,"µç Á÷:");
+    	Dispcbar(F9X+5-20+160,F9Y-10+21*3,F9X+40+160,F9Y+5+18*3+20,0,color,1,"Éù Òô:");
+    	Dispcbar(F9X+5-20+160,F9Y-10+21*4,F9X+40+160,F9Y+5+18*4+20,0,color,1,"ÁÁ ¶È:");
     }
 }
 /*ĞŞ¸ÄÔË¶¯Ë³Ğò*/
@@ -1915,8 +1928,8 @@ void ListStr1(int x,int y,char flag){
   if(flag)l<<=16;
   x*=8;y*=LNYL;
   strcpy(DispStr,StrLN1(sl0));strcat(DispStr,"  ");
-  Listbar3d(F9X+100+x-1,F9Y+35+y,F9X+100+x+8*3+30,F9Y+35+y+18,(long)l,1,0,1,DispStr);
-  Listbar3d(F9X+100+x+8*3+12,F9Y+35+y+1,F9X+100+x+8*3+30,F9Y+35+y+17,(long)(LNBC4<<8|LNCO4),0,0,1,"®Á");
+  Listbar3d(F9X+100+x-1-60,F9Y+35+y,F9X+100+x+8*3+30-60,F9Y+35+y+18,(long)l,1,0,1,DispStr);
+  Listbar3d(F9X+100+x+8*3+12-60,F9Y+35+y+1,F9X+100+x+8*3+30-60,F9Y+35+y+17,(long)(LNBC4<<8|LNCO4),0,0,1,"®Á");
 }
 void ListStr2(int x,int y,char flag){
     char DispStr[10];
@@ -1924,8 +1937,8 @@ void ListStr2(int x,int y,char flag){
   if(flag)l<<=16;
   x*=8;y*=LNYL;
   strcpy(DispStr,StrLN2(sl1));strcat(DispStr,"  ");
-  Listbar3d(F9X+100+x-1,F9Y+35+y,F9X+100+x+8*3+30,F9Y+35+y+18,(long)l,1,0,1,DispStr);
-  Listbar3d(F9X+100+x+8*3+12,F9Y+35+y+1,F9X+100+x+8*3+30,F9Y+35+y+17,(long)(LNBC4<<8|LNCO4),0,0,1,"®Á");
+  Listbar3d(F9X+100+x-1-60,F9Y+35+y,F9X+100+x+8*3+30-60,F9Y+35+y+18,(long)l,1,0,1,DispStr);
+  Listbar3d(F9X+100+x+8*3+12-60,F9Y+35+y+1,F9X+100+x+8*3+30-60,F9Y+35+y+17,(long)(LNBC4<<8|LNCO4),0,0,1,"®Á");
 }
 void ListStr3(int x,int y,char flag){
     char DispStr[10];
@@ -1933,8 +1946,8 @@ void ListStr3(int x,int y,char flag){
   if(flag)l<<=16;
   x*=8;y*=LNYL;
   strcpy(DispStr,StrLN3(sl2));strcat(DispStr,"  ");
-  Listbar3d(F9X+100+x-1,F9Y+35+y,F9X+100+x+8*3+30,F9Y+35+y+18,(long)l,1,0,1,DispStr);
-  Listbar3d(F9X+100+x+8*3+12,F9Y+35+y+1,F9X+100+x+8*3+30,F9Y+35+y+17,(long)(LNBC4<<8|LNCO4),0,0,1,"®Á");
+  Listbar3d(F9X+100+x-1-60,F9Y+35+y,F9X+100+x+8*3+30-60,F9Y+35+y+18,(long)l,1,0,1,DispStr);
+  Listbar3d(F9X+100+x+8*3+12-60,F9Y+35+y+1,F9X+100+x+8*3+30-60,F9Y+35+y+17,(long)(LNBC4<<8|LNCO4),0,0,1,"®Á");
 }
 void ListStr4(int x,int y,char flag){
     char DispStr[10];
@@ -1942,8 +1955,8 @@ void ListStr4(int x,int y,char flag){
   if(flag)l<<=16;
   x*=8;y*=LNYL;
   strcpy(DispStr,StrLN4(sl3));strcat(DispStr,"  ");
-  Listbar3d(F9X+100+x-1,F9Y+35+y,F9X+100+x+8*3+30,F9Y+35+y+18,(long)l,1,0,1,DispStr);
-  Listbar3d(F9X+100+x+8*3+12,F9Y+35+y+1,F9X+100+x+8*3+30,F9Y+35+y+17,(long)(LNBC4<<8|LNCO4),0,0,1,"®Á");
+  Listbar3d(F9X+100+x-1-60,F9Y+35+y,F9X+100+x+8*3+30-60,F9Y+35+y+18,(long)l,1,0,1,DispStr);
+  Listbar3d(F9X+100+x+8*3+12-60,F9Y+35+y+1,F9X+100+x+8*3+30-60,F9Y+35+y+17,(long)(LNBC4<<8|LNCO4),0,0,1,"®Á");
 }
 void ListStr5(int x,int y,char flag){
     char DispStr[10];
@@ -1951,8 +1964,8 @@ void ListStr5(int x,int y,char flag){
   if(flag)l<<=16;
   x*=8;y*=LNYL;
   strcpy(DispStr,StrLN5(sl4));strcat(DispStr,"  ");
-  Listbar3d(F9X+100+x-1,F9Y+35+y,F9X+100+x+8*3+30,F9Y+35+y+18,(long)l,1,0,1,DispStr);
-  Listbar3d(F9X+100+x+8*3+12,F9Y+35+y+1,F9X+100+x+8*3+30,F9Y+35+y+17,(long)(LNBC4<<8|LNCO4),0,0,1,"®Á");
+  Listbar3d(F9X+100+x-1-60,F9Y+35+y,F9X+100+x+8*3+30-60,F9Y+35+y+18,(long)l,1,0,1,DispStr);
+  Listbar3d(F9X+100+x+8*3+12-60,F9Y+35+y+1,F9X+100+x+8*3+30-60,F9Y+35+y+17,(long)(LNBC4<<8|LNCO4),0,0,1,"®Á");
 }
 void ListStr6(int x,int y,char flag){
     char DispStr[10];
@@ -1960,8 +1973,48 @@ void ListStr6(int x,int y,char flag){
   if(flag)l<<=16;
   x*=8;y*=LNYL;
   strcpy(DispStr,StrLN6(sl5));strcat(DispStr,"  ");
-  Listbar3d(F9X+100+x-1,F9Y+35+y,F9X+100+x+8*3+30,F9Y+35+y+18,(long)l,1,0,1,DispStr);
-  Listbar3d(F9X+100+x+8*3+12,F9Y+35+y+1,F9X+100+x+8*3+30,F9Y+35+y+17,(long)(LNBC4<<8|LNCO4),0,0,1,"®Á");
+  Listbar3d(F9X+100+x-1-30,F9Y+35+y,F9X+100+x+8*3+30-30,F9Y+35+y+18,(long)l,1,0,1,DispStr);
+  Listbar3d(F9X+100+x+8*3+12-30,F9Y+35+y+1,F9X+100+x+8*3+30-30,F9Y+35+y+17,(long)(LNBC4<<8|LNCO4),0,0,1,"®Á");
+}
+
+void ListStrSound(int x,int y,char flag)
+{
+    char DispStr[10];
+    char str[12];
+    long l=(long)(LNBC3<<24|LNCO3<<16|LNBC5<<8|LNCO5);
+    str[0]=0;
+    str[1]=0;
+    if(flag)
+    {
+        l<<=16;
+    }
+    x*=8;
+    y*=LNYL;
+    itoa(soundV,str,10);
+    strcpy(DispStr,str);
+    strcat(DispStr,"  ");
+    Listbar3d(F9X+100+x-1-30,F9Y+55+y,F9X+100+x+8*3+30-30,F9Y+55+y+18,(long)l,1,0,1,DispStr);
+    Listbar3d(F9X+100+x+8*3+12-30,F9Y+55+y+1,F9X+100+x+8*3+30-30,F9Y+55+y+17,(long)(LNBC4<<8|LNCO4),0,0,1,"®Á");
+}
+
+void ListStrLight(int x,int y,char flag)
+{
+    char DispStr[10];
+    char str[12];
+    long l=(long)(LNBC3<<24|LNCO3<<16|LNBC5<<8|LNCO5);
+    str[0]=0;
+    str[1]=0;
+    if(flag)
+    {
+        l<<=16;
+    }
+    x*=8;
+    y*=LNYL;
+    itoa(lightM,str,10);
+    strcpy(DispStr,str);
+    strcat(DispStr,"  ");
+    Listbar3d(F9X+70+x-1,F9Y+55+y,F9X+100+x+8*3,F9Y+55+y+18,(long)l,1,0,1,DispStr);
+    Listbar3d(F9X+70+x+8*3+12,F9Y+55+y+1,F9X+100+x+8*3,F9Y+55+y+17,(long)(LNBC4<<8|LNCO4),0,0,1,"®Á");
 }
 
 void ListStr7(int x,int y,char flag,char line){
@@ -2070,7 +2123,7 @@ void ListStrDeep(int x,int y,char flag){
 }
 void ListStrCur(int x,int y,char flag){
   char DispStr[10];
-  char str[12],str1[6]=".000";
+  char str[12];
   long l=(long)(LNBC3<<24|LNCO3<<16|LNBC5<<8|LNCO5);
   register j;
   str[0]=0;str[1]=0;
@@ -2088,7 +2141,7 @@ void ListStrCur(int x,int y,char flag){
 }
 void ListStrAcr(int x,int y,char flag){
   char DispStr[10];
-  char str[12],str1[6]=".000";
+  char str[12];
   long l=(long)(LNBC3<<24|LNCO3<<16|LNBC5<<8|LNCO5);
   register j;
   str[0]=0;str[1]=0;

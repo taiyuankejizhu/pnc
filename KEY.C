@@ -593,7 +593,7 @@ if(UDK&0x20)F11_flag=0;
   break;
   case 10:  /*系统设置*/
     switch(k){
-      case DN:last_setline=setline;setline++;if(setline>5)setline=0;
+      case DN:last_setline=setline;setline++;if(setline>7)setline=0;
             if(setline==0)
                 {ListStr1(6,setline,1);ShowMess(40);}
             else if(setline==1)
@@ -604,8 +604,12 @@ if(UDK&0x20)F11_flag=0;
                 {ListStr4(6,setline,1);ShowMess(41);}
             else if(setline==4)
                 {ListStr5(6,setline,1);ShowMess(42);}
+            else if(setline==5)
+                {ListStr6(17,0,1);ShowMess(50);}
+            else if(setline==6)
+            		{ListStrSound(17,0,1);ShowMess(52);}
             else
-                {ListStr6(6,setline,1);ShowMess(50);}
+            		{ListStrLight(17,1,1);ShowMess(53);}
             if(last_setline==0)
                 ListStr1(6,last_setline,0);
             else if(last_setline==1)
@@ -616,10 +620,14 @@ if(UDK&0x20)F11_flag=0;
                 ListStr4(6,last_setline,0);
             else if(last_setline==4)
                 ListStr5(6,last_setline,0);
-             else
-                ListStr6(6,last_setline,0);
+            else if(last_setline==5)
+            		ListStr6(17,0,0);
+            else if(last_setline==6)
+            		ListStrSound(17,0,0);
+            else
+            		ListStrLight(17,1,0);
                 break;
-      case UP:last_setline=setline;if(setline==0)setline=5;else setline--;
+      case UP:last_setline=setline;if(setline==0)setline=7;else setline--;
             if(setline==0)
                 {ListStr1(6,setline,1);ShowMess(40);}
             else if(setline==1)
@@ -630,8 +638,12 @@ if(UDK&0x20)F11_flag=0;
                 {ListStr4(6,setline,1);ShowMess(41);}
             else if(setline==4)
                 {ListStr5(6,setline,1);ShowMess(42);}
+            else if(setline==5)
+                {ListStr6(17,0,1);ShowMess(50);}
+            else if(setline==6)
+            		{ListStrSound(17,0,1);ShowMess(52);}
             else
-                {ListStr6(6,setline,1);ShowMess(50);}
+            		{ListStrLight(17,1,1);ShowMess(53);}
             if(last_setline==0)
                 ListStr1(6,last_setline,0);
             else if(last_setline==1)
@@ -642,8 +654,12 @@ if(UDK&0x20)F11_flag=0;
                 ListStr4(6,last_setline,0);
             else if(last_setline==4)
                 ListStr5(6,last_setline,0);
+            else if(last_setline==5)
+                ListStr6(17,0,0);
+            else if(last_setline==6)
+            		ListStrSound(17,0,0);
             else
-                ListStr6(6,last_setline,0);
+            		ListStrLight(17,1,0);
                 break;
       case RIGHT:
           if(setline==0)
@@ -656,8 +672,13 @@ if(UDK&0x20)F11_flag=0;
             {sl3++;if(sl3>1)sl3=0;ListStr4(6,setline,1);}
           else if(setline==4)
             {sl4++;if(sl4>1)sl4=0;ListStr5(6,setline,1);}
+          else if(setline==5)
+            {sl5++;if(sl5>1)sl5=0;ListStr6(17,0,1);}
+          else if(setline==6)
+          	{soundV++;if(soundV>7)soundV=0;Opens_V(soundV);
+          	ListStrSound(17,0,1);}
           else
-            {sl5++;if(sl5>1)sl5=0;ListStr6(6,setline,1);}
+          	{lightM++;if(lightM>7)lightM=0;Opens_M(lightM);ListStrLight(17,1,1);}
             break;
        case LEFT:
           if(setline==0)
@@ -670,17 +691,28 @@ if(UDK&0x20)F11_flag=0;
             {if(sl3==0)sl3=1; else sl3--;ListStr4(6,setline,1);}
           else if(setline==4)
             {if(sl4==0)sl4=1; else sl4--;ListStr5(6,setline,1);}
+          else if(setline==5)
+            {if(sl5==0)sl5=1; else sl5--;ListStr6(17,0,1);}
+          else if(setline==6)
+          	{soundV--;if(soundV<0)soundV=7;Opens_V(soundV);
+          	ListStrSound(17,0,1);}
           else
-            {if(sl5==0)sl5=1; else sl5--;ListStr6(6,setline,1);}
+          	{lightM--;if(lightM<0)lightM=7;Opens_M(lightM);ListStrLight(17,1,1);}
             break;
       case aF1:
         DispF9(3);
+        WriteSPI(0x1c,soundV);
+        WriteSPI(0x1d,lightM);
         SetParameter();
         KEYL=4;ShowKey(5,0);
         ExitTime=36;
         break;/*确定*/
       case aF2:
-      case aF8:DispF9(3);KEYL=4;ShowKey(5,0);break;/*取消*/
+      case aF8:DispF9(3);
+      	soundV=ReadSPI(0x1c);if(soundV>7)soundV=7;
+      	lightM=ReadSPI(0x1d);if(lightM>7)lightM=7;
+      	KEYL=4;ShowKey(5,0);
+      	break;/*取消*/
     }
   break;
   case 11:  /*运动顺序设定*/
@@ -912,11 +944,14 @@ void DelLine(){
 void SaveF7V()
 {
     int i=2,j=0;
-    unsigned int maxi=0;
+    unsigned int maxi=0,curi=0;
     if(KeyN!=0x7fffffff)
     {
         /*if(Table.Index[YY]!=1){*/
-        if(XX==2)
+        curi=KeyN/1000;
+        if(curi>currents[cMaterial-1][cShape-1])
+            curi=currents[cMaterial-1][cShape-1];
+        if(XX==2&&curi<=currents[cMaterial-1][cShape-1])
         {
             i=5;
             while(Table.Index[j]==1)
@@ -928,66 +963,69 @@ void SaveF7V()
             maxi=maxi/2;
             if(KeyN/1000>maxi)
                 maxi=KeyN/1000;
-            ProcessTable(lDeep,cMaterial,KeyN/1000,iAcreage,cEffect,cShape,cProcess,maxi);
+            ProcessTable(lDeep,cMaterial,curi,iAcreage,cEffect,cShape,cProcess,maxi);
+          	if(Table.Index[YY]!=1)
+            {
+                if(StrTable.Index[i]>0)Table.Index[YY]=1;
+                else Table.Index[YY]=-1;
+                if(YY>0) Table.Shendu[YY]=Table.Shendu[YY-1]+StrTable.Shendu[i];
+                else Table.Shendu[YY]=0+StrTable.Shendu[i];
+                Table.Jixin[YY]=StrTable.Jixin[i];
+                Table.Dianliu[YY]=StrTable.Dianliu[i];
+                Table.Maikuan[YY]=StrTable.Maikuan[i];
+                Table.Xiuzhi[YY]=StrTable.Xiuzhi[i];
+                Table.Jianxi[YY]=StrTable.Jianxi[i];
+                Table.Sudu[YY]=StrTable.Sudu[i];
+                Table.Shenggao[YY]=StrTable.Shenggao[i];
+                Table.Gongshi[YY]=StrTable.Gongshi[i];
+                Table.LV[YY]=StrTable.LV[i];
+                Table.Gaoya[YY]=StrTable.Gaoya[i];
+                Table.PP[YY]=StrTable.PP[i];
+                Table.WcLc[YY]=StrTable.WcLc[i];
+            }
+            else
+            {
+                Table.Index[YY]=1;
+                /*Table.Shendu[YY]=StrTable.Shendu[i];*/
+                Table.Dianliu[YY]=StrTable.Dianliu[i];
+                Table.Maikuan[YY]=StrTable.Maikuan[i];
+                Table.Xiuzhi[YY]=StrTable.Xiuzhi[i];
+            }
+        }
+        else if (XX==2&&curi>currents[cMaterial-1][cShape-1]){}
+        else if (Table.Index[YY]!=1){
             Table.Index[YY]=1;
-            Table.Shendu[YY]=StrTable.Shendu[i];
-            Table.Jixin[YY]=StrTable.Jixin[i];
-            Table.Dianliu[YY]=StrTable.Dianliu[i];
-            Table.Maikuan[YY]=StrTable.Maikuan[i];
-            Table.Xiuzhi[YY]=StrTable.Xiuzhi[i];
-            Table.Jianxi[YY]=StrTable.Jianxi[i];
-            Table.Sudu[YY]=StrTable.Sudu[i];
-            Table.Shenggao[YY]=StrTable.Shenggao[i];
-            Table.Gongshi[YY]=StrTable.Gongshi[i];
-            Table.LV[YY]=StrTable.LV[i];
-            Table.Gaoya[YY]=StrTable.Gaoya[i];
-            Table.PP[YY]=StrTable.PP[i];
-            Table.WcLc[YY]=StrTable.WcLc[i];
+            Table.Shendu[YY]=0+StrTable.Shendu[2];
+            Table.Jixin[YY]=StrTable.Jixin[2];
+            Table.Dianliu[YY]=StrTable.Dianliu[2];
+            Table.Maikuan[YY]=StrTable.Maikuan[2];
+            Table.Xiuzhi[YY]=StrTable.Xiuzhi[2];
+            Table.Jianxi[YY]=StrTable.Jianxi[2];
+            Table.Sudu[YY]=StrTable.Sudu[2];
+            Table.Shenggao[YY]=StrTable.Shenggao[2];
+            Table.Gongshi[YY]=StrTable.Gongshi[2];
+            Table.LV[YY]=StrTable.LV[2];
+            Table.Gaoya[YY]=StrTable.Gaoya[2];
+            Table.PP[YY]=StrTable.PP[2];
+            Table.WcLc[YY]=StrTable.WcLc[2];
         }
         switch(XX)
         {
-        case 0:
-            Table.Shendu[YY]=KeyN/DZC;
-            break;
-        case 1:
-            Table.Jixin[YY]=KeyN;
-            break;
-        case 2:
-            Table.Dianliu[YY]=KeyN/500;
-            break;
-        case 3:
-            Table.Maikuan[YY]=KeyN;
-            break;
-        case 4:
-            Table.Xiuzhi[YY]=KeyN;
-            break;
+        case 0:Table.Shendu[YY]=KeyN/DZC;break;
+        case 1:Table.Jixin[YY]=KeyN;break;
+        case 2:Table.Dianliu[YY]=KeyN/500;break;
+        case 3:Table.Maikuan[YY]=KeyN;break;
+        case 4:Table.Xiuzhi[YY]=KeyN;break;
         case 5:
-            if(!KeyN||KeyN>=StrTable.Jianxi[0])
-            {
-                Table.Jianxi[YY]=KeyN;
-            }
+            if(!KeyN||KeyN>=StrTable.Jianxi[0])Table.Jianxi[YY]=KeyN;
             break;
-        case 6:
-            Table.Sudu[YY]=KeyN;
-            break;
-        case 7:
-            Table.Shenggao[YY]=KeyN;
-            break;
-        case 8:
-            Table.Gongshi[YY]=KeyN;
-            break;
-        case 9:
-            Table.LV[YY]=KeyN;
-            break;
-        case 10:
-            Table.Gaoya[YY]=KeyN;
-            break;
-        case 11:
-            Table.PP[YY]=KeyN;
-            break;
-        case 12:
-            Table.WcLc[YY]=KeyN;
-            break;
+        case 6:Table.Sudu[YY]=KeyN;break;
+        case 7:Table.Shenggao[YY]=KeyN;break;
+        case 8:Table.Gongshi[YY]=KeyN;break;
+        case 9:Table.LV[YY]=KeyN;break;
+        case 10:Table.Gaoya[YY]=KeyN;break;
+        case 11:Table.PP[YY]=KeyN;break;
+        case 12:Table.WcLc[YY]=KeyN;break;
         }
         CheckTab();
         ShowInput(0);
