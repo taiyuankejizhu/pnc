@@ -3047,7 +3047,7 @@ void Ck8255(void)
         }
         fires2=4;
     }
-    if(!(c&0x80))
+    if(!(c&0x40))
     {
         /*左限*/
         if(fires7>5)
@@ -3085,7 +3085,7 @@ void Ck8255(void)
         }
         fires7=4;
     }
-    if(!(c&0x40))
+    if(!(c&0x80))
     {
         /*右限*/
         if(fires8>5)
@@ -3123,7 +3123,7 @@ void Ck8255(void)
         }
         fires8=4;
     }
-    if(!(d&0x80))
+    if(!(d&0x40))
     {
         /*前限*/
         if(fires9>5)
@@ -3161,7 +3161,7 @@ void Ck8255(void)
         }
         fires9=4;
     }
-    if(!(d&0x40))
+    if(!(d&0x80))
     {
         /*后限*/
         if(fires10>5)
