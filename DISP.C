@@ -622,6 +622,9 @@ void ShowKey(int kn,int ke)
         case 0xb05:
             k=P[12];
             break;
+				case 0xA01:k=C[0];break;
+        case 0xA02:k=C[1];break;
+        case 0xA03:k=C[2];break;
         }
         if(l!=0x108&&l!=0xc08)
         {
@@ -1368,7 +1371,7 @@ char *KeyStr(int y,int x)
     {
         /*0*/   {"   F1   ","   F2   ","   F3   ","   F4   ","   F5   ","   F6   ","   F7   ","   F8   "},
         /*1*/   {"副 电 源"," 油  泵 "," 坐  标 "," 放  电 "," 安  全 "," 系  统 ","反 加 工",""},
-        /*2*/   {" 归  零 ","组 别 00"," 坐标 0 "," 中  心 "," 校  模 ","归原点",""," 返  回 "},
+        /*2*/   {" 归  零 ","组 别 00"," 坐标 0 "," 中  心 "," 校  模 "," 归原点","  移动 "," 返  回 "},
         /*3*/   {"参 数 表","组 别 00"," 坐标 0 "," 位  置"," 高  度 ","钢蚀钢00",""," 返  回 "},
         /*4*/   {" 积  炭 "," 火  警 "," 油  位 "," 深  孔 ","XY 保 护"," 锁  定 ",""," 返  回 "},
         /*5*/   {" 声 音 0"," 睡  眠 ","上 升 00"," 关  机 "," 清  时 ","        "," 设  置 "," 返  回 "},
@@ -1376,7 +1379,7 @@ char *KeyStr(int y,int x)
         /*7*/   {" 确  定 "," 取  消 ","","","","","","取消返回"},
         /*8*/   {"时间 000","高度 000","积炭关闭","","","",""," 返  回 "},
         /*9*/   {" X+归零 "," X-归零 "," Y+归零 "," Y-归零 "," Z+归零 "," Z-归零 ","","取消返回"},
-        /*A*/   {"","","","","","","","取消返回"},
+        /*A*/   {"   X  ","   Y  ","   Z  ","","","","","取消返回"},
         /*B*/   {" 确  定 "," 取  消 "," 删  除 ","","多点加工","","","确定返回"},
         /*C*/   {""},
         /*D*/   {""},
@@ -1660,7 +1663,7 @@ void ShowAuto(int value)
         "面积——1~99cm",
         "材料——铜-钢 石墨-钢 铜-钨钢",
         "效果——1~4",
-        "形状——平面 清角 深孔",
+        "形状——平面 深孔 清角 ",
         "制程——粗 精"
     };
     itoa(current[cMaterial-1][cShape-1],cur,10);
@@ -2866,7 +2869,7 @@ void ShowTB(char value)
     i=value&0xf;
     if(!i)
     {
-        bar(CX0+1,CY0+18,CX1-78,CY0+32);
+        bar(CX0+1,CY0+18,CX1-75,CY0+32+1);
         return;
     }
     if(value>0xf)
@@ -2876,20 +2879,20 @@ void ShowTB(char value)
     if(i>6)
         if(i==0xd)
         {
-            Dispcbar(CX0+20+203,CY0+18,CX0+20+203+34,CY0+32,COLORC,BKCOLORC,1,TBstr[value]);
+            Dispcbar(CX0+20+203,CY0+18+1,CX0+20+203+34,CY0+32+1,COLORC,BKCOLORC,1,TBstr[value]);
         }
         else
         {
-            Dispcbar(CX0+20+(i-6)*38+203,CY0+18,CX0+20+(i-6)*38+203+34,CY0+32,COLORC,BKCOLORC,1,TBstr[value]);
+            Dispcbar(CX0+20+(i-6)*38+203,CY0+18+1,CX0+20+(i-6)*38+203+34,CY0+32+1,COLORC,BKCOLORC,1,TBstr[value]);
         }
     else
     {
-        Dispcbar(CX0+20+(i-1)*25,CY0+18,CX0+20+(i-1)*25+24,CY0+32,COLORC,BKCOLORC,1,TBstr[value]);
+        Dispcbar(CX0+20+(i-1)*25,CY0+18+1,CX0+20+(i-1)*25+24,CY0+32+1,COLORC,BKCOLORC,1,TBstr[value]);
         if(value)
         {
             value=0xc;
         }
-        Dispcbar(CX0+20+203-58,CY0+18,CX0+20+203+34-58+10,CY0+32,COLORC,BKCOLORC,1,TBstr[value]);
+        Dispcbar(CX0+20+203-58,CY0+18+1,CX0+20+203+34-58+10,CY0+32+1,COLORC,BKCOLORC,1,TBstr[value]);
     }
 }
 void Ck8255(void)
@@ -2903,10 +2906,10 @@ void Ck8255(void)
     a=inb(OSC+3);
     outb(Address_Z,0x01);
     b=inb(Address_Z+3);
-    outb(ICXaddr,0x01);
-    d=inb(ICXaddr+3);
     outb(ICYaddr,0x01);
-    c=inb(ICYaddr+3);
+    d=inb(ICYaddr+3);
+    outb(ICXaddr,0x01);
+    c=inb(ICXaddr+3);
     if(Dis_flag&&!(a&0x80)&&P[4])
     {
         /*火警*/
@@ -3049,7 +3052,7 @@ void Ck8255(void)
     }
     if(!(c&0x40))
     {
-        /*左限*/
+        /*左限X+*/
         if(fires7>5)
         {
             if(LF_K)
@@ -3067,8 +3070,8 @@ void Ck8255(void)
             {
                 F5(5);
             }
-            Ck8255_flag|=0x01;
-            ShowTB(0x3);
+            Ck8255_flag|=0x02;
+            ShowTB(0x5);
             fires7=0;
         }
         else
@@ -3078,16 +3081,16 @@ void Ck8255(void)
     }
     else
     {
-        if(Ck8255_flag&0x01)
+        if(Ck8255_flag&0x02)
         {
-            ShowTB(0x13);
-            Ck8255_flag&=0xfe;
+            ShowTB(0x15);
+            Ck8255_flag&=0xfd;
         }
         fires7=4;
     }
     if(!(c&0x80))
     {
-        /*右限*/
+        /*右限X-*/
         if(fires8>5)
         {
             if(RT_K)
@@ -3105,8 +3108,8 @@ void Ck8255(void)
             {
                 F5(6);
             }
-            Ck8255_flag|=0x02;
-            ShowTB(0x4);
+            Ck8255_flag|=0x01;
+            ShowTB(0x6);
             fires8=0;
         }
         else
@@ -3116,16 +3119,16 @@ void Ck8255(void)
     }
     else
     {
-        if(Ck8255_flag&0x02)
+        if(Ck8255_flag&0x01)
         {
-            ShowTB(0x14);
-            Ck8255_flag&=0xfd;
+            ShowTB(0x16);
+            Ck8255_flag&=0xfe;
         }
         fires8=4;
     }
     if(!(d&0x40))
     {
-        /*前限*/
+        /*前限Y+*/
         if(fires9>5)
         {
             if(FR_K)
@@ -3143,8 +3146,8 @@ void Ck8255(void)
             {
                 F5(5);
             }
-            Ck8255_flag|=0x04;
-            ShowTB(0x5);
+            Ck8255_flag|=0x08;
+            ShowTB(0x3);
             fires9=0;
         }
         else
@@ -3154,16 +3157,16 @@ void Ck8255(void)
     }
     else
     {
-        if(Ck8255_flag&0x04)
+        if(Ck8255_flag&0x08)
         {
-            ShowTB(0x15);
-            Ck8255_flag&=0xfb;
+            ShowTB(0x13);
+            Ck8255_flag&=0xf7;
         }
         fires9=4;
     }
     if(!(d&0x80))
     {
-        /*后限*/
+        /*后限Y-*/
         if(fires10>5)
         {
             if(BK_K)
@@ -3181,8 +3184,8 @@ void Ck8255(void)
             {
                 F5(6);
             }
-            Ck8255_flag|=0x08;
-            ShowTB(0x6);
+            Ck8255_flag|=0x04;
+            ShowTB(0x4);
             fires10=0;
         }
         else
@@ -3192,10 +3195,10 @@ void Ck8255(void)
     }
     else
     {
-        if(Ck8255_flag&0x08)
+        if(Ck8255_flag&0x04)
         {
-            ShowTB(0x16);
-            Ck8255_flag&=0xf7;
+            ShowTB(0x14);
+            Ck8255_flag&=0xfb;
         }
         fires10=4;
     }

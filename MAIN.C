@@ -27,6 +27,9 @@ void P10(void); /*ø⁄¡Ó*/
 void P16(void);  /*…Ë÷√*/
 void P11(void); /*–ﬁµ◊*/
 void P12(void); /*∂‡µ„º”π§*/
+void C1(void); /*“∆∂ØX*/
+void C2(void); /*“∆∂ØY*/
+void C3(void); /*“∆∂ØZ*/
 void C4(void); /*X+πÈ¡„*/
 void C5(void); /*X-πÈ¡„*/
 void C6(void); /*Y+πÈ¡„*/
@@ -601,6 +604,7 @@ void P11(void)  /*–ﬁµ◊*/
         P[10]=1;
     }
 }
+
 /*9.1πÈ¡„ÃÌº”*/
 void ClearC(int c)
 {
@@ -613,9 +617,87 @@ void ClearC(int c)
         }
     }
 }
+
+void C1(void){
+    long ll;
+    ClearC(0);
+    if(C[0]){
+        if(KeyN!=0x7fffffff){
+            ll=KeyN/DZC;
+            ll -=offset_x;
+            lock_x=0;
+            Position_control_x(ll);
+        }else ShowMess(0);
+        ClearKey(0);
+        C[0]=0;
+    }
+    else{
+        if(Dis_flag){ShowMess(17);return;}
+        ClearKey(0);
+        MaxL=7;MaxN=9999999;MinN=-9999999;
+        C[0]=1;
+    }
+}
+void C2(void){
+    long ll;
+    ClearC(1);
+    if(C[1]){
+        if(KeyN!=0x7fffffff){
+            ll=KeyN/DZC;
+            ll -=offset_y;
+            lock_y=0;
+            Position_control_y(ll);
+        }else
+            ShowMess(0);
+        ClearKey(0);
+        C[1]=0;
+    }
+    else {
+        if(Dis_flag){ShowMess(17);return;}
+        ClearKey(0);
+        MaxL=7;MaxN=9999999;MinN=-9999999;
+        C[1]=1;
+    }
+}
+void C3(void){
+    long ll;
+    if(Dis_flag){ShowMess(17);return;}
+    ClearC(2);
+    if(C[2]){
+        if(KeyN!=0x7fffffff){
+            ll=KeyN/DZC;
+            ll -=offset_z;
+            lock_z=0;
+            Position_control_z(ll);
+        }else
+            ShowMess(0);
+        ClearKey(0);
+        C[2]=0;
+    }else{
+        if(Dis_flag){ShowMess(17);return;}
+        ClearKey(0);
+        MaxL=7;MaxN=9999999;MinN=-9999999;
+        C[2]=1;
+    }
+}
+
 void C4(void)
 {
-    StopF5();
+		if(C[3]||C[4])
+    {
+        Stop_x(0);
+    }
+    else if(C[5]||C[6])
+    {
+        Stop_y(0);
+    }
+    else if(C[7]||C[8])
+    {
+        Stop_z(0);
+    }
+    F[4]=0;
+    Zero();
+    ShortSound();
     ClearC(3);
     if(C[3])
     {
@@ -638,7 +720,21 @@ void C4(void)
 }
 void C5(void)
 {
-    StopF5();
+		if(C[3]||C[4])
+    {
+        Stop_x(0);
+    }
+    else if(C[5]||C[6])
+    {
+        Stop_y(0);
+    }
+    else if(C[7]||C[8])
+    {
+        Stop_z(0);
+    }
+    F[4]=0;
+    Zero();
+    ShortSound();
     ClearC(4);
     if(C[4])
     {
@@ -661,7 +757,21 @@ void C5(void)
 }
 void C6(void)
 {
-    StopF5();
+		if(C[3]||C[4])
+    {
+        Stop_x(0);
+    }
+    else if(C[5]||C[6])
+    {
+        Stop_y(0);
+    }
+    else if(C[7]||C[8])
+    {
+        Stop_z(0);
+    }
+    F[4]=0;
+    Zero();
+    ShortSound();
     ClearC(5);
     if(C[5])
     {
@@ -684,7 +794,21 @@ void C6(void)
 }
 void C7(void)
 {
-    StopF5();
+		if(C[3]||C[4])
+    {
+        Stop_x(0);
+    }
+    else if(C[5]||C[6])
+    {
+        Stop_y(0);
+    }
+    else if(C[7]||C[8])
+    {
+        Stop_z(0);
+    }
+    F[4]=0;
+    Zero();
+    ShortSound();
     ClearC(6);
     if(C[6])
     {
@@ -707,7 +831,21 @@ void C7(void)
 }
 void C8(void)
 {
-    StopF5();
+		if(C[3]||C[4])
+    {
+        Stop_x(0);
+    }
+    else if(C[5]||C[6])
+    {
+        Stop_y(0);
+    }
+    else if(C[7]||C[8])
+    {
+        Stop_z(0);
+    }
+    F[4]=0;
+    Zero();
+    ShortSound();
     ClearC(7);
     if(C[7])
     {
@@ -730,7 +868,21 @@ void C8(void)
 }
 void C9(void)
 {
-    StopF5();
+		if(C[3]||C[4])
+    {
+        Stop_x(0);
+    }
+    else if(C[5]||C[6])
+    {
+        Stop_y(0);
+    }
+    else if(C[7]||C[8])
+    {
+        Stop_z(0);
+    }
+    F[4]=0;
+    Zero();
+    ShortSound();
     ClearC(8);
     if(C[8])
     {

@@ -696,6 +696,10 @@ void Key(void)
                         }
                     }
                     break;
+                case aF7:
+                		KEYL=14;
+                		ShowKey(10,0);
+                		break;
                 case aF8:
                     KEYL=0;
                     ShowKey(1,0);
@@ -2167,6 +2171,39 @@ void Key(void)
                 break;
             }
             break;
+        case 14: /*X Y Z÷·“∆∂Ø*/
+     			if(Fx){
+        		switch(k){
+        		case aF1:
+                C1();
+                ShowKey(10,1);ShowKey(10,2);ShowKey(10,3);
+                break;
+        		case aF2:
+                C2();
+                ShowKey(10,1);ShowKey(10,2);ShowKey(10,3);
+                break;
+        		case aF3:
+                C3();
+                ShowKey(10,1);ShowKey(10,2);ShowKey(10,3);
+                break;
+        		case aF8:
+                KEYL=1;
+								if(C[0])Stop_x(0);
+    						else if(C[1])Stop_y(0);
+    						else if(C[2])Stop_z(0);
+                ClearC(10);
+                ShowKey(2,0);
+                break;
+        		}
+    			}
+    			else{
+        		if(!Fx&&k==0xd){
+            	if(C[0]){C1();ShowKey(10,1);ShowKey(10,2);ShowKey(10,3);}
+            	if(C[1]){C2();ShowKey(10,1);ShowKey(10,2);ShowKey(10,3);}
+            	if(C[2]){C3();ShowKey(10,1);ShowKey(10,2);ShowKey(10,3);}
+        		}
+    			}
+  				break;
         }
         if(!Fx)
         {
@@ -2214,7 +2251,7 @@ void SWF()
 void Left(void)
 {
     long ll;
-    if(Dis_flag||Ck8255_flag&0x10||(!K[3]&&V<10&&lock_z_stop==1&&SWF_K<10))
+    if(Dis_flag||Ck8255_flag&0x01||(!K[3]&&V<10&&lock_z_stop==1&&SWF_K<10))
     {
         ShowMess(15);
         return;
@@ -2227,7 +2264,7 @@ void Left(void)
         SoundTime=SoundTIME;
         if(!F[1])
         {
-            ShowMess(17);
+            ShowMess(15);
         }
         ZeroFlag=0;
         ShowTB(0);
@@ -2265,7 +2302,7 @@ void Left(void)
 void Right(void)
 {
     long ll;
-    if(Dis_flag||Ck8255_flag&0x10||(!K[3]&&V<10&&lock_z_stop==1&&SWF_K<10))
+    if(Dis_flag||Ck8255_flag&0x02||(!K[3]&&V<10&&lock_z_stop==1&&SWF_K<10))
     {
         ShowMess(15);
         return;
@@ -2278,7 +2315,7 @@ void Right(void)
         SoundTime=SoundTIME;
         if(!F[1])
         {
-            ShowMess(17);
+            ShowMess(15);
         }
         ZeroFlag=0;
         ShowTB(0);
@@ -2316,7 +2353,7 @@ void Right(void)
 void Front(void)
 {
     long ll;
-    if(Dis_flag||Ck8255_flag&0x10||(!K[3]&&V<10&&lock_z_stop==1&&SWF_K<10))
+    if(Dis_flag||Ck8255_flag&0x04||(!K[3]&&V<10&&lock_z_stop==1&&SWF_K<10))
     {
         ShowMess(15);
         return;
@@ -2329,7 +2366,7 @@ void Front(void)
         SoundTime=SoundTIME;
         if(!F[1])
         {
-            ShowMess(17);
+            ShowMess(15);
         }
         ZeroFlag=0;
         ShowTB(0);
@@ -2367,7 +2404,7 @@ void Front(void)
 void Back(void)
 {
     long ll;
-    if(Dis_flag||Ck8255_flag&0x10||(!K[3]&&V<10&&lock_z_stop==1&&SWF_K<10))
+    if(Dis_flag||Ck8255_flag&0x08||(!K[3]&&V<10&&lock_z_stop==1&&SWF_K<10))
     {
         ShowMess(15);
         return;
@@ -2380,7 +2417,7 @@ void Back(void)
         SoundTime=SoundTIME;
         if(!F[1])
         {
-            ShowMess(17);
+            ShowMess(15);
         }
         ZeroFlag=0;
         ShowTB(0);
