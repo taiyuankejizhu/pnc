@@ -93,8 +93,8 @@ void main(int argc,char *argv[])
     Read_Table(Group);
     CheckTab();
     SetTable(Dis_lines);
-/*    InitScr256(4);*/
-    InitScr256(3);
+    InitScr256(4);
+/*    InitScr256(3);*/
     Disp();
     F2();
     ShowKey(1,1);
