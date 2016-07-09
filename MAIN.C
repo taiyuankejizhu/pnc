@@ -71,7 +71,7 @@ void Init_IO()
    outb(OSC,0x01);
    outportb(OSC+2,OTPS1);
    outb(OSC,0x02);
-   outportb(OSC+3,0xff);         
+   outportb(OSC+3,0xff);      
    outportb(IO+0,IO0);
    outportb(IO+1,IO1);
    outportb(IO+3,IO3);
