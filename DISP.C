@@ -4,7 +4,7 @@
 #include <conio.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
+#include <string.h> 
 #include <graphics.h>
 #define LNYL 20
 #define LNCO0 (long)0x45    /*LN00Ç°¾°É«*/
@@ -3635,6 +3635,7 @@ void ShowF6(int lines)
 char DispF7(int flag)
 {
     int j;
+    unsigned char current[3][3]= {{95,63,31},{191,63,31},{31,31,31}};
     if(flag==0)
     {
         getimage(F9X,F9Y,F9X+259,F9Y+170+7,BMP);
@@ -3657,6 +3658,11 @@ char DispF7(int flag)
     }
     if(flag==1)
     {
+    		if(iCurrent>current[cMaterial-1][cShape-1])
+				{
+	    		ShowMess(15);
+	    		return 1;
+				}
         if(lDeep!=0x7fffffff&&iCurrent!=0x7fff&&iAcreage!=0x7fff&&
                 cEffect!=0x7f&&cMaterial!=0x7f&&cShape!=0x7f)
         {

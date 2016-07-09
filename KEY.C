@@ -2944,10 +2944,14 @@ void DelLine()
 void SaveF7V()
 {
     int i=2,j=0;
-    unsigned int maxi=0;
+    unsigned int maxi=0,curi=0;
+    int current[3][3]= {{95,63,31},{191,63,31},{31,31,31}};
     if(KeyN!=0x7fffffff)
     {
-        if(XX==2)
+    	  curi=KeyN/1000;
+        if(curi>current[cMaterial-1][cShape-1])
+            curi=current[cMaterial-1][cShape-1];
+        if(XX==2&&curi<=current[cMaterial-1][cShape-1])
         {
             i=5;
             while(Table.Index[j]==1)
@@ -2957,13 +2961,22 @@ void SaveF7V()
                 j++;
             }
             maxi=maxi/2;
+            if(curi>maxi) maxi=curi;
+            if(maxi>current[cMaterial-1][cShape-1]) maxi=current[cMaterial-1][cShape-1];
             if(KeyN/1000>maxi)
                 maxi=KeyN/1000;
             ProcessTable(lDeep,cMaterial,KeyN/1000,iAcreage,cEffect,cShape,cProcess,maxi);
             if(Table.Index[YY]!=1)
             {
-            	Table.Index[YY]=1;
-            	Table.Shendu[YY]=StrTable.Shendu[i];
+              if(StrTable.Index[i]>0)
+                  Table.Index[YY]=1;
+              else
+                  Table.Index[YY]=-1;
+              Table.Index[YY]=1;
+              if(YY>0)
+                  Table.Shendu[YY]=Table.Shendu[YY-1]+StrTable.Shendu[i];
+              else
+                  Table.Shendu[YY]=0+StrTable.Shendu[i];
             	Table.Jixin[YY]=StrTable.Jixin[i];
             	Table.Dianliu[YY]=StrTable.Dianliu[i];
             	Table.Maikuan[YY]=StrTable.Maikuan[i];
@@ -2986,6 +2999,7 @@ void SaveF7V()
                 Table.Xiuzhi[YY]=StrTable.Xiuzhi[i];
             }
         }
+        else if (XX==2&&curi>current[cMaterial-1][cShape-1]){}
 				else if (Table.Index[YY]!=1){
             Table.Index[YY]=1;
             Table.Shendu[YY]=0+StrTable.Shendu[2];

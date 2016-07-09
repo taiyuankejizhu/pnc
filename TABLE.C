@@ -231,7 +231,16 @@ void ProcessTable(long lDeep,char cMaterial,int iCurrent,int iAcreage,char cEffe
         }
         if(stTemp.Index[i]!=1)
             i=i-1;
-        StrTable.Shendu[5]=0;
+        if(K[8])
+        {
+            StrTable.Shendu[5]=CNC_atol(tabprocon[select[0]].b_ofs)/DZC;
+        }
+        else
+        {
+            StrTable.Shendu[5]=CNC_atol(tabprocon[select[0]].b_ofs)/DZC;
+            StrTable.Shendu[5]=0-StrTable.Shendu[5];
+        }
+        StrTable.Index[5]=1;
         StrTable.Jixin[5]=stTemp.Jixin[i];
         StrTable.Dianliu[5]=stTemp.Dianliu[i];
         StrTable.Maikuan[5]=stTemp.Maikuan[i];
