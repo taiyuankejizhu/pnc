@@ -179,16 +179,15 @@ void Key(void)
     {
         F11_flag=0;
     }
- 		if(!(UDK&0x08) && PUMP_K>=0)
+ 		if(!(UDK&0x08))
     {
-        if(PUMP_K<5) PUMP_K++;
-        else
-        {
-        	PUMP_K = -1;
-					SoundTime=SoundTIME;
-          F3();
-          if(KEYL==0) ShowKey(1,2);
-        }
+    	if(PUMP_K==0)
+    	{
+    		PUMP_K = 1;
+				SoundTime=SoundTIME;
+      	F3();
+      	if(KEYL==0) ShowKey(1,2);
+      }
     }
     else PUMP_K=0;
     /* ÓÍ±Ã¿ª¹Ø */
