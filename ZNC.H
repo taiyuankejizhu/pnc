@@ -363,6 +363,7 @@ extern char SWF_flag;
 extern char SWF_K;
 extern char UP_K;
 extern char DN_K;
+extern char PUMP_K;
 extern char DNUP;
 
 extern long UDL;

@@ -879,7 +879,7 @@ void ShowMess(int value){
     "面积——1~99cm",
     "材料——Cu-St Gr-St Cu-Wc", 
     "效果——1~4",
-    "形状——平面 深孔 清角",
+    "形状——平面 清角 深孔",
     "制程——粗 正常"
      };
      char * showinput2[5]={
@@ -1915,7 +1915,7 @@ char *StrLN9(char flag){
   return str[flag];
 }
 char *StrLN10(char flag){
-  char *str[__LNSTR10__]={"平面","深孔","清角"};
+  char *str[__LNSTR10__]={"平面","清角","深孔"};
   return str[flag];
 }
 char *StrLN11(char flag){

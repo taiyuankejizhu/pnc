@@ -14,7 +14,7 @@ void ErrXY();
 void Key(void){
     static char MaxL1;
     static long MaxN1,MinN1;
-    static char KXX=-1,ii=0;
+    static char KXX=-1;
     int i,j,k;
     long l,l1,l2,l3;
     int UDK,UDK1;
@@ -98,7 +98,19 @@ if(!Dis_flag)if(!(UDK&0x10))
 }/* DIS键  */
 if(!(UDK&0x20)&&!F11_flag){SoundTime=SoundTIME;F11();if(ORgin&0x80){ShowMess(17);return ; }}  /* 停止开关 */
 if(UDK&0x20)F11_flag=0;
-
+ 		if(!(UDK&0x08) && PUMP_K>=0)
+    {
+        if(PUMP_K<40) PUMP_K++;
+        else
+        {
+        	PUMP_K = -1;
+					SoundTime=SoundTIME;
+          F3();
+          if(KEYL==0) ShowKey(1,2);
+        }
+    }
+    else PUMP_K=0;
+    /* 油泵开关 */
     if(KeyPress()){
     if(Ck8255_flag&0x80){Ck8255_flag&=0x7f;ShowTB(0x0);}
     if(Ck8256_flag&0x80){Ck8256_flag&=0x7f;}ShowTB(0x0);
