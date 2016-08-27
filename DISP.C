@@ -1526,7 +1526,7 @@ void ShowMess(int value)
         "面积——1~99cm",
         "材料——铜-钢 石墨-钢 铜-钨钢",
         "效果——1~4",
-        "形状——平面 清角 深孔",
+        "形状——平面 深孔 清角",
         "制程——粗 精"
     };
     char * showinput2[5]=
@@ -1630,7 +1630,7 @@ void ShowAuto(int value)
         "面积——1~99cm",
         "材料——铜-钢 石墨-钢 铜-钨钢",
         "效果——1~4",
-        "形状——平面 清角 深孔",
+        "形状——平面 深孔 清角",
         "制程——粗 精"
     };
 
@@ -3509,7 +3509,7 @@ char *StrLN9(char flag)
 }
 char *StrLN10(char flag)
 {
-    char *str[__LNSTR10__]= {"平面","清角","深孔"};
+    char *str[__LNSTR10__]= {"平面","深孔","清角"};
     return str[flag];
 }
 char *StrLN11(char flag)
