@@ -2253,6 +2253,10 @@ void F11(void)
     }
     offset_rz=ZPosi(0);
     Position_control_z(offset_rz);
+    offset_rx=XPosi(0);
+    Position_control_x(offset_rx);
+    offset_ry=YPosi(0);
+    Position_control_y(offset_ry);
     F11_flag=1;
     if(Dis_flag)
     {
