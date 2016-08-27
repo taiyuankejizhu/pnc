@@ -98,12 +98,11 @@ if(!Dis_flag)if(!(UDK&0x10))
 }/* DIS¼ü  */
 if(!(UDK&0x20)&&!F11_flag){SoundTime=SoundTIME;F11();if(ORgin&0x80){ShowMess(17);return ; }}  /* Í£Ö¹¿ª¹Ø */
 if(UDK&0x20)F11_flag=0;
- 		if(!(UDK&0x08) && PUMP_K>=0)
+ 		if(!(UDK&0x08))
     {
-        if(PUMP_K<5) PUMP_K++;
-        else
+        if(PUMP_K==0)
         {
-        	PUMP_K = -1;
+        	PUMP_K=1;
 					SoundTime=SoundTIME;
           F3();
           if(KEYL==0) ShowKey(1,2);
