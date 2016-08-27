@@ -3710,7 +3710,6 @@ void ShowF7(int lines)
 {
     int current[3][3]= {{95,63,31},{191,63,31},{31,31,31}};
     int ia;
-    char str[12],str1[6]=".000";
     int color=7;
     register j;
     if(!lines)
@@ -3753,8 +3752,6 @@ void ShowF7(int lines)
         /*case 5:MaxL=1;MinN=1;MaxN=3;break;*/
         /*case 6:MaxL=1;MinN=1;MaxN=2;break;*/
     }
-    str[0]=0;
-    str[1]=0;
     ListStrDeep(12,-1,0);
     ListStr8(12,0,0);
     ListStr9(12,1,0);
@@ -4251,7 +4248,7 @@ void ListStrDeep(int x,int y,char flag)
 void ListStrCur(int x,int y,char flag)
 {
     char DispStr[10];
-    char str[12],str1[6]=".000";
+    char str[12];
     long l=(long)(LNBC3<<24|LNCO3<<16|LNBC5<<8|LNCO5);
     register j;
     str[0]=0;
@@ -4278,7 +4275,7 @@ void ListStrCur(int x,int y,char flag)
 void ListStrAcr(int x,int y,char flag)
 {
     char DispStr[10];
-    char str[12],str1[6]=".000";
+    char str[12];
     long l=(long)(LNBC3<<24|LNCO3<<16|LNBC5<<8|LNCO5);
     register j;
     str[0]=0;
@@ -4305,7 +4302,7 @@ void ListStrAcr(int x,int y,char flag)
 void ListStrXP(int x,int y,char flag)
 {
     char DispStr[10];
-    char str[12],str1[6]=".000";
+    char str[12];
     long l=(long)(LNBC3<<24|LNCO3<<16|LNBC5<<8|LNCO5);
     register j;
     str[0]=0;
@@ -4325,7 +4322,7 @@ void ListStrXP(int x,int y,char flag)
 void ListStrYP(int x,int y,char flag)
 {
     char DispStr[10];
-    char str[12],str1[6]=".000";
+    char str[12];
     long l=(long)(LNBC3<<24|LNCO3<<16|LNBC5<<8|LNCO5);
     register j;
     str[0]=0;
@@ -4345,7 +4342,7 @@ void ListStrYP(int x,int y,char flag)
 void ListStrZP(int x,int y,char flag)
 {
     char DispStr[10];
-    char str[12],str1[6]=".000";
+    char str[12];
     long l=(long)(LNBC3<<24|LNCO3<<16|LNBC5<<8|LNCO5);
     register j;
     str[0]=0;

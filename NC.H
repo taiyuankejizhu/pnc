@@ -86,6 +86,7 @@ int soundV=5;
 unsigned char buf[0x200];
 char SWF_flag=1;
 char SWF_K=0;
+char PUMP_K=0;
 char UP_K=0;
 char DN_K=0;
 char DNUP=0;

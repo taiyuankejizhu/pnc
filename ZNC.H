@@ -425,6 +425,7 @@ extern char F11_flag,F12_flag;
 extern char XX,YY,Y7Y;
 extern char SWF_flag;
 extern char SWF_K;
+extern char PUMP_K;
 extern char UP_K;
 extern char DN_K;
 extern char DNUP;

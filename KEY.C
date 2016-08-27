@@ -366,6 +366,21 @@ void Key(void)
     {
         F11_flag=0;
     }
+    
+    if(!(UDK&0x08) && PUMP_K>=0)
+    {
+        if(PUMP_K<40) PUMP_K++;
+        else
+        {
+        	PUMP_K = -1;
+					SoundTime=SoundTIME;
+          F3();
+          if(KEYL==0) ShowKey(1,2);
+        }
+    }
+    else PUMP_K=0;
+    /* ÓÍ±Ã¿ª¹Ø */
+    
     if(KeyPress())
     {
         if(Ck8255_flag&0x80)

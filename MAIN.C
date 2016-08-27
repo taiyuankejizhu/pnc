@@ -3939,7 +3939,7 @@ void SetTable(char lines)
     outb(OSC,0x12);
     outb(OSC+1,Up_time);
     outb(OSC+2,Up_time>>8);
-    Work_time=Table.Gongshi[lines];  /* 工时 */
+    Work_time=Table.Gongshi[lines]*9/5;  /* 工时 */
     outb(OSC,0x10);
     outb(OSC+1,50);
     outb(OSC+2,Work_time);
