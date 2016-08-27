@@ -1535,7 +1535,7 @@ void ShowMess(int value)
         "面积——1~99cm",
         "材料——铜-钢 石墨-钢 铜-钨钢",
         "效果——1~4",
-        "形状——平面 清角 深孔",
+        "形状——平面 深孔 清角",
         "制程——粗 精"
     };
     char * showinput2[5]=
@@ -1638,7 +1638,7 @@ void ShowAuto(int value)
         "面积——1~99cm",
         "材料——铜-钢 石墨-钢 铜-钨钢",
         "效果——1~4",
-        "形状——平面 清角 深孔",
+        "形状——平面 深孔 清角",
         "制程——粗 精"
     };
 
@@ -2653,7 +2653,6 @@ void ShowInput(char value)
     int j;
     static int k=0;
     char a[]="\0\0\0\0";
-    long l=(long)(LNBC3<<24|LNCO3<<16|LNBC5<<8|LNCO5);
     int x, y;
     char flag;
     if(MaxL==-1)
@@ -2756,10 +2755,6 @@ void ShowInput(char value)
     {
         x=12;
         y=Y7Y-2;
-        if(flag)
-        {
-            l<<=16;
-        }
         x*=8;
         y*=LNYL;
         y+=8;
@@ -3244,7 +3239,7 @@ void ShowF7(int lines)
 {
     int current[3][3]= {{95,63,31},{191,63,31},{31,31,31}};
     int ia;
-    char str[12],str1[6]=".000";
+    char str[12];
     int color=7;
     register j;
     if(!lines)
@@ -3292,8 +3287,6 @@ void ShowF7(int lines)
         /*case 5:MaxL=1;MinN=1;MaxN=3;break;*/
         /*case 6:MaxL=1;MinN=1;MaxN=2;break;*/
     }
-    str[0]=0;
-    str[1]=0;
     ListStrDeep(12,-1,0);
     ListStr8(12,0,0);
     ListStr9(12,1,0);
@@ -3523,7 +3516,7 @@ char *StrLN9(char flag)
 }
 char *StrLN10(char flag)
 {
-    char *str[__LNSTR10__]= {"平面","清角","深孔"};
+    char *str[__LNSTR10__]= {"平面","深孔","清角"};
     return str[flag];
 }
 char *StrLN11(char flag)
@@ -3626,7 +3619,7 @@ void ListStr6(int x,int y,char flag)
 void ListStrSound(int x,int y,char flag)
 {
     char DispStr[10];
-    char str[12],str1[6]=".000";
+    char str[12];
     long l=(long)(LNBC3<<24|LNCO3<<16|LNBC5<<8|LNCO5);
     str[0]=0;
     str[1]=0;
@@ -3646,7 +3639,7 @@ void ListStrSound(int x,int y,char flag)
 void ListStrLight(int x,int y,char flag)
 {
     char DispStr[10];
-    char str[12],str1[6]=".000";
+    char str[12];
     long l=(long)(LNBC3<<24|LNCO3<<16|LNBC5<<8|LNCO5);
     str[0]=0;
     str[1]=0;
@@ -3830,7 +3823,7 @@ void ListStrDeep(int x,int y,char flag)
 void ListStrCur(int x,int y,char flag)
 {
     char DispStr[10];
-    char str[12],str1[6]=".000";
+    char str[12];
     long l=(long)(LNBC3<<24|LNCO3<<16|LNBC5<<8|LNCO5);
     register j;
     str[0]=0;
@@ -3857,7 +3850,7 @@ void ListStrCur(int x,int y,char flag)
 void ListStrAcr(int x,int y,char flag)
 {
     char DispStr[10];
-    char str[12],str1[6]=".000";
+    char str[12];
     long l=(long)(LNBC3<<24|LNCO3<<16|LNBC5<<8|LNCO5);
     register j;
     str[0]=0;

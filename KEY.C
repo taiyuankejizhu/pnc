@@ -179,32 +179,19 @@ void Key(void)
     {
         F11_flag=0;
     }
-    if(!(UDK&0x08))
+ 		if(!(UDK&0x08) && PUMP_K>=0)
     {
-        if(PUMP_K==0)
+        if(PUMP_K<5) PUMP_K++;
+        else
         {
-            SoundTime=SoundTIME;
-            if(!Pumn_flag)
-            {
-                F3();
-                ShowKey(1,2);
-            }
-            else
-            {
-                F[2]=0;
-                ShowKey(1,2);
-                ShowMess(15);
-            }
-        }
-        if(PUMP_K<40)
-        {
-            PUMP_K++;
+        	PUMP_K = -1;
+					SoundTime=SoundTIME;
+          F3();
+          if(KEYL==0) ShowKey(1,2);
         }
     }
-    else
-    {
-        PUMP_K=0;
-    }/* 油泵开关 */
+    else PUMP_K=0;
+    /* 油泵开关 */
     if(KeyPress())
     {
         if(Ck8255_flag&0x80)

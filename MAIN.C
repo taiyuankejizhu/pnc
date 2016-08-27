@@ -1847,7 +1847,7 @@ void F12(void)
             {
                 ShowTable(Dis_lines+1);
                 SetTable(Dis_lines);
-                DY=Table.Jianxi[Dis_lines]/2+41+Table.Gaoya[Dis_lines]*2;
+                DY=Table.Jianxi[Dis_lines]/2+41+Table.Gaoya[Dis_lines];
             }
             /*4.28 跳升不变化Bug*/
             lh=(Table.Shenggao[Dis_lines]%100)*100/DZC;
@@ -1959,7 +1959,7 @@ void F12(void)
             }
             SetTable(Dis_lines);
             Open_Elect();
-            DY=Table.Jianxi[Dis_lines]/2+41+Table.Gaoya[Dis_lines]*2;
+            DY=Table.Jianxi[Dis_lines]/2+41+Table.Gaoya[Dis_lines];
             ShowTable(0);
             ShowTable(Dis_lines+1);
             /*4.28 跳升不变化Bug*/
@@ -2060,7 +2060,7 @@ void F12(void)
                 }
                 SetTable(Dis_lines);
                 Open_Elect();
-                DY=Table.Jianxi[Dis_lines]/2+41+Table.Gaoya[Dis_lines]*2;
+                DY=Table.Jianxi[Dis_lines]/2+41+Table.Gaoya[Dis_lines];
                 ShowTable(0);
                 ShowTable(Dis_lines+1);
                 /*4.28 跳升不变化Bug*/
@@ -2139,7 +2139,7 @@ void F12(void)
                 {
                     SetTable(Dis_lines);
                     Open_Elect();
-                    DY=Table.Jianxi[Dis_lines]/2+41+Table.Gaoya[Dis_lines]*2;
+                    DY=Table.Jianxi[Dis_lines]/2+41+Table.Gaoya[Dis_lines];
                     ShowTable(0);
                     ShowTable(Dis_lines+1);
                 }
@@ -2250,7 +2250,7 @@ void F12(void)
                 SetTable(Dis_lines);
                 Open_Elect();
                 /*4.28 跳升不变化Bug*/
-                DY=Table.Jianxi[Dis_lines]/2+41+Table.Gaoya[Dis_lines]*2;
+                DY=Table.Jianxi[Dis_lines]/2+41+Table.Gaoya[Dis_lines];
                 lh=(Table.Shenggao[Dis_lines]%100)*100/DZC;
                 ld=Table.Dianliu[Dis_lines]/8+MianJi;
                 ld/=DZC;
@@ -2387,8 +2387,7 @@ void F13(void)
             {
                 ShowTable(Dis_lines+1);
                 SetTable(Dis_lines);
-                DY=Table.Jianxi[Dis_lines]/2+41+
-                   Table.Gaoya[Dis_lines]*2;
+                DY=Table.Jianxi[Dis_lines]/2+41+Table.Gaoya[Dis_lines];
             }
             /*4.28 跳升不变化Bug*/
             lh=(Table.Shenggao[Dis_lines]%100)*100/DZC;
@@ -2498,8 +2497,7 @@ void F13(void)
             }
             SetTable(Dis_lines);
             Open_Elect();
-            DY=Table.Jianxi[Dis_lines]/2+41+
-               Table.Gaoya[Dis_lines]*2;
+            DY=Table.Jianxi[Dis_lines]/2+41+Table.Gaoya[Dis_lines];
             ShowTable(0);
             ShowTable(Dis_lines+1);
             return;
@@ -2597,8 +2595,7 @@ void F13(void)
                 }
                 SetTable(Dis_lines);
                 Open_Elect();
-                DY=Table.Jianxi[Dis_lines]/2+41+
-                   Table.Gaoya[Dis_lines]*2;
+                DY=Table.Jianxi[Dis_lines]/2+41+Table.Gaoya[Dis_lines];
                 ShowTable(0);
                 ShowTable(Dis_lines+1);
                 /*4.28 跳升不变化Bug*/
@@ -2671,8 +2668,7 @@ void F13(void)
                 {
                     SetTable(Dis_lines);
                     Open_Elect();
-                    DY=Table.Jianxi[Dis_lines]/2+41+
-                       Table.Gaoya[Dis_lines]*2;
+                    DY=Table.Jianxi[Dis_lines]/2+41+Table.Gaoya[Dis_lines];
                     ShowTable(0);
                     ShowTable(Dis_lines+1);
                 }
@@ -2788,6 +2784,7 @@ void F13(void)
                 SetTable(Dis_lines);
                 Open_Elect();
                 /*4.28 跳升不变化Bug*/
+                DY=Table.Jianxi[Dis_lines]/2+41+Table.Gaoya[Dis_lines];
                 lh=(Table.Shenggao[Dis_lines]%100)*100/DZC;
                 ld=10*MianJi/DZC;
                 TF8=0;
@@ -3412,7 +3409,7 @@ void SetTable(char lines)
     }
     SetDianliu(Table.Dianliu[lines]);   /* 电流 */
     ib=Table.Dianliu[lines];
-    Duty_ratio(Table.Maikuan[lines],Table.Xiuzhi[lines],0);             /* 脉冲 */
+    Duty_ratio(Table.Maikuan[lines],Table.Xiuzhi[lines],0); /* 脉冲 */
     outb(OSC,0x02);
     outb(OSC+2,(Table.Jianxi[Dis_lines]));  /* 间隙电压 */
     MianJi=(Table.Shenggao[lines]/100)*10;        /* 面积 */
@@ -3423,7 +3420,7 @@ void SetTable(char lines)
     outb(OSC,0x12);
     outb(OSC+1,Up_time);
     outb(OSC+2,Up_time>>8);
-    Work_time=Table.Gongshi[lines];  /* 工时 */
+    Work_time=Table.Gongshi[lines]*9/5;  /* 工时 */
     outb(OSC,0x10);
     outb(OSC+1,50);
     outb(OSC+2,Work_time);
