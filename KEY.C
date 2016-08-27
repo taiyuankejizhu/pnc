@@ -100,7 +100,7 @@ if(!(UDK&0x20)&&!F11_flag){SoundTime=SoundTIME;F11();if(ORgin&0x80){ShowMess(17)
 if(UDK&0x20)F11_flag=0;
  		if(!(UDK&0x08) && PUMP_K>=0)
     {
-        if(PUMP_K<40) PUMP_K++;
+        if(PUMP_K<5) PUMP_K++;
         else
         {
         	PUMP_K = -1;
