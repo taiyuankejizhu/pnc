@@ -2061,14 +2061,6 @@ void Key(void)
                         ShowInput(0);
                     }
                 }
-                else
-                {
-                    if(XX==1)
-                    {
-                        Inputstr1[1]=0;
-                    }
-                    /*    ShowInput(k);*/
-                }
             }
             ShowF6(YY+1);
             break;
