@@ -680,7 +680,7 @@ void Key(void)
                     ShowKey(2,3);
                     break;
                 case aF4:
-                    F6();
+/*                    F6();*/
                     ShowKey(2,4);
                     break;
                 case aF5:
@@ -2169,6 +2169,10 @@ void Key(void)
                 ShowKey(9,5);
                 ShowKey(9,6);
                 break;
+            case aF7:
+            		F6();
+                ShowKey(9,7);
+            		break;
             case aF8:
                 KEYL=1;
                 StopF5();

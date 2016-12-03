@@ -1593,7 +1593,7 @@ long ReadRegisterValue_Z(char cLowReg)
 void F6(void)
 {
     long l;
-    F[5]=1;
+		C[9]=0;
     if(XYZ[0])
     {
         offset_x=position_x/2-XPosi(0);
@@ -1619,7 +1619,6 @@ void F6(void)
     }
     SaveXYZ(0);
     ClearKey(0);
-    F[5]=0;
 }
 void F7(char flag)
 {
