@@ -78,7 +78,7 @@ void Key(void)
     }
     else
     {
-        if(UDK1&0x20)
+        if((UDK1&0x20)||(UDK1&0x10))
         {
             DNUP=0;
         }
@@ -97,7 +97,7 @@ void Key(void)
     }
     else
     {
-        if(UDK2&0x20||UDK2&0x10)
+        if((UDK2&0x20)||(UDK2&0x10))
         {
             LFRT=0;
         }
@@ -116,7 +116,7 @@ void Key(void)
     }
     else
     {
-        if(UDK3&0x20||UDK3&0x10)
+        if((UDK3&0x20)||(UDK3&0x10))
         {
             FRBK=0;
         }
@@ -261,10 +261,13 @@ void Key(void)
         {
             LFRT=1;    /* Left ¼ü  */
         }
-        if(Dis_flag&&K[8]&&C[9]==0)
+/*
+        if(C[3]||C[4])
         {
+        		ShowMess(15);
             return;
         }
+*/
         Left();
     }
     else if((F[4]<5||F[4]>6)&&!(UDK2&0x20))
@@ -278,10 +281,13 @@ void Key(void)
         {
             LFRT=2;    /* Right ¼ü  */
         }
-        if(Dis_flag&&!K[8]&&C[9]==0)
+/*
+        if(C[3]||C[4])
         {
+        		ShowMess(15);
             return;
         }
+*/
         Right();
     }
     /*9.1 YÖáÌí¼Ó*/
@@ -296,10 +302,13 @@ void Key(void)
         {
             FRBK=1;    /* Front ¼ü  */
         }
-        if(Dis_flag&&K[8]&&C[9]==1)
+/*
+        if(C[5]||C[6])
         {
+        		ShowMess(15);
             return;
         }
+*/
         Front();
     }
     else if((F[4]<5||F[4]>6)&&!(UDK3&0x20))
@@ -313,10 +322,13 @@ void Key(void)
         {
             FRBK=2;    /* Back ¼ü  */
         }
-        if(Dis_flag&&!K[8]&&C[9]==1)
+/*
+        if(C[5]||C[6])
         {
+        		ShowMess(15);
             return;
         }
+*/
         Back();
     }
     if(!Dis_flag)if(!(UDK&0x10))
@@ -2261,13 +2273,13 @@ void SWF()
 void Left(void)
 {
     long ll;
-    if(Dis_flag||Ck8255_flag&0x01||(!K[3]&&V<10&&lock_z_stop==1&&SWF_K<10))
+    if((Dis_flag&&!K[3])||Ck8255_flag&0x01||(!K[3]&&V<10&&lock_z_stop==1&&SWF_K<10))
     {
         ShowMess(15);
         return;
     }
     lock_x=0;
-    if(!LF_K)
+		if(!LF_K)
     {
         RT_K=0;
         ClearKey(0);
@@ -2284,9 +2296,19 @@ void Left(void)
             Velocity_control_x(0xffd0);
             break;
         case 1:
+        	if(K[3]&&Dis_flag)
+        		Velocity_control_x(0xffd0);
+        	else if(K[3])
+        		Velocity_control_x(0xff00);
+        	else
             Velocity_control_x(0xfc00);
             break;
         case 2:
+        	if(K[3]&&Dis_flag)
+        		Velocity_control_x(0xffd0);
+        	else if(K[3])
+        		Velocity_control_x(0xfe00);
+        	else
             Velocity_control_x(0xf800);
             break;
         case 3:
@@ -2312,13 +2334,13 @@ void Left(void)
 void Right(void)
 {
     long ll;
-    if(Dis_flag||Ck8255_flag&0x02||(!K[3]&&V<10&&lock_z_stop==1&&SWF_K<10))
+    if((Dis_flag&&!K[3])||Ck8255_flag&0x02||(!K[3]&&V<10&&lock_z_stop==1&&SWF_K<10))
     {
         ShowMess(15);
         return;
     }
     lock_x=0;
-    if(!RT_K)
+		if(!RT_K)
     {
         LF_K=0;
         ClearKey(0);
@@ -2335,9 +2357,19 @@ void Right(void)
             Velocity_control_x(0x30);
             break;
         case 1:
+        	if(K[3]&&Dis_flag)
+        		Velocity_control_x(0x30);
+        	else if(K[3])
+        		Velocity_control_x(0x100);
+        	else
             Velocity_control_x(0x400);
             break;
         case 2:
+        	if(K[3]&&Dis_flag)
+        		Velocity_control_x(0x30);
+        	else if(K[3])
+        		Velocity_control_x(0x200);
+        	else
             Velocity_control_x(0x800);
             break;
         case 3:
@@ -2363,7 +2395,7 @@ void Right(void)
 void Front(void)
 {
     long ll;
-    if(Dis_flag||Ck8255_flag&0x04||(!K[3]&&V<10&&lock_z_stop==1&&SWF_K<10))
+    if((Dis_flag&&!K[3])||Ck8255_flag&0x04||(!K[3]&&V<10&&lock_z_stop==1&&SWF_K<10))
     {
         ShowMess(15);
         return;
@@ -2386,9 +2418,19 @@ void Front(void)
             Velocity_control_y(0xffd0);
             break;
         case 1:
+        	if(K[3]&&Dis_flag)
+        		Velocity_control_y(0xffd0);
+        	else if(K[3])
+        		Velocity_control_y(0xff00);
+        	else
             Velocity_control_y(0xfc00);
             break;
         case 2:
+        	if(K[3]&&Dis_flag)
+        		Velocity_control_y(0xffd0);
+        	else if(K[3])
+        		Velocity_control_y(0xfe00);
+        	else
             Velocity_control_y(0xf800);
             break;
         case 3:
@@ -2414,7 +2456,7 @@ void Front(void)
 void Back(void)
 {
     long ll;
-    if(Dis_flag||Ck8255_flag&0x08||(!K[3]&&V<10&&lock_z_stop==1&&SWF_K<10))
+    if((Dis_flag&&!K[3])||Ck8255_flag&0x08||(!K[3]&&V<10&&lock_z_stop==1&&SWF_K<10))
     {
         ShowMess(15);
         return;
@@ -2437,9 +2479,19 @@ void Back(void)
             Velocity_control_y(0x30);
             break;
         case 1:
+        	if(K[3]&&Dis_flag)
+        		Velocity_control_y(0x30);
+        	else if(K[3])
+        		Velocity_control_y(0x100);
+        	else
             Velocity_control_y(0x400);
             break;
         case 2:
+        	if(K[3]&&Dis_flag)
+        		Velocity_control_y(0x30);
+        	else if(K[3])
+        		Velocity_control_y(0x200);
+        	else
             Velocity_control_y(0x800);
             break;
         case 3:
