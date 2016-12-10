@@ -2199,15 +2199,15 @@ void F12(void)
     case 7:
         /*11.11 speed*/
         /*ShowLong(lt);*/
-        if(Zposi(0)<=(positiond+lt))
+        if(ZPosi(0)<=(positiond+lt))
         {
-            if(Zposi(0)<positiond)
+            if(ZPosi(0)<positiond)
             {
                 Velocity=100;
             }
             else
             {
-                Velocity=2*(100-MianJi)+(Zposi(0)-positiond);
+                Velocity=2*(100-MianJi)+(ZPosi(0)-positiond);
             }
             Velocity=abs(Velocity);
             Velocity_control_z(Velocity);
@@ -2734,15 +2734,15 @@ void F13(void)
         break;
     case 7:
         /*11.11 speed*/
-        if(Zposi(0)>=(positiond-ld))
+        if(ZPosi(0)>=(positiond-ld))
         {
-            if(Zposi(0)>positiond)
+            if(ZPosi(0)>positiond)
             {
                 Velocity=-100;
             }
             else
             {
-                Velocity=2*(100-MianJi)+(Zposi(0)-positiond);
+                Velocity=2*(100-MianJi)+(ZPosi(0)-positiond);
             }
             Velocity=abs(Velocity);
             Velocity_control_z(-Velocity);

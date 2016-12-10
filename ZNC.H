@@ -493,6 +493,7 @@ extern void ShowTime(char flag);
 extern void ShowTimeD(int flag);
 extern void ShowVer(char *ver);
 extern void ShowLong(long value);
+extern void ShowLongHex(long value);
 extern void SaveBMP(void);
 extern void Delay1(unsigned mill);
 extern void hzk16f(unsigned char value,char * buf);

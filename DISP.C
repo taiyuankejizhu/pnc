@@ -1447,9 +1447,69 @@ char *KeyStr(int y,int x)
 void ShowLong(long value)
 {
     char str[]="Ver:         \0";
-    itoa(value,str,10);
+    ltoa(value,str,10);
     Dispebar(CX1-73,CY0+17,CX1-1,CY1-1,COLORC-1,BKCOLORC,2,str);
 }
+
+void ShowLongHex(long value)
+{
+		char str[]="                 \0";
+		char strtmp[]="              \0";
+		char i0, i1, i2, i3;
+		long Z_Pos = value;
+		int i = 0;
+		int j = 0;
+
+		i0 = Z_Pos & 0x000000ff;
+		
+		i1 = Z_Pos >> 8;
+		i1 = i1 & 0x000000ff;
+
+		i2 = Z_Pos >> 16;
+		i2 = i2 & 0x000000ff;
+
+		i3 = Z_Pos >> 24;
+		i3 = i3 & 0x000000ff;
+		
+		str[j] = '0';j++;
+		str[j] = 'x';j++;
+		
+		sprintf(strtmp, "%02x", i3);
+		for (i = 0;i < 10;i++)
+		{
+			if (strtmp[i] == '\0') break;
+		}
+		str[j] = strtmp[i - 2];j++;
+		str[j] = strtmp[i - 1];j++;
+		
+		sprintf(strtmp, "%02x", i2);
+		for (i = 0;i < 10;i++)
+		{
+			if (strtmp[i] == '\0') break;
+		}
+		str[j] = strtmp[i - 2];j++;
+		str[j] = strtmp[i - 1];j++;
+		
+		sprintf(strtmp, "%02x", i1);
+		for (i = 0;i < 10;i++)
+		{
+			if (strtmp[i] == '\0') break;
+		}
+		str[j] = strtmp[i - 2];j++;
+		str[j] = strtmp[i - 1];j++;
+		
+		sprintf(strtmp, "%02x", i0);
+		for (i = 0;i < 10;i++)
+		{
+			if (strtmp[i] == '\0') break;
+		}
+		str[j] = strtmp[i - 2];j++;
+		str[j] = strtmp[i - 1];j++;
+		
+		str[j] = '\0';
+		Dispebar(CX1-73,CY0+17,CX1-1,CY1-1,COLORC-1,BKCOLORC,2,str);
+}
+
 void ShowVer(char *ver)
 {
     char str[]="Ver:     \0";
