@@ -1149,7 +1149,7 @@ void F7(char flag)
         {
             F[6]=0;
         }
-        WriteSPI(Group+0x100,1);
+        WriteSPI(Group+0x150,1);
         DelLine();
         i=F12_flag;
         j=Dis_lines;
