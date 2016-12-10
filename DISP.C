@@ -1563,7 +1563,7 @@ void ShowMess(int value)
         "材料——Cu-St Gr-St Cu-Wc",
         "效果——1~4",
         "形状——平面 深孔 清角",
-        "制程——粗 正常"
+        "制程——粗 精"
     };
     char * showinput2[5]=
     {
@@ -1848,7 +1848,7 @@ void Read_Table(unsigned char group)
 {
     char far *pi;
     int i,j;
-    j=0x130+group*0x130;
+    j=0x200+group*0x200;
     pi=(char far * )&Table;
     for(i=0; i<sizeof(Table); i++)
     {
@@ -1878,7 +1878,7 @@ void Write_Table(unsigned char group)
     char far *pi;
     char a;
     int i,j;
-    j=0x130+group*0x130;
+    j=0x200+group*0x200;
     pi=(char far * )&Table;
     for(i=0; i<sizeof(Table); i++)
     {
@@ -1892,7 +1892,7 @@ void Read_Nodes(unsigned char group)
 {
     char far *pi;
     int i,j;
-    j=0x77f0+group*0x130;
+    j=0xd200+group*0x150;
     pi=(char far * )&Node;
     for(i=0; i<sizeof(Node); i++)
     {
@@ -1913,7 +1913,7 @@ void Write_Nodes(unsigned char group)
     char far *pi;
     char a;
     int i,j;
-    j=0x77f0+group*0x130;
+    j=0xd200+group*0x150;
     pi=(char far * )&Node;
     for(i=0; i<sizeof(Node); i++)
     {
@@ -3422,7 +3422,7 @@ char DispF6(int flag)
     }
     if(flag==1)
     {
-        Write_Nodes(0);
+        Write_Nodes(Group);
         setviewport(0,0,639,479,0);
         putimage(F9X-25,F9Y,BMP,0);
         ShowTable(0);
@@ -3430,7 +3430,7 @@ char DispF6(int flag)
     }
     if(flag>=2)
     {
-        Read_Nodes(0);
+        Read_Nodes(Group);
         setviewport(0,0,639,479,0);
         putimage(F9X-25,F9Y,BMP,0);
         ShowTable(0);
@@ -3991,7 +3991,7 @@ char *StrLN10(char flag)
 }
 char *StrLN11(char flag)
 {
-    char *str[__LNSTR11__]= {"粗","正常"};
+    char *str[__LNSTR11__]= {"粗","精"};
     return str[flag];
 }
 void ListStr1(int x,int y,char flag)

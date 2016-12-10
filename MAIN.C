@@ -106,7 +106,7 @@ void main(int argc,char *argv[])
     Position_control_y(YPosi(0));
     ResetXYZ();
     Read_Table(Group);
-    Read_Nodes(0);
+    Read_Nodes(Group);
     CheckTab();
     InitScr();
     SetTable(Dis_lines);
@@ -189,9 +189,9 @@ void main(int argc,char *argv[])
             if(1==Node.flag[Dis_pos])
             {
                 lock_z=0;
-                if(ZPosi(0)!=Node.z_pos[Dis_pos]-offset_z)
+                if(ZPosi(0)!=Node.z_pos[Dis_pos-1]-offset_z)
                 {
-                    Position_control_z(Node.z_pos[Dis_pos]-offset_z);
+                    Position_control_z(Node.z_pos[Dis_pos-1]-offset_z);
                 }
                 else
                 {
@@ -201,9 +201,9 @@ void main(int argc,char *argv[])
             else
             {  
                 lock_z=0;
-                if(K[2]&&abs(ZPosi(0)-offset_rz)>2)
+                if(ZPosi(0)!=Node.z_pos[Dis_pos-1]-offset_z)
                 {
-                    Position_control_z(offset_rz);
+                    Position_control_z(Node.z_pos[Dis_pos-1]-offset_z);
                 }
                 else
                 {
@@ -1648,7 +1648,7 @@ void F7(char flag)
         {
             F[6]=0;
         }
-        WriteSPI(Group+0x130,1);
+        WriteSPI(Group+0x200,1);
         DelLine();
         i=F12_flag;
         j=Dis_lines;
@@ -1774,6 +1774,7 @@ void F9(void)
             Group=(char)KeyN;
             Dis_start=Dis_end=0;
             Read_Table(Group);
+            Read_Nodes(Group);
             ShowTable(0);
             SetTable(0);
             WriteSPI(0x0d,Group);
@@ -1908,6 +1909,7 @@ void K4(void)
         zu=Group;
         KeyN=0;
         Read_Table(0);
+        Read_Nodes(0);
         if(Table.Index[0]!=1)
         {
             Table.Dianliu[0]=StrTable.Dianliu[4];
