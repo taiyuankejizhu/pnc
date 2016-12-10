@@ -193,7 +193,7 @@ void main(int argc,char *argv[])
             if(1==Node.flag[Dis_pos])
             {
                 lock_z=0;
-                if(Zposi(0)!=Node.z_pos[Dis_pos]-offset_z)
+                if(ZPosi(0)!=Node.z_pos[Dis_pos]-offset_z)
                 {
                     Position_control_z(Node.z_pos[Dis_pos]-offset_z);
                 }
@@ -205,7 +205,7 @@ void main(int argc,char *argv[])
             else
             {
                 lock_z=0;
-                if(Zposi(0)!=Node.z_pos[Dis_pos]-offset_z)
+                if(ZPosi(0)!=Node.z_pos[Dis_pos]-offset_z)
                 {
                     Position_control_z(Node.z_pos[Dis_pos]-offset_z);
                 }
@@ -2732,15 +2732,15 @@ void F12(void)
         break;
     case 7:
         /*11.11 speed*/
-        if(Zposi(0)<=(positiond+50*MianJi/DZC))
+        if(ZPosi(0)<=(positiond+50*MianJi/DZC))
         {
-            if(Zposi(0)<positiond)
+            if(ZPosi(0)<positiond)
             {
                 Velocity=100;
             }
             else
             {
-                Velocity=(100/(MianJi+10))*(Zposi(0)-positiond)+100;
+                Velocity=(100/(MianJi+10))*(ZPosi(0)-positiond)+100;
             }
             Velocity=abs(Velocity);
             Velocity_control_z(Velocity);
@@ -3276,15 +3276,15 @@ void F13(void)
         break;
     case 7:
         /*11.11 speed*/
-        if(Zposi(0)<=(positiond-50*MianJi/DZC))
+        if(ZPosi(0)<=(positiond-50*MianJi/DZC))
         {
-            if(Zposi(0)<positiond)
+            if(ZPosi(0)<positiond)
             {
                 Velocity=-100;
             }
             else
             {
-                Velocity=(100/(MianJi+10))*(Zposi(0)-positiond)+100;
+                Velocity=(100/(MianJi+10))*(ZPosi(0)-positiond)+100;
             }
             Velocity=abs(Velocity);
             Velocity_control_z(-Velocity);
