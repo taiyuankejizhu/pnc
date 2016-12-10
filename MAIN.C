@@ -155,7 +155,7 @@ void main(int argc,char *argv[])
         case 0:
             break;
         case 1:
-            if((abs(Xposi(0)-Node.x_pos[Dis_pos]+offset_x)>2 || abs(Yposi(0)-Node.y_pos[Dis_pos]+offset_y)>2)
+            if((abs(XPosi(0)-Node.x_pos[Dis_pos]+offset_x)>2 || abs(YPosi(0)-Node.y_pos[Dis_pos]+offset_y)>2)
                     && 1==Node.flag[Dis_pos] && P[12])
             {
                 Position_control_x(Node.x_pos[Dis_pos]-offset_x);
@@ -180,13 +180,9 @@ void main(int argc,char *argv[])
             if(Dis_flag)
             {
                 if(!K[8])
-                {
                     F12();
-                }
                 else
-                {
                     F13();
-                }
             }
             break;
         case 3:
@@ -203,11 +199,11 @@ void main(int argc,char *argv[])
                 }
             }
             else
-            {
+            {  
                 lock_z=0;
-                if(ZPosi(0)!=Node.z_pos[Dis_pos]-offset_z)
+                if(K[2]&&abs(ZPosi(0)-offset_rz)>2)
                 {
-                    Position_control_z(Node.z_pos[Dis_pos]-offset_z);
+                    Position_control_z(offset_rz);
                 }
                 else
                 {
@@ -217,6 +213,12 @@ void main(int argc,char *argv[])
                     SoundTime=SDST;
                     ShowMess(28);
                     ShowTable(0);
+										if(K[1])
+                		{
+                    	K[9]=1;
+                    	ExitTime=360;
+                    	if(KEYL==4)ShowKey(5,4);
+                		}
                 }
             }
             break;
@@ -2353,26 +2355,28 @@ void F12(void)
                     Muti_flag=3;
                     Dis_pos++;
                     WriteSPI(0x108,Dis_pos);
+                    offset_rz=ZPosi(0);
+                  	if(K[2])offset_rz+=((long)K_3*1000/DZC);
                     return;
                 }
-                offset_rz=ZPosi(0);
-                if(K[1])
+                else
                 {
+									offset_rz=ZPosi(0);
+									if(K[1])
+                	{
                     K[9]=1;
                     ExitTime=360;
                     if(KEYL==4)
                     {
                         ShowKey(5,4);
                     }
-                }
-                if(!P[12])
-                {
-                    SoundTime=SDST;
-                    if(K[2])
-                    {
-                        offset_rz+=((long)K_3*1000/DZC);
-                    }
-                    Position_control_z(offset_rz);
+                	}
+									SoundTime=SDST;
+                  if(K[2])
+                  {
+                    offset_rz+=((long)K_3*1000/DZC);
+                  }
+                  Position_control_z(offset_rz);
                 }
                 return;
             }
