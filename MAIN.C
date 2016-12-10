@@ -1763,7 +1763,7 @@ void F9(void)
         ClearKey(0);
         ShowMess(18);
         MaxL=2;
-        MaxN=99;
+        MaxN=50;
         MinN=1;
         F[8]=1;
     }

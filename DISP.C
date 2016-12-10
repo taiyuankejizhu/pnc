@@ -1848,7 +1848,7 @@ void Read_Table(unsigned char group)
 {
     char far *pi;
     int i,j;
-    j=0x200+group*0x200;
+    j=0x150+group*0x150;
     pi=(char far * )&Table;
     for(i=0; i<sizeof(Table); i++)
     {
@@ -1878,7 +1878,7 @@ void Write_Table(unsigned char group)
     char far *pi;
     char a;
     int i,j;
-    j=0x200+group*0x200;
+    j=0x150+group*0x150;
     pi=(char far * )&Table;
     for(i=0; i<sizeof(Table); i++)
     {
@@ -1892,7 +1892,7 @@ void Read_Nodes(unsigned char group)
 {
     char far *pi;
     int i,j;
-    j=0xd200+group*0x150;
+    j=0x4440+group*0x110;
     pi=(char far * )&Node;
     for(i=0; i<sizeof(Node); i++)
     {
@@ -1913,7 +1913,7 @@ void Write_Nodes(unsigned char group)
     char far *pi;
     char a;
     int i,j;
-    j=0xd200+group*0x150;
+    j=0x4440+group*0x110;
     pi=(char far * )&Node;
     for(i=0; i<sizeof(Node); i++)
     {
