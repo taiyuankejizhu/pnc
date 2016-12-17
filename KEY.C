@@ -591,7 +591,7 @@ void Key(void)
         }
         else
         {
-            if(KEYL==1&&k==aF4)
+            if(KEYL==13&&k==aF7)
             {
                 F6();
             }
