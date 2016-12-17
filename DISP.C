@@ -2250,6 +2250,30 @@ long YPosi(char flag)   /*读取Y轴计数器的数据*/
         return ll;
     }
 }
+
+long XYZPosi(char flag)
+{
+	long ll=0;
+	switch(M[1])
+	{
+	case 0:
+	case 1:
+		ll=XPosi(0);
+		break;
+	case 2:
+	case 3:
+		ll=YPosi(0);
+		break;
+	case 4:
+	case 5:
+		ll=ZPosi(0);
+		break;
+	default:
+		break;
+	}
+	return ll;
+}
+
 long ZPosi(char flag)  /*读取Z轴计数器的数据*/
 {
     unsigned char   i0,i1,i2,i3;

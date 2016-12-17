@@ -125,7 +125,7 @@ long ox,oy,oz,origin_z,origin_x,origin_y,diff_oz=0,diff_ox=0,diff_oy=0,lpz=0,s_O
 long position_x = -9999999,position_y = -9999999,position_z =0x8fffffff,R_positionz=0x8fffffff,position_t =0,position_tt;
 long offset_x=0,offset_y=0,offset_z=0,offset_t=0,position_p=-9999999,position_d=9999999;
 long position_dx,position_dy,position_dz,position_px,position_py,position_pz;
-long offset_rx=0,offset_ry=0,offset_rz=0;
+long offset_rx=0,offset_ry=0,offset_rz=0,offset_rxyz=0;
 char lock_x=1,lock_y=1,lock_z=1;
 char lock_z_stop=0,lock_x_stop=0,lock_y_stop=0;
 long offset_xx[10],offset_yy[10],offset_zz[10];

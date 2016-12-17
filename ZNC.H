@@ -214,6 +214,7 @@ extern long position_p; /*当前的目标深度*/
 extern long offset_rx;/*当前X轴寄存器坐标*/
 extern long offset_ry;
 extern long offset_rz;
+extern long offset_rxyz;
 extern long position_dx;
 extern long position_dy;
 extern long position_dz;
@@ -271,7 +272,10 @@ extern char Showline;/*当前显示行*/
 extern char F6line;/*当前位置显示行*/
 void OpenPower(void);      /*打开副电源*/
 void ClosePower(void);   /*关闭副电源*/
-void Signal_Jianxi(char flag);    /*发放间隙电压信号*/
+void Signal_Jianxi_Z(char flag);    /*发放间隙电压信号*/
+void Signal_Jianxi_X(char flag);
+void Signal_Jianxi_Y(char flag);
+void Signal_Jianxi_XYZ(char flag);
 void Open_OCSF(void);   /*开脉冲*/
 void Close_OCSF(void);  /*关脉冲*/
 void Open_Elect(void);  /*开变压器*/
@@ -281,6 +285,8 @@ void Close_Pump(void);  /*关油泵*/
 void CloseAllPower(void); /*关闭所有电源*/
 unsigned char Current(void);   /*读取电流值*/
 unsigned char Voltage(void);   /*读取电压值*/
+void Position_control_xyz(long position);
+void Velocity_control_xyz(unsigned v);
 void Position_control_z(long position); /**(struct ThreeByte position);**/ /* Entry position control mode */
 void Velocity_control_z(unsigned v);           /* proportional velocity control mode */
 /*9.1 Y轴添加*/

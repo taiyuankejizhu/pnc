@@ -1302,6 +1302,49 @@ void StopF5(void)   /* Õ£÷ππÈ¡„ */
         ShowKey(2,1);
     }
 }
+
+void Position_control_xyz(long position)
+{
+	switch(M[1])
+	{
+	case 0:
+	case 1:
+		Position_control_x(position);
+		break;
+	case 2:
+	case 3:
+		Position_control_y(position);
+		break;
+	case 4:
+	case 5:
+		Position_control_z(position);
+		break;
+	default:
+		break;
+	}
+}
+
+void Velocity_control_xyz(unsigned v)
+{
+	switch(M[1])
+	{
+	case 0:
+	case 1:
+		Velocity_control_x(v);
+		break;
+	case 2:
+	case 3:
+		Velocity_control_y(v);
+		break;
+	case 4:
+	case 5:
+		Velocity_control_z(v);
+		break;
+	default:
+		break;
+	}
+}
+
 void Position_control_z(long position)
 {
     /* Position control mode */
@@ -1543,7 +1586,29 @@ int KeyAss(void)
     }
     return ak&0xff;
 }
-void Signal_Jianxi(char flag)
+
+void Signal_Jianxi_XYZ(char flag)
+{
+	switch(M[1])
+	{
+	case 0:
+	case 1:
+		Signal_Jianxi_X(flag);
+		break;
+	case 2:
+	case 3:
+		Signal_Jianxi_Y(flag);
+		break;
+	case 4:
+	case 5:
+		Signal_Jianxi_Z(flag);
+		break;
+	default:
+		break;
+	}
+}
+
+void Signal_Jianxi_Z(char flag)
 {
     if(!flag)
     {
@@ -1557,6 +1622,36 @@ void Signal_Jianxi(char flag)
     }
     outb(Address_Z,0x01);
     outb(Address_Z+1,IOZ0);
+}
+void Signal_Jianxi_X(char flag)
+{
+    if(!flag)
+    {
+        IOX0|=0x06;
+        IOX0&=0xfe;
+    }
+    else
+    {
+        IOX0|=0x04;
+        IOX0&=0xfc;
+    }
+    outb(ICXaddr,0x01);
+    outb(ICXaddr+1,IOX0);
+}
+void Signal_Jianxi_Y(char flag)
+{
+    if(!flag)
+    {
+        IOY0|=0x06;
+        IOY0&=0xfe;
+    }
+    else
+    {
+        IOY0|=0x04;
+        IOY0&=0xfc;
+    }
+    outb(ICYaddr,0x01);
+    outb(ICYaddr+1,IOY0);
 }
 void ShortSound(void)
 {
@@ -2350,7 +2445,7 @@ void F12(void)
                 }
                 else
                 {
-									offset_rz=ZPosi(0);
+									offset_rxyz=XYZPosi(0);
 									if(K[1])
                 	{
                     K[9]=1;
@@ -2363,9 +2458,9 @@ void F12(void)
 									SoundTime=SDST;
                   if(K[2])
                   {
-                    offset_rz+=((long)K_3*1000/DZC);
+                    offset_rxyz+=((long)K_3*1000/DZC);
                   }
-                  Position_control_z(offset_rz);
+                  Position_control_xyz(offset_rxyz);
                 }
                 return;
             }
@@ -2415,7 +2510,7 @@ void F12(void)
         ShowFL(0);
         if(Voltage()<10)
         {
-            Velocity_control_z(0x40);
+            Velocity_control_xyz(0x40);
             Delay1(0x100);
         }
         Position_control_z(ZPosi(0));
@@ -2447,7 +2542,7 @@ void F12(void)
         }
         Delay1(0x100);
         SetDianliu(1);
-        Signal_Jianxi(K[8]);
+        Signal_Jianxi_XYZ(K[8]);
         F12_flag++;
         break;
     case 2:
@@ -2538,7 +2633,7 @@ void F12(void)
             F12_flag++;
             if(P[10]<=1) /*NO –ﬁµ◊*/
             {
-                Signal_Jianxi(K[8]);
+                Signal_Jianxi_XYZ(K[8]);
                 if(ia||ERR_XY)
                 {
                     position_d=position_z;
@@ -2983,7 +3078,7 @@ void F13(void)
         }
         Delay1(0x100);
         SetDianliu(1);
-        Signal_Jianxi(K[8]);
+        Signal_Jianxi_XYZ(K[8]);
         F12_flag++;
         break;
     case 2:
@@ -3076,7 +3171,7 @@ void F13(void)
             F12_flag++;
             if(P[10]<2) /*NO –ﬁµ◊*/
             {
-                Signal_Jianxi(K[8]);
+                Signal_Jianxi_XYZ(K[8]);
                 if(ia||ERR_XY)
                 {
                     position_d=position_z;
