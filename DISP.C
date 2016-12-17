@@ -2862,20 +2862,20 @@ void ShowTB(char value)
     if(i>6)
         if(i==0xd)
         {
-            Dispcbar(CX0+20+145,CY0+20,CX0+20+185,CY0+34,COLORC,BKCOLORC,1,TBstr[value]);
+            Dispcbar(CX0+20+145,CY0+19,CX0+20+185,CY0+35,COLORC,BKCOLORC,1,TBstr[value]);
         }
         else
         {
-            Dispcbar(CX0+20+(i-7)*38+203,CY0+20,CX0+20+(i-7)*38+203+34,CY0+34,COLORC,BKCOLORC,1,TBstr[value]);
+            Dispcbar(CX0+20+(i-7)*38+203,CY0+19,CX0+20+(i-7)*38+203+34,CY0+35,COLORC,BKCOLORC,1,TBstr[value]);
         }
     else
     {
-        Dispcbar(CX0+20+(i-1)*25,CY0+20,CX0+20+(i-1)*25+24,CY0+34,COLORC,BKCOLORC,1,TBstr[value]);
+        Dispcbar(CX0+20+(i-1)*25,CY0+19,CX0+20+(i-1)*25+24,CY0+35,COLORC,BKCOLORC,1,TBstr[value]);
         if(value)
         {
             value=0xc;
         }
-        Dispcbar(CX0+20+75,CY0+20,CX0+20+128,CY0+34,COLORC,BKCOLORC,1,TBstr[value]);
+        Dispcbar(CX0+20+75,CY0+19,CX0+20+128,CY0+35,COLORC,BKCOLORC,1,TBstr[value]);
     }
 }
 void Ck8255(void)
