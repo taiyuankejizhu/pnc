@@ -396,6 +396,7 @@ extern char C[10];
 extern char F[10];
 extern char K[10];
 extern char P[15];
+extern char M[10];
 extern char keysound;
 extern long K_3;
 extern char TabWidth[14];
@@ -422,7 +423,7 @@ extern char Group;/*当前组*/
 extern char MaxL;
 extern long KeyN,MaxN,MinN;
 extern char F11_flag,F12_flag;
-extern char XX,YY,Y7Y;
+extern char XX,YY,Y7Y,Y8Y;
 extern char SWF_flag;
 extern char SWF_K;
 extern char PUMP_K;
@@ -508,6 +509,7 @@ extern char DispF7(int flag);
 extern void ShowF7(int lines);
 extern void ShowF8(int lines);
 extern void ShowF9(int lines);
+extern void ShowF10(int lines);
 extern void ShowFL(int flag);
 extern void ShowPZ(int);
 extern int CheckBMP(void);
@@ -544,6 +546,8 @@ void Listbar3d(int x,int y,int x1,int y1,long color,unsigned char flag,unsigned 
 #define __LNSTR9__ 4        /*效果*/
 #define __LNSTR10__ 3       /*形状*/
 #define __LNSTR11__ 2       /*制程*/
+#define __LNSTR12__ 5				/*加工轴*/
+#define __LNSTR13__ 2				/*加工方向*/
 extern unsigned sl0,sl1,sl2,sl3,sl4,sl5,sl6,sl7,sl8,sl9;
 char *StrLN1(char flag);
 char *StrLN2(char flag);
@@ -563,6 +567,7 @@ void ListStr8(int x,int y,char flag);
 void ListStr9(int x,int y,char flag);
 void ListStr10(int x,int y,char flag);
 void ListStr11(int x,int y,char flag);
+void ListStr12(int x,int y,char flag,char line);
 void ListStrDeep(int x,int y,char flag);
 void ListStrCur(int x,int y,char flag);
 void ListStrAcr(int x,int y,char flag);

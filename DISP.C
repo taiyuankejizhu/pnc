@@ -362,6 +362,7 @@ void ShowFlag(char flags)
     char flag=0;
     char str[3][5]= {" OFF"," ON ","G5\0\0"};
     char str1[4][5]= {"x1 ","x10","x100","*1"};
+    char str2[7][5]= {" X+ "," X- "," Y+ "," Y- "," Z+ "," Z- ","G5\0\0"};
     if(flags==1||!flags)
     {
         if(F[1])
@@ -389,19 +390,20 @@ void ShowFlag(char flags)
     }
     if(flags==3||!flags)
     {
+    		flag=M[1]*2;
         if(K[8])
         {
-            flag=1;
+            flag+=1;
         }
         else
         {
-            flag=0;
+            flag+=0;
         }
         if(!flags)
         {
-            Dispbar3d(EX0+4,EY0+4+47*7,(EX1+EX0)/2-1,EY0+4+47*7+40,BKCOLORE1|COLORE1<<4,0,0x100,1,"反加工");
+            Dispbar3d(EX0+4,EY0+4+47*7,(EX1+EX0)/2-1,EY0+4+47*7+40,BKCOLORE1|COLORE1<<4,0,0x100,1,"加工轴");
         }
-        Dispebar(EX0+4+9,EY0+4+47*7+21,(EX1+EX0)/2-1-9,EY0+4+47*7+21+16,COLORE2,BKCOLORE2,1,str[flag]);
+        Dispebar(EX0+4+9,EY0+4+47*7+21,(EX1+EX0)/2-1-9,EY0+4+47*7+21+16,COLORE2,BKCOLORE2,1,str2[flag]);
     }
     if(flags==4||!flags)
     {
@@ -520,9 +522,11 @@ void ShowKey(int kn,int ke)
         case 0x102:
             k=F[2];
             break;
+/*
         case 0x107:
             k=K[8];
             break;
+*/
         case 0x201:
             k=F[4];
             break;
@@ -1373,7 +1377,7 @@ char *KeyStr(int y,int x)
     char * keystr[0x12][14]=
     {
         /*0*/   {"   F1   ","   F2   ","   F3   ","   F4   ","   F5   ","   F6   ","   F7   ","   F8   "},
-        /*1*/   {"副 电 源"," 油  泵 "," 坐  标 "," 放  电 "," 安  全 "," 系  统 ","反 加 工",""},
+        /*1*/   {"副 电 源"," 油  泵 "," 坐  标 "," 放  电 "," 安  全 "," 系  统 ","加 工 轴",""},
         /*2*/   {" 归  零 ","组 别 00"," 坐标 0 ",""," 校  模 "," 归原点","  移动 "," 返  回 "},
         /*3*/   {"参 数 表","组 别 00"," 坐标 0 "," 位  置"," 高  度 ","钢蚀钢00",""," 返  回 "},
         /*4*/   {" 积  炭 "," 火  警 "," 油  位 "," 深  孔 ","XY 保 护"," 锁  定 ",""," 返  回 "},
@@ -3939,6 +3943,70 @@ void ShowF9(int lines)
         Dispcbar(F9X+5+40,F9Y+35+20*4,F9X+100,F9Y+35+18*4+16,0,color,1,"第  运动顺序：");
     }
 }
+
+/*修改加工轴*/
+char DispF11(int flag)
+{
+    if(flag==0)
+    {
+        getimage(F9X,F9Y,F9X+259,F9Y+159,BMP);
+        setcolor(0);
+        rectangle(F9X+1,F9Y+1,F9X+257,F9Y+157);
+        rectangle(F9X+2,F9Y+2,F9X+258,F9Y+158);
+        setcolor(0xb);
+        rectangle(F9X+0,F9Y+0,F9X+259,F9Y+159);
+        rectangle(F9X+3,F9Y+3,F9X+257,F9Y+157);
+        setfillstyle(1,0x7);
+        bar(F9X+4,F9Y+4,F9X+256,F9Y+156);
+        ListStr12(6,0,1,1);
+        ListStr12(6,1,0,2);
+        ShowF10(0);
+        flag=1;
+        setline1=0;
+    }
+    if(flag==1)
+    {
+    }
+    if(flag>=2)
+    {
+        setviewport(0,0,639,479,0);
+        putimage(F9X,F9Y,BMP,0);
+    }
+    if(flag>2)
+    {
+        ShowTable(0);
+    }
+    return 0;
+}
+void ShowF10(int lines)
+{
+    int ia;
+    char str[12];
+    int color=7;
+    register j;
+    if(!lines)
+    {
+        Dispcbar(F9X+5+40,F9Y+5+20*0,F9X+100,F9Y+5+18*0+16,0,color,1,"    加工轴设定   ");
+        Dispcbar(F9X+5,F9Y+5+20*1,F9X+255,F9Y+5+18*1+10,0,0x1,1,"");
+        Dispcbar(F9X+5+40,F9Y+10+20*2,F9X+100,F9Y+10+18*2+16,0,color,1,"加工轴：");
+        Dispcbar(F9X+5+40,F9Y+20+20*3,F9X+100,F9Y+20+18*3+16,0,color,1,"加工方向：");
+    }
+    
+    switch(lines)
+    {
+    case 1:
+			ListStr12(6,0,1,1);
+			ListStr12(6,1,0,2);
+    	break;
+    case 2:
+    	ListStr12(6,0,0,1);
+      ListStr12(6,1,1,2);
+    	break;
+    default:
+    	break;
+    }
+}
+
 char *StrLN1(char flag)
 {
     char *str[__LNSTR1__]= {"1","5"};
@@ -3992,6 +4060,16 @@ char *StrLN10(char flag)
 char *StrLN11(char flag)
 {
     char *str[__LNSTR11__]= {"粗","精"};
+    return str[flag];
+}
+char *StrLN12(char flag)
+{
+    char *str[__LNSTR12__]= {"X","Y","Z"," "};
+    return str[flag];
+}
+char *StrLN13(char flag)
+{
+    char *str[__LNSTR13__]= {"+","-"};
     return str[flag];
 }
 void ListStr1(int x,int y,char flag)
@@ -4111,6 +4189,27 @@ void ListStr7(int x,int y,char flag,char line)
     Listbar3d(F9X+100+x-1,F9Y+35+y,F9X+100+x+8*3+30,F9Y+35+y+18,(long)l,1,0,1,DispStr);
     Listbar3d(F9X+100+x+8*3+12,F9Y+35+y+1,F9X+100+x+8*3+30,F9Y+35+y+17,(long)(LNBC4<<8|LNCO4),0,0,1,"");
 }
+
+void ListStr12(int x,int y,char flag,char line)
+{
+    char DispStr[10];
+    long l=(long)(LNBC3<<24|LNCO3<<16|LNBC5<<8|LNCO5);
+    if(flag)
+    {
+        l<<=16;
+    }
+    x*=8;
+    y*=30;
+    y+=10;
+    if(line==1)
+        strcpy(DispStr,StrLN12(M[1]));
+    else
+        strcpy(DispStr,StrLN13(K[8]));
+    strcat(DispStr,"  ");
+    Listbar3d(F9X+100+x-1,F9Y+35+y,F9X+100+x+8*3+30,F9Y+35+y+18,(long)l,1,0,1,DispStr);
+    Listbar3d(F9X+100+x+8*3+12,F9Y+35+y+1,F9X+100+x+8*3+30,F9Y+35+y+17,(long)(LNBC4<<8|LNCO4),0,0,1,"");
+}
+
 void ListStr8(int x,int y,char flag)
 {
     char DispStr[10];

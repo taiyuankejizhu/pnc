@@ -2010,22 +2010,9 @@ void K8(void)
 void K9(void)
 {
     ClearKey(0);
-    if(Dis_flag)
-    {
-        ShowMess(15);
-        return;
-    }
     if(K[2])
     {
         K3();
-    }
-    if(K[8])
-    {
-        K[8]=0;
-    }
-    else
-    {
-        K[8]=1;
     }
     if(K[3])
     {
@@ -4219,6 +4206,12 @@ void Init_coordinate(void)
     }
     Opens_V(soundV);
     full=ReadSPI(0x0f);
+		M[1]=ReadSPI(0x120);
+		K[8]=ReadSPI(0x125);
+		if(M[1]>2)M[1]=2;
+		if(M[1]<0)M[1]=0;
+		if(K[8]>1)K[8]=1;
+		if(K[8]<0)K[8]=0;
     outb(OSC,0x30);
     outb(OSC+3,full);
     if(sl0>1)

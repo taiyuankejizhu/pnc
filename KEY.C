@@ -657,8 +657,17 @@ void Key(void)
                     ShowKey(5,0);
                     break;
                 case aF7:
-                    K9();
-                    ShowKey(1,7);
+                    if(!Dis_flag)
+                    {
+                        KEYL=15;
+                        Y8Y=1;
+                        DispF11(0);
+                        ShowKey(7,0);
+                    }
+                    else
+                    {
+											ShowMess(15);
+                    }
                     break;
                 }
                 return;
@@ -2223,6 +2232,62 @@ void Key(void)
             	if(C[0]){C1();ShowKey(10,1);ShowKey(10,2);ShowKey(10,3);}
             	if(C[1]){C2();ShowKey(10,1);ShowKey(10,2);ShowKey(10,3);}
             	if(C[2]){C3();ShowKey(10,1);ShowKey(10,2);ShowKey(10,3);}
+        		}
+    			}
+  				break;
+        case 15: /*加工轴设定*/
+     			if(Fx){
+        		switch(k){
+						case LEFT :
+							if(Y8Y==1) {
+								if(M[1]<=0)M[1]=2;
+								else M[1]--;
+							}
+							else K[8]=K[8]==0?1:0;
+							ShowF10(Y8Y);
+							break;
+            case RIGHT:
+							if(Y8Y==1) {
+								if(M[1]>=2)M[1]=0;
+								else M[1]++;
+							}
+							else K[8]=K[8]==0?1:0;
+            	ShowF10(Y8Y);
+							break;
+            case UP   :
+            	if(Y8Y>1)Y8Y--;
+            	else Y8Y=1;
+            	ShowF10(Y8Y);
+							break;
+            case DN   :
+            	if(Y8Y<2)Y8Y++;
+            	else Y8Y=2;
+							ShowF10(Y8Y);
+							break;
+        		case aF1:
+        			WriteSPI(0x120,M[1]);
+        			WriteSPI(0x125,K[8]);
+        			DispF11(3);
+              KEYL=0;
+              ShowKey(1,0);
+        			K9();
+              break;
+        		case aF2:
+        		case aF8:
+        			M[1]=ReadSPI(0x120);
+        			K[8]=ReadSPI(0x125);
+        			if(M[1]>2)M[1]=2;
+							if(M[1]<0)M[1]=0;
+							if(K[8]>1)K[8]=1;
+							if(K[8]<0)K[8]=0;
+              DispF11(3);
+              KEYL=0;
+              ShowKey(1,0);
+              break;
+        		}
+    			}
+    			else{
+        		if(!Fx&&k==0xd){
         		}
     			}
   				break;
