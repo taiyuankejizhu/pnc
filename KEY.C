@@ -222,7 +222,7 @@ void Key(void)
             ShowMess(15);
             return ;
         }
-        if(Dis_flag&&K[8])
+        if(Dis_flag&&K[8]&&M[1]==2)
         {
             F11();    /* DN ¼ü  */
         }
@@ -243,7 +243,7 @@ void Key(void)
         {
             DNUP=2;    /* UP ¼ü  */
         }
-        if(Dis_flag&&!K[8])
+        if(Dis_flag&&!K[8]&&M[1]==2)
         {
             F11();
         }
@@ -260,6 +260,10 @@ void Key(void)
         if(UDK2&0x20)
         {
             LFRT=1;    /* Left ¼ü  */
+        }
+        if(Dis_flag&&K[8]&&M[1]==0)
+        {
+            F11();    /* DN ¼ü  */
         }
 /*
         if(C[3]||C[4])
@@ -288,6 +292,10 @@ void Key(void)
             return;
         }
 */
+        if(Dis_flag&&!K[8]&&M[1]==0)
+        {
+            F11();    /* DN ¼ü  */
+        }
         Right();
     }
     /*9.1 YÖáÌí¼Ó*/
@@ -309,6 +317,10 @@ void Key(void)
             return;
         }
 */
+        if(Dis_flag&&K[8]&&M[1]==1)
+        {
+            F11();    /* DN ¼ü  */
+        }
         Front();
     }
     else if((F[4]<5||F[4]>6)&&!(UDK3&0x20))
@@ -329,6 +341,10 @@ void Key(void)
             return;
         }
 */
+        if(Dis_flag&&!K[8]&&M[1]==1)
+        {
+            F11();    /* DN ¼ü  */
+        }
         Back();
     }
     if(!Dis_flag)if(!(UDK&0x10))
@@ -366,6 +382,8 @@ void Key(void)
         if(!Dis_flag&&V<10)
         {
             lock_z_stop=20;
+            lock_x_stop=20;
+            lock_y_stop=20;
             ShowMess(59);
         }
         if(ORgin&0x80)
@@ -460,6 +478,8 @@ void Key(void)
             if(!Dis_flag&&V<10)
             {
                 lock_z_stop=20;
+                lock_x_stop=20;
+                lock_y_stop=20;
                 ShowMess(59);
             }
         }
@@ -701,8 +721,9 @@ void Key(void)
                     ShowKey(2,3);
                     break;
                 case aF4:
-/*                    F6();*/
-                    ShowKey(2,4);
+										D6();
+										KEYL=16;
+                    ShowKey(12,0);
                     break;
                 case aF5:
                     K4();
@@ -2090,14 +2111,8 @@ void Key(void)
             {
             case aF1:
                 C4();
-                if(C[3])
-                {
-                    ii=1;
-                }
-                else
-                {
-                    ii=0;
-                }
+                if(C[3])ii=1;
+                else ii=0;
                 ShowKey(9,1);
                 ShowKey(9,2);
                 ShowKey(9,3);
@@ -2107,14 +2122,8 @@ void Key(void)
                 break;
             case aF2:
                 C5();
-                if(C[4])
-                {
-                    ii=2;
-                }
-                else
-                {
-                    ii=0;
-                }
+                if(C[4])ii=2;
+                else ii=0;
                 ShowKey(9,1);
                 ShowKey(9,2);
                 ShowKey(9,3);
@@ -2125,13 +2134,9 @@ void Key(void)
             case aF3:
                 C6();
                 if(C[5])
-                {
                     ii=3;
-                }
                 else
-                {
                     ii=0;
-                }
                 ShowKey(9,1);
                 ShowKey(9,2);
                 ShowKey(9,3);
@@ -2142,13 +2147,9 @@ void Key(void)
             case aF4:
                 C7();
                 if(C[6])
-                {
                     ii=4;
-                }
                 else
-                {
                     ii=0;
-                }
                 ShowKey(9,1);
                 ShowKey(9,2);
                 ShowKey(9,3);
@@ -2159,13 +2160,9 @@ void Key(void)
             case aF5:
                 C8();
                 if(C[7])
-                {
                     ii=5;
-                }
                 else
-                {
                     ii=0;
-                }
                 ShowKey(9,1);
                 ShowKey(9,2);
                 ShowKey(9,3);
@@ -2176,13 +2173,9 @@ void Key(void)
             case aF6:
                 C9();
                 if(C[8])
-                {
                     ii=6;
-                }
                 else
-                {
                     ii=0;
-                }
                 ShowKey(9,1);
                 ShowKey(9,2);
                 ShowKey(9,3);
@@ -2268,6 +2261,13 @@ void Key(void)
         			WriteSPI(0x120,M[1]);
         			WriteSPI(0x125,K[8]);
         			DispF11(3);
+							switch(M[1])
+							{
+							case 0:offset_xyz=offset_x;position_d=position_x;break;
+							case 1:offset_xyz=offset_y;position_d=position_y;break;
+							case 2:offset_xyz=offset_z;position_d=position_z;break;
+							default:break;
+							}
               KEYL=0;
               ShowKey(1,0);
         			K9();
@@ -2280,6 +2280,13 @@ void Key(void)
 							if(M[1]<0)M[1]=0;
 							if(K[8]>1)K[8]=1;
 							if(K[8]<0)K[8]=0;
+							switch(M[1])
+							{
+							case 0:offset_xyz=offset_x;position_d=position_x;break;
+							case 1:offset_xyz=offset_y;position_d=position_y;break;
+							case 2:offset_xyz=offset_z;position_d=position_z;break;
+							default:break;
+							}
               DispF11(3);
               KEYL=0;
               ShowKey(1,0);
@@ -2291,6 +2298,101 @@ void Key(void)
         		}
     			}
   				break;
+        case 16:  /*X+- Y+- Z+-·Åµç¹éÁã*/
+            switch(k)
+            {
+            case aF1:
+                D[3]=D[3]==0?1:0;
+                ClearD(3);
+                DispZero(0);
+                if(D[3])ii=1;
+                else ii=0;
+                ShowKey(12,1);
+                ShowKey(12,2);
+                ShowKey(12,3);
+                ShowKey(12,4);
+                ShowKey(12,5);
+                ShowKey(12,6);
+                break;
+            case aF2:
+                D[4]=D[4]==0?1:0;
+                ClearD(4);
+                DispZero(0);
+                if(D[4])ii=2;
+                else ii=0;
+                ShowKey(12,1);
+                ShowKey(12,2);
+                ShowKey(12,3);
+                ShowKey(12,4);
+                ShowKey(12,5);
+                ShowKey(12,6);
+                break;
+            case aF3:
+                D[5]=D[5]==0?1:0;
+                ClearD(5);
+                DispZero(0);
+                if(D[5]) ii=3;
+                else ii=0;
+                ShowKey(12,1);
+                ShowKey(12,2);
+                ShowKey(12,3);
+                ShowKey(12,4);
+                ShowKey(12,5);
+                ShowKey(12,6);
+                break;
+            case aF4:
+                D[6]=D[6]==0?1:0;
+                ClearD(6);
+                DispZero(0);
+                if(D[6])ii=4;
+                else ii=0;
+                ShowKey(12,1);
+                ShowKey(12,2);
+                ShowKey(12,3);
+                ShowKey(12,4);
+                ShowKey(12,5);
+                ShowKey(12,6);
+                break;
+            case aF5:
+                D[7]=D[7]==0?1:0;
+                ClearD(7);
+                DispZero(0);
+                if(D[7])ii=5;
+                else ii=0;
+                ShowKey(12,1);
+                ShowKey(12,2);
+                ShowKey(12,3);
+                ShowKey(12,4);
+                ShowKey(12,5);
+                ShowKey(12,6);
+                break;
+            case aF6:
+                D[8]=D[8]==0?1:0;
+                ClearD(8);
+                DispZero(0);
+                if(D[8])ii=6;
+                else ii=0;
+                ShowKey(12,1);
+                ShowKey(12,2);
+                ShowKey(12,3);
+                ShowKey(12,4);
+                ShowKey(12,5);
+                ShowKey(12,6);
+                break;
+            case aF7:
+            		F6();
+                ShowKey(9,7);
+            		break;
+            case aF8:
+                KEYL=1;
+                D6();
+                ClearD(10);
+                DispZero(0);
+                StopF5();
+                ShowKey(2,0);
+                break;
+            }
+            break;
         }
         if(!Fx)
         {
@@ -2338,7 +2440,7 @@ void SWF()
 void Left(void)
 {
     long ll;
-    if((Dis_flag&&!K[3])||Ck8255_flag&0x01||(!K[3]&&V<10&&lock_z_stop==1&&SWF_K<10))
+    if(Dis_flag||Ck8255_flag&0x01||(!K[3]&&V<10&&lock_x_stop==1&&SWF_K<10))
     {
         ShowMess(15);
         return;
@@ -2399,7 +2501,7 @@ void Left(void)
 void Right(void)
 {
     long ll;
-    if((Dis_flag&&!K[3])||Ck8255_flag&0x02||(!K[3]&&V<10&&lock_z_stop==1&&SWF_K<10))
+    if(Dis_flag||Ck8255_flag&0x02||(!K[3]&&V<10&&lock_x_stop==1&&SWF_K<10))
     {
         ShowMess(15);
         return;
@@ -2460,7 +2562,7 @@ void Right(void)
 void Front(void)
 {
     long ll;
-    if((Dis_flag&&!K[3])||Ck8255_flag&0x04||(!K[3]&&V<10&&lock_z_stop==1&&SWF_K<10))
+    if(Dis_flag||Ck8255_flag&0x04||(!K[3]&&V<10&&lock_y_stop==1&&SWF_K<10))
     {
         ShowMess(15);
         return;
@@ -2521,7 +2623,7 @@ void Front(void)
 void Back(void)
 {
     long ll;
-    if((Dis_flag&&!K[3])||Ck8255_flag&0x08||(!K[3]&&V<10&&lock_z_stop==1&&SWF_K<10))
+    if(Dis_flag||Ck8255_flag&0x08||(!K[3]&&V<10&&lock_y_stop==1&&SWF_K<10))
     {
         ShowMess(15);
         return;
@@ -2849,6 +2951,13 @@ void X()
             SaveXYZ(0);
             position_px=position_x;
             offset_x=l;
+						switch(M[1])
+    				{
+						case 0:offset_xyz=offset_x;break;
+						case 1:offset_xyz=offset_y;break;
+						case 2:offset_xyz=offset_z;break;
+						default:break;
+    				}
         }
         XYZ[0]=0;
         ClearKey(0);
@@ -2878,6 +2987,13 @@ void Y()
             SaveXYZ(0);
             position_py=position_y;
             offset_y=l;
+						switch(M[1])
+    				{
+						case 0:offset_xyz=offset_x;break;
+						case 1:offset_xyz=offset_y;break;
+						case 2:offset_xyz=offset_z;break;
+						default:break;
+    				}
         }
         XYZ[1]=0;
         ClearKey(0);
@@ -2928,6 +3044,13 @@ void Z()
                 F12_flag=i;
             }
             SaveXYZ(0);
+						switch(M[1])
+    				{
+						case 0:offset_xyz=offset_x;break;
+						case 1:offset_xyz=offset_y;break;
+						case 2:offset_xyz=offset_z;break;
+						default:break;
+    				}
         }
         XYZ[2]=0;
         ShowDP(1);
@@ -3640,6 +3763,10 @@ void ErrXY(int flag)
     {
         F11();
         ShowMess(36);
+        SoundTime=SDST;
+    }
+    if(flag==3){
+        F11();
         SoundTime=SDST;
     }
 }

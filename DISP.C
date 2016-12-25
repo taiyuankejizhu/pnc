@@ -362,7 +362,7 @@ void ShowFlag(char flags)
     char flag=0;
     char str[3][5]= {" OFF"," ON ","G5\0\0"};
     char str1[4][5]= {"x1 ","x10","x100","*1"};
-    char str2[7][5]= {" X+ "," X- "," Y+ "," Y- "," Z+ "," Z- ","G5\0\0"};
+    char str2[7][5]= {" X- "," X+ "," Y- "," Y+ "," Z- "," Z+ ","G5\0\0"};
     if(flags==1||!flags)
     {
         if(F[1])
@@ -626,6 +626,27 @@ void ShowKey(int kn,int ke)
         case 0x907:
             k=C[9];
             break; 
+        case 0xc01:
+            k=D[3];
+            break;
+        case 0xc02:
+            k=D[4];
+            break;
+        case 0xc03:
+            k=D[5];
+            break;
+        case 0xc04:
+            k=D[6];
+            break;
+        case 0xc05:
+            k=D[7];
+            break;
+        case 0xc06:
+            k=D[8];
+            break;
+        case 0xc07:
+            k=D[9];
+            break;
         case 0xb05:
             k=P[12];
             break;
@@ -633,7 +654,7 @@ void ShowKey(int kn,int ke)
         case 0xA02:k=C[1];break;
         case 0xA03:k=C[2];break;
         }
-        if(l!=0x108&&l!=0xc08)
+        if(l!=0x108)
         {
             if(j==8)
             {
@@ -1103,7 +1124,7 @@ void ShowXYZ(int flag)
         strcat(xyzs,xyzs1);
         Dispebar(DX0+13,DY0+1+23*1,DX1-1,EY0+1+23*1+21,COLORD,BKCOLORD,3,xyzs);
         ShowDP1(1);
-        if(Dis_flag&&P[2])
+        if(Dis_flag&&P[2]&&M[1]!=0)
         {
             ErrXY(1);
         }
@@ -1205,7 +1226,7 @@ void ShowXYZ(int flag)
         strcat(xyzs,xyzs1);
         Dispebar(DX0+13,DY0+1+23*2,DX1-1,EY0+1+23*2+21,COLORD,BKCOLORD,3,xyzs);
         ShowDP1(2);
-        if(Dis_flag&&P[2])
+        if(Dis_flag&&P[2]&&M[1]!=1)
         {
             ErrXY(2);
         }
@@ -1317,6 +1338,7 @@ void ShowXYZ(int flag)
         strcat(xyzs,xyzs1);
         Dispebar(DX0+13,DY0+1+23*3,DX1-1,EY0+1+23*3+21,COLORD,BKCOLORD,3,xyzs);
         ShowDP1(3);
+        if(Dis_flag&&P[2]&&M[1]!=2)ErrXY(3);
         if(!Origin_Flag&&!(ORgin&0x80)&&ZPosi(0))
         {
             Origin_Flag=1;
@@ -1378,7 +1400,7 @@ char *KeyStr(int y,int x)
     {
         /*0*/   {"   F1   ","   F2   ","   F3   ","   F4   ","   F5   ","   F6   ","   F7   ","   F8   "},
         /*1*/   {"副 电 源"," 油  泵 "," 坐  标 "," 放  电 "," 安  全 "," 系  统 ","加 工 轴",""},
-        /*2*/   {" 归  零 ","组 别 00"," 坐标 0 ",""," 校  模 "," 归原点","  移动 "," 返  回 "},
+        /*2*/   {" 归  零 ","组 别 00"," 坐标 0 ","放电归零"," 校  模 "," 归原点","  移动 "," 返  回 "},
         /*3*/   {"参 数 表","组 别 00"," 坐标 0 "," 位  置"," 高  度 ","钢蚀钢00",""," 返  回 "},
         /*4*/   {" 积  炭 "," 火  警 "," 油  位 "," 深  孔 ","XY 保 护"," 锁  定 ",""," 返  回 "},
         /*5*/   {" 声 音 0"," 睡  眠 ","上 升 00"," 关  机 "," 清  时 ","        "," 设  置 "," 返  回 "},
@@ -1388,7 +1410,7 @@ char *KeyStr(int y,int x)
         /*9*/   {" X+归零 "," X-归零 "," Y+归零 "," Y-归零 "," Z+归零 "," Z-归零 "," 中  心 ","取消返回"},
         /*A*/   {"   X  ","   Y  ","   Z  ","","","","","取消返回"},
         /*B*/   {" 确  定 "," 取  消 "," 删  除 ","","多点加工","","","确定返回"},
-        /*C*/   {""},
+        /*C*/   {" X+归零 "," X-归零 "," Y+归零 "," Y-归零 "," Z+归零 "," Z-归零 "," 中  心 ","取消返回"},
         /*D*/   {""},
         /*E*/   {""},
         /*F*/   {""},
@@ -1478,7 +1500,7 @@ char *KeyStr(int y,int x)
 void ShowLong(long value)
 {
     char str[]="Ver:         \0";
-    itoa(value,str,10);
+    ltoa(value,str,10);
     Dispebar(CX1-73,CY0+17,CX1-1,CY1-1,COLORC-1,BKCOLORC,2,str);
 }
 void ShowVer(char *ver)
@@ -2022,8 +2044,15 @@ void ResetXYZ()
     {
         Group=1;
     }
+    
     XYPosition();
-    position_d=position_z;
+    switch(M[1])
+    {
+		case 0:offset_xyz=offset_x;position_d=position_x;break;
+		case 1:offset_xyz=offset_y;position_d=position_y;break;
+		case 2:offset_xyz=offset_z;position_d=position_z;break;
+		default:break;
+    }
     position_dx=position_x;
     position_dy=position_y;
     position_dz=position_z;
@@ -2107,6 +2136,35 @@ void SaveXYZ(char flag)
             Write_spi(0x50+i*16,offset_xx[i]+ol);
         }
         positionx=position_x;
+        if(lock_x&&l>=5/DZC)
+        {
+            Position_control_x(offset_rx);
+        }
+        if(Dis_flag)
+        {
+            if(positionx<=position_d&&!K[8]&&M[1]==0)
+            {
+                if(position_d<=position_d)
+                {
+                    position_d=position_x;
+                }
+                if(Dis_flag)
+                {
+                    ShowDP(1);
+                }
+            }
+            if(positionx>=position_d&&K[8]&&M[1]==0)
+            {
+                if(position_d>=position_d)
+                {
+                    position_d=position_x;
+                }
+                if(Dis_flag)
+                {
+                    ShowDP(1);
+                }
+            }
+        }
         if(Dis_flag)if(labs(position_x-position_xdis)>1)
             {
                 /*ErrXY(1);*/position_xdis=position_x;
@@ -2123,6 +2181,35 @@ void SaveXYZ(char flag)
             Write_spi(0x54+i*16,offset_yy[i]+ol);
         }
         positiony=position_y;
+        if(lock_y&&l>=5/DZC)
+        {
+            Position_control_y(offset_ry);
+        }
+        if(Dis_flag)
+        {
+            if(positiony<=position_d&&!K[8]&&M[1]==1)
+            {
+                if(position_d<=position_d)
+                {
+                    position_d=position_y;
+                }
+                if(Dis_flag)
+                {
+                    ShowDP(1);
+                }
+            }
+            if(positiony>=position_d&&K[8]&&M[1]==1)
+            {
+                if(position_d>=position_d)
+                {
+                    position_d=position_y;
+                }
+                if(Dis_flag)
+                {
+                    ShowDP(1);
+                }
+            }
+        }
         if(Dis_flag)if(labs(position_y-position_ydis)>1)
             {
                 /*ErrXY(2);*/position_ydis=position_y;
@@ -2145,7 +2232,7 @@ void SaveXYZ(char flag)
         }
         if(Dis_flag)
         {
-            if(positionz<=position_d&&!K[8])
+            if(positionz<=position_d&&!K[8]&&M[1]==2)
             {
                 if(position_d<=position_d)
                 {
@@ -2156,7 +2243,7 @@ void SaveXYZ(char flag)
                     ShowDP(1);
                 }
             }
-            if(positionz>=position_d&&K[8])
+            if(positionz>=position_d&&K[8]&&M[1]==2)
             {
                 if(position_d>=position_d)
                 {
@@ -2257,15 +2344,12 @@ long XYZPosi(char flag)
 	switch(M[1])
 	{
 	case 0:
-	case 1:
 		ll=XPosi(0);
 		break;
-	case 2:
-	case 3:
+	case 1:
 		ll=YPosi(0);
 		break;
-	case 4:
-	case 5:
+	case 2:
 		ll=ZPosi(0);
 		break;
 	default:
@@ -2616,6 +2700,7 @@ void XYPosition()   /*设置X,Y轴,Z轴的位置*/
     position_x=ox+offset_x;
     position_y=oy+offset_y;
     position_z=offset_z+oz;
+    position_xyz=XYZPosi(0)+offset_xyz;
     if(F12_flag>=1&&F12_flag<10)
     {
         pi=MK_FP(0x40,0x6c);
@@ -3233,27 +3318,27 @@ void Ck8255(void)
         }
         fires10=4;
     }
-    if((!F[4]&&!Dis_flag)&&Voltage()<=1&&!ZeroFlag) /*短路*/
+    if(!(D[3]||D[4]||D[5]||D[6]||D[7]||D[8])&&(!F[4]&&!Dis_flag)&&Voltage()<=1&&!ZeroFlag) /*短路*/
     {
         if(fires3>=5)
         {
             if(!K[3])
             {
-                if(DN_K&&!K[8]||UP_K&&K[8])
+                if(DN_K||UP_K)
                 {
                     V=0;
                     Stop_z(0);
                     DN_K=0;
                     UP_K=0;
                 }
-                if(RT_K&&!K[8]||LF_K&&K[8])
+                if(LF_K||RT_K)
                 {
                     V=0;
                     Stop_x(0);
                     RT_K=0;
                     LF_K=0;
                 }
-                if(FR_K&&!K[8]||BK_K&&K[8])
+                if(FR_K||BK_K)
                 {
                     V=0;
                     Stop_y(0);
@@ -3263,10 +3348,9 @@ void Ck8255(void)
                 SoundTime|=0x4000;
                 OpenSound();
             }
-            if(lock_z_stop<10)
-            {
-                lock_z_stop=1;
-            }
+            if(lock_z_stop<10)lock_z_stop=1;
+            if(lock_x_stop<10)lock_x_stop=1;
+            if(lock_y_stop<10)lock_y_stop=1;
             if(ORgin&0x80)
             {
                 Stop_z(0);
@@ -3303,6 +3387,8 @@ void Ck8255(void)
             V0ING=0;
         }
         lock_z_stop=0;
+        lock_y_stop=0;
+        lock_x_stop=0;
         fires3=5;
     }
     if(Dis_flag&&K[4]&&OilSwitch())
@@ -4093,7 +4179,7 @@ char *StrLN12(char flag)
 }
 char *StrLN13(char flag)
 {
-    char *str[__LNSTR13__]= {"+","-"};
+    char *str[__LNSTR13__]= {"-","+"};
     return str[flag];
 }
 void ListStr1(int x,int y,char flag)

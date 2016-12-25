@@ -21,6 +21,8 @@ struct Tab StrTable= /*[4]校模参数*/
     {0,11,0,0,0,0,0,0,0,0},        /*PP*/
     {0,39,0,0,0,0,0,0,0,0},     /*LC*/
 };
+/*放电归零*/
+char D[10] = {0,0,0,0,0,0,0,0,0,0};
 /*9.1归零添加*/
 char C[10] = {0,0,0,0,0,0,0,0,0,0};
 char F[10]= {1,0,0,1,0,0,0,0,0,0};
@@ -122,6 +124,8 @@ int SoundTime=0;
 int ExitTime=0;
 long Oldtime=0,Velocity_Time=0;
 long ox,oy,oz,origin_z,origin_x,origin_y,diff_oz=0,diff_ox=0,diff_oy=0,lpz=0,s_OZh=0,s_OZl=0,F_positionz=0;
+long position_xyz=-9999999;
+long offset_xyz=0;
 long position_x = -9999999,position_y = -9999999,position_z =0x8fffffff,R_positionz=0x8fffffff,position_t =0,position_tt;
 long offset_x=0,offset_y=0,offset_z=0,offset_t=0,position_p=-9999999,position_d=9999999;
 long position_dx,position_dy,position_dz,position_px,position_py,position_pz;

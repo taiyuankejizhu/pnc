@@ -203,6 +203,8 @@ extern struct Tab
 extern struct Tab StrTable;
 extern char Dis_flag;   /*放电标志。正在放电为1，停止放电为0。*/
 extern char Dis_first;
+extern long position_xyz; /*当前放电轴的位置*/
+extern long offset_xyz;   /*当前放电轴的辅助位置,POSITION=OFFSET+COUNTER*/
 extern long position_x; /*当前X轴的位置*/
 extern long offset_x;   /*当前X轴的辅助位置,POSITION=OFFSET+COUNTER*/
 extern long position_y; /*当前Y轴的位置*/
@@ -339,6 +341,7 @@ void InvertGraphic(int iPosX1,int iPosY1,int iPosX2,int iPosY2);
 void DispFace(void);
 void AllButton(char cChar,int iFlag);
 void Zero(void); /*归零功能函数*/
+void DispZero(char clz); /*放电归零功能函数*/
 void High(void);  /*高度功能函数*/
 void AlterMessage(void);/****信息****/
 void OpenSound(void);
@@ -356,6 +359,7 @@ void Stop_y(char flag);
 long XPosi(char flag);/*读取X轴计数器的数据*/
 long YPosi(char flag);/*读取Y轴计数器的数据*/
 long ZPosi(char flag);/*读取Y轴计数器的数据*/
+long XYZPosi(char flag);/*读取放电轴计数器的数据*/
 long ZPosi_origin(char flag);/*读取原点的值*/
 void XYPosition(void);/*设置X、Y轴的位置*/
 void ResetXYZ(void);
@@ -397,6 +401,7 @@ extern char Fx;     /*1:按下F?,0数字母*/
 extern char * DispKey(int zu,int fkey);
 extern unsigned char ReadRAM(unsigned char page,unsigned int number);
 extern char CopyRight[];
+extern char D[10];
 /*9.1归零添加*/
 extern char C[10];
 extern char F[10];

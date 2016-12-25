@@ -36,6 +36,7 @@ void C6(void); /*Y+πÈ¡„*/
 void C7(void); /*Y-πÈ¡„*/
 void C8(void); /*Z+πÈ¡„*/
 void C9(void); /*Z-πÈ¡„*/
+void D6(void); /*∑≈µÁπÈ¡„*/
 void F2(void);  /*µÁ‘¥*/
 void F3(void);  /*±√∆÷*/
 void F4(void);  /*…˘“Ù*/
@@ -166,7 +167,13 @@ void main(int argc,char *argv[])
                 ZeroFlag=0;
                 F12_flag=0;
                 Dis_flag=1;
-                lock_z=0;
+                switch(M[1])
+                {
+                case 0:lock_x=0;lock_y=1;lock_z=1;break;
+                case 1:lock_x=1;lock_y=0;lock_z=1;break;
+                case 2:lock_x=1;lock_y=1;lock_z=0;break;
+                default: break;
+                }
                 DN_K=0;
                 UP_K=0;
                 ShowKey(0xff,0xff);
@@ -222,7 +229,7 @@ void main(int argc,char *argv[])
                 }
             }
             break;
-defalut:
+						defalut:
             break;
         }
         SaveXYZ(1);
@@ -605,6 +612,117 @@ void P11(void)  /*–ﬁµ◊*/
     {
         P[10]=1;
     }
+}
+
+void D6(void)
+{
+    static zu;
+    int i;
+    ClearKey(0);
+    if(Dis_flag)
+    {
+        ShowMess(15);
+        return;
+    }
+    if(K[0])
+    {
+        K[0]=0;
+        P[7]=2;
+        KeyN=zu;
+        F[8]=1;
+        F9();
+    }
+    else
+    {
+        zu=Group;
+        KeyN=0;
+        Read_Table(0);
+        if(Table.Index[0]!=1)
+        {
+            Table.Dianliu[0]=StrTable.Dianliu[4];
+            Table.Maikuan[0]=StrTable.Maikuan[4];
+            Table.Xiuzhi[0]=StrTable.Xiuzhi[4];
+            Table.Jianxi[0]=StrTable.Jianxi[4];
+            Table.Sudu[0]=StrTable.Sudu[4];
+            Table.Shenggao[0]=StrTable.Shenggao[4];
+            Table.Gongshi[0]=StrTable.Gongshi[4];
+            Table.LV[0]=StrTable.LV[4];
+            Table.Jixin[0]=StrTable.Jixin[4];
+            Table.Gaoya[0]=StrTable.Gaoya[4];
+        }
+        for(i=1; i<10; i++)
+        {
+            Table.Index[i]=0;
+        }
+        Table.Index[0]=StrTable.Index[4];
+        if(!K[8])
+        {
+            Table.Shendu[0]=StrTable.Shendu[4];
+        }
+        else
+        {
+            Table.Shendu[0]=-StrTable.Shendu[4];
+        }
+        Write_Table(0);
+        F[8]=1;
+        F9();
+        K[0]=1;
+        P[7]=0;
+    }
+}
+
+/*∑≈µÁπÈ¡„ÃÌº”*/
+void ClearD(int c)
+{
+    int i=0;
+    for(; i<10; i++)
+    {
+        if(i!=c)
+        {
+            D[i]=0;
+        }
+    }
+}
+
+/*∑≈µÁπÈ¡„ÃÌº”*/
+void DispZero(char clz)
+{
+	if(D[3]||D[4]||D[5]||D[6]||D[7]||D[8])
+	{
+		ShowTB(0);
+    SetTable(0);
+    ShowTable(1);
+		Open_Elect();
+		Delay(0x100);
+		Open_OCSF();
+		outb(OSC,0x01);
+		outb(OSC+2,OTPS1|=0x01);   /*DIS LED*/
+		
+		Stop_x(0);Stop_y(0);Stop_z(0);
+		if(D[3]) {lock_x=0;Signal_Jianxi_X(1);}
+		if(D[4]) {lock_x=0;Signal_Jianxi_X(0);}
+		if(D[5]) {lock_y=0;Signal_Jianxi_Y(1);}
+		if(D[6]) {lock_y=0;Signal_Jianxi_Y(0);}
+		if(D[7]) {lock_z=0;Signal_Jianxi_Z(1);}
+		if(D[8]) {lock_z=0;Signal_Jianxi_Z(0);}
+	}
+	else
+	{
+    offset_rz=ZPosi(0);
+    Position_control_z(offset_rz);
+    offset_rx=XPosi(0);
+    Position_control_x(offset_rx);
+    offset_ry=YPosi(0);
+    Position_control_y(offset_ry);
+
+    outb(OSC,0x01);
+    outb(OSC+2,OTPS1&=0xfe);     /*DIS ÷∏ æµ∆*/
+		Close_OCSF();
+		Close_Elect();
+		ShowTable(0);
+		ClearD(10);
+		lock_x=1;lock_y=1;lock_z=1;
+	}
 }
 
 /*9.1πÈ¡„ÃÌº”*/
@@ -1085,6 +1203,8 @@ void Zero()
         return;
     }
     lock_z=0;
+    lock_y=0;
+    lock_x=0;
     offset_ds=0;
     ZeroFlag=0;
     if(byte_2159==0)
@@ -1270,22 +1390,28 @@ void Zero()
 }
 void StopF5(void)   /* Õ£÷ππÈ¡„ */
 {
-    if(C[3]||C[4])
+    if(C[3]||C[4]||D[3]||D[4])
     {
         C[3] = 0;
         C[4] =0;
+				D[3] = 0;
+        D[4] =0;
         Stop_x(0);
     }
-    else if(C[5]||C[6])
+    else if(C[5]||C[6]||D[5]||D[6])
     {
         C[5] = 0;
         C[6] =0;
+				D[5] = 0;
+        D[6] =0;
         Stop_y(0);
     }
-    else if(C[7]||C[8])
+    else if(C[7]||C[8]||D[7]||D[8])
     {
         C[7] = 0;
         C[8] =0;
+				D[7] = 0;
+        D[8] =0;        
         Stop_z(0);
     }
     F[4]=0;
@@ -1295,7 +1421,7 @@ void StopF5(void)   /* Õ£÷ππÈ¡„ */
     ShowKey(9,4);
     ShowKey(9,5);
     ShowKey(9,6);
-    Zero();
+    /*Zero();*/
     ShortSound();
     if(KEYL==1)
     {
@@ -1308,15 +1434,12 @@ void Position_control_xyz(long position)
 	switch(M[1])
 	{
 	case 0:
-	case 1:
 		Position_control_x(position);
 		break;
-	case 2:
-	case 3:
+	case 1:
 		Position_control_y(position);
 		break;
-	case 4:
-	case 5:
+	case 2:
 		Position_control_z(position);
 		break;
 	default:
@@ -1329,15 +1452,12 @@ void Velocity_control_xyz(unsigned v)
 	switch(M[1])
 	{
 	case 0:
-	case 1:
 		Velocity_control_x(v);
 		break;
-	case 2:
-	case 3:
+	case 1:
 		Velocity_control_y(v);
 		break;
-	case 4:
-	case 5:
+	case 2:
 		Velocity_control_z(v);
 		break;
 	default:
@@ -1592,15 +1712,12 @@ void Signal_Jianxi_XYZ(char flag)
 	switch(M[1])
 	{
 	case 0:
-	case 1:
 		Signal_Jianxi_X(flag);
 		break;
-	case 2:
-	case 3:
+	case 1:
 		Signal_Jianxi_Y(flag);
 		break;
-	case 4:
-	case 5:
+	case 2:
 		Signal_Jianxi_Z(flag);
 		break;
 	default:
@@ -2399,7 +2516,7 @@ void F12(void)
             }
             for(i=Dis_lines; i<=Dis_end; i++)
             {
-                if(Table.Shendu[i]>position_z)
+                if(Table.Shendu[i]>position_xyz)
                 {
                     Dis_lines++;
                     continue;
@@ -2513,7 +2630,7 @@ void F12(void)
             Velocity_control_xyz(0x40);
             Delay1(0x100);
         }
-        Position_control_z(ZPosi(0));
+        Position_control_xyz(XYZPosi(0));
         ShowTable(Dis_lines+1);
         end=0;
         ZeroFlag=0;
@@ -2546,7 +2663,7 @@ void F12(void)
         F12_flag++;
         break;
     case 2:
-        if(offset_d<ZPosi(0)/*&&!K[3]*/&&offset_ds&&0)
+        if(offset_d<XYZPosi(0)/*&&!K[3]*/&&offset_ds&&0)
         {
             if(P[3])
             {
@@ -2554,9 +2671,9 @@ void F12(void)
             }
             positiond=offset_d+(545/DZC);
             ldv=positiond+ld;
-            if(ldv<ZPosi(0))
+            if(ldv<XYZPosi(0))
             {
-                Position_control_z(ldv);
+                Position_control_xyz(ldv);
             }
             if(lhv-ldv>1000/DZC)
                 if(Elect_speed>30)
@@ -2575,7 +2692,7 @@ void F12(void)
         }
         break;
     case 3:
-        if(offset_z+ZPosi(0)<Table.Shendu[Dis_lines])
+        if(offset_xyz+XYZPosi(0)<Table.Shendu[Dis_lines])
         {
             Dis_lines++;
             if(Dis_lines>Dis_end)
@@ -2591,7 +2708,7 @@ void F12(void)
             return;
         }
         ShowFL(5);
-        position_d=position_z;
+        position_d=position_xyz;
         if(Voltage()<=Table.Jianxi[Dis_lines]) /*Delay1(50);*/
         {
             if(Voltage()<=Table.Jianxi[Dis_lines])
@@ -2601,7 +2718,7 @@ void F12(void)
             ShowFL(0);
         }
         ShowDP(1);
-        positiond=position_z-offset_z+45/DZC;
+        positiond=position_xyz-offset_xyz+45/DZC;
         SetDianliu(Table.Dianliu[Dis_lines]);
         break;
     case 4:
@@ -2611,7 +2728,7 @@ void F12(void)
             if(ia>2) {}
             if(ia==2)
             {
-                if(ZPosi(0)<(long)(ldv+2000/DZC))
+                if(XYZPosi(0)<(long)(ldv+2000/DZC))
                 {
                     if(ia==2)
                     {
@@ -2624,7 +2741,7 @@ void F12(void)
                 }
             }
         }
-        if(ERR_XY||ZPosi(0)<(long)(positiond+ld/5+10)) /*by jason ldv*/
+        if(ERR_XY||XYZPosi(0)<(long)(positiond+ld/5+10)) /*by jason ldv*/
         {
             if(P[3])
             {
@@ -2636,7 +2753,7 @@ void F12(void)
                 Signal_Jianxi_XYZ(K[8]);
                 if(ia||ERR_XY)
                 {
-                    position_d=position_z;
+                    position_d=position_xyz;
                     ShowFL(0);
                     ShowFL(4);
                     ShowFL(8);
@@ -2654,10 +2771,10 @@ void F12(void)
         break;
     case 5: /*ShowFL(5);*/
         GetTime((long)0);
-        if(position_d<=position_p||ZPosi(0)+offset_z<position_p)
+        if(position_d<=position_p||XYZPosi(0)+offset_xyz<position_p)
         {
             end++;
-            if(end>=1||ZPosi(0)+offset_z<position_p)
+            if(end>=1||XYZPosi(0)+offset_xyz<position_p)
             {
                 Dis_lines++;
                 if(Dis_lines>Dis_end)
@@ -2673,7 +2790,7 @@ void F12(void)
                         P[10]++;
                         ShowMess(22);
                         vol=0xff;
-                        positiond=position_p-offset_z;
+                        positiond=position_p-offset_xyz;
                         ld=0;
                         F12_flag++;
                         return;
@@ -2710,10 +2827,10 @@ void F12(void)
         if(P[10]>1&&end>1) /*–ﬁµ◊*/
         {
             position_d=position_p;
-            if(Voltage()+10>vol&&ZPosi(0)+offset_z<=position_p)
+            if(Voltage()+10>vol&&XYZPosi(0)+offset_xyz<=position_p)
             {
                 delay(100);
-                if(Voltage()+10>vol&&ZPosi(0)+offset_z<=position_p)
+                if(Voltage()+10>vol&&XYZPosi(0)+offset_xyz<=position_p)
                 {
                     XD++;
                 }
@@ -2733,10 +2850,10 @@ void F12(void)
             }
             return;
         }
-        if(position_d<=position_p||ZPosi(0)+offset_z<position_p)
+        if(position_d<=position_p||XYZPosi(0)+offset_xyz<position_p)
         {
             end++;
-            if(end>=1||ZPosi(0)+offset_z<position_p)
+            if(end>=1||XYZPosi(0)+offset_xyz<position_p)
             {
                 Dis_lines++;
                 if(Dis_lines>Dis_end)
@@ -2752,7 +2869,7 @@ void F12(void)
                         P[10]++;
                         ShowMess(22);
                         vol=0xff;
-                        positiond=position_p-offset_z;
+                        positiond=position_p-offset_xyz;
                         ld=0;
                     }
                 }
@@ -2777,7 +2894,7 @@ void F12(void)
         }
         if(P[10]<=1)
         {
-            positiond=ZPosi(0);
+            positiond=XYZPosi(0);
         }
         if(offset_d>positiond)
         {
@@ -2820,23 +2937,23 @@ void F12(void)
         break;
     case 7:
         /*11.11 speed*/
-        if(ZPosi(0)<=(positiond+50*MianJi/DZC))
+        if(XYZPosi(0)<=(positiond+50*MianJi/DZC))
         {
-            if(ZPosi(0)<positiond)
+            if(XYZPosi(0)<positiond)
             {
                 Velocity=100;
             }
             else
             {
-                Velocity=(100/(MianJi+10))*(ZPosi(0)-positiond)+100;
+                Velocity=(100/(MianJi+10))*(XYZPosi(0)-positiond)+100;
             }
             Velocity=abs(Velocity);
-            Velocity_control_z(Velocity);
+            Velocity_control_xyz(Velocity);
         }
         else
         {
-            Position_control_z(lhv+100/DZC);
-            if(ZPosi(0)>lhv)
+            Position_control_xyz(lhv+100/DZC);
+            if(XYZPosi(0)>lhv)
             {
                 if(F[7]==3)
                 {
@@ -2856,14 +2973,14 @@ void F12(void)
                     hth=0;
                 }
                 lhv=positiond+lh+hth;
-                Position_control_z(lhv+50/DZC);
+                Position_control_xyz(lhv+50/DZC);
                 F12_flag++;
             }
         }
         break;
     case 8:
         ShowFL(7);
-        if(ZPosi(0)>lhv-50/DZC)
+        if(XYZPosi(0)>lhv-50/DZC)
         {
             if(TF8)
             {
@@ -2918,7 +3035,7 @@ void F12(void)
             }
             if(!ERR_XY)
             {
-                Position_control_z(ldv);
+                Position_control_xyz(ldv);
             }
         }
         break;
@@ -2949,7 +3066,7 @@ void F13(void)
             }
             for(i=Dis_lines; i<=Dis_end; i++)
             {
-                if(Table.Shendu[i]<position_z)
+                if(Table.Shendu[i]<position_xyz)
                 {
                     Dis_lines++;
                     continue;
@@ -2985,7 +3102,7 @@ void F13(void)
                     return;
                 }
                 F11();
-                offset_rz=ZPosi(0);
+                offset_rxyz=XYZPosi(0);
                 if(K[1])
                 {
                     K[9]=1;
@@ -2997,9 +3114,9 @@ void F13(void)
                 }
                 if(K[2])
                 {
-                    offset_rz-=((long)K_3*1000/DZC);
+                    offset_rxyz-=((long)K_3*1000/DZC);
                 }
-                Position_control_z(offset_rz);
+                Position_control_xyz(offset_rxyz);
                 return;
             }
             if(Dis_lines<=Dis_end)
@@ -3046,10 +3163,10 @@ void F13(void)
         ShowFL(0);
         if(Voltage()<10)
         {
-            Velocity_control_z(0xff80);
+            Velocity_control_xyz(0xff80);
             Delay1(0x100);
         }
-        Position_control_z(ZPosi(0));
+        Position_control_xyz(XYZPosi(0));
         ShowTable(Dis_lines+1);
         end=0;
         ZeroFlag=0;
@@ -3082,7 +3199,7 @@ void F13(void)
         F12_flag++;
         break;
     case 2:
-        if(offset_d>ZPosi(0)/*&&!K[3]*/&&offset_ds&&0)
+        if(offset_d>XYZPosi(0)/*&&!K[3]*/&&offset_ds&&0)
         {
             if(P[3])
             {
@@ -3092,7 +3209,7 @@ void F13(void)
             ldv=positiond-ld;
             if(ldv<ZPosi(0))
             {
-                Position_control_z(ldv);
+                Position_control_xyz(ldv);
             }
             if(lhv-ldv<-1000/DZC)if(Elect_speed>30)
                 {
@@ -3110,7 +3227,7 @@ void F13(void)
         }
         break;
     case 3:
-        if(offset_z+ZPosi(0)>Table.Shendu[Dis_lines])
+        if(offset_xyz+XYZPosi(0)>Table.Shendu[Dis_lines])
         {
             Dis_lines++;
             if(Dis_lines>Dis_end)
@@ -3127,7 +3244,7 @@ void F13(void)
             return;
         }
         ShowFL(5);
-        position_d=position_z;
+        position_d=position_xyz;
         if(Voltage()<=Table.Jianxi[Dis_lines]) /*Delay1(50);*/
         {
             if(Voltage()<=Table.Jianxi[Dis_lines])
@@ -3137,7 +3254,7 @@ void F13(void)
             ShowFL(0);
         }
         ShowDP(1);
-        positiond=position_z-offset_z-45/DZC;
+        positiond=position_xyz-offset_xyz-45/DZC;
         SetDianliu(Table.Dianliu[Dis_lines]);
         break;
     case 4:
@@ -3149,7 +3266,7 @@ void F13(void)
             }
             if(ia==2)
             {
-                if(ZPosi(0)<(long)(ldv+2000/DZC))
+                if(XYZPosi(0)<(long)(ldv+2000/DZC))
                 {
                     if(ia==2)
                     {
@@ -3162,7 +3279,7 @@ void F13(void)
                 }
             }
         }
-        if(ERR_XY||ZPosi(0)>(long)(ldv-10))
+        if(ERR_XY||XYZPosi(0)>(long)(ldv-10))
         {
             if(P[3])
             {
@@ -3174,7 +3291,7 @@ void F13(void)
                 Signal_Jianxi_XYZ(K[8]);
                 if(ia||ERR_XY)
                 {
-                    position_d=position_z;
+                    position_d=position_xyz;
                     ShowFL(0);
                     ShowFL(4);
                     ShowFL(8);
@@ -3192,10 +3309,10 @@ void F13(void)
         break;
     case 5:
         GetTime((long)0);
-        if(position_d>=position_p||ZPosi(0)+offset_z>position_p)
+        if(position_d>=position_p||XYZPosi(0)+offset_xyz>position_p)
         {
             end++;
-            if(end>=1||ZPosi(0)+offset_z>position_p+1)
+            if(end>=1||XYZPosi(0)+offset_xyz>position_p+1)
             {
                 Dis_lines++;
                 if(Dis_lines>Dis_end)
@@ -3211,7 +3328,7 @@ void F13(void)
                         P[10]++;
                         ShowMess(22);
                         vol=0xff;
-                        positiond=position_p-offset_z;
+                        positiond=position_p-offset_xyz;
                         ld=0;
                         F12_flag++;
                         return;
@@ -3249,10 +3366,10 @@ void F13(void)
         if(P[10]>1&&end>1) /*–ﬁµ◊*/
         {
             position_d=position_p;
-            if(Voltage()+10>vol&&ZPosi(0)+offset_z>=position_p)
+            if(Voltage()+10>vol&&XYZPosi(0)+offset_xyz>=position_p)
             {
                 delay(100);
-                if(Voltage()+10>vol&&ZPosi(0)+offset_z>=position_p)
+                if(Voltage()+10>vol&&XYZPosi(0)+offset_xyz>=position_p)
                 {
                     F12_flag=0;
                     Dis_lines++;
@@ -3268,10 +3385,10 @@ void F13(void)
             }
             return;
         }
-        if(position_d>=position_p||ZPosi(0)+offset_z>position_p)
+        if(position_d>=position_p||XYZPosi(0)+offset_xyz>position_p)
         {
             end++;
-            if(end>=1||ZPosi(0)+offset_z>position_p)
+            if(end>=1||XYZPosi(0)+offset_xyz>position_p)
             {
                 Dis_lines++;
                 if(Dis_lines>Dis_end)
@@ -3287,7 +3404,7 @@ void F13(void)
                         P[10]++;
                         ShowMess(22);
                         vol=0xff;
-                        positiond=position_p-offset_z;
+                        positiond=position_p-offset_xyz;
                         ld=0;
                     }
                 }
@@ -3313,7 +3430,7 @@ void F13(void)
         }
         if(P[10]<=1)
         {
-            positiond=ZPosi(0);
+            positiond=XYZPosi(0);
         }
         if(offset_d<positiond)
         {
@@ -3364,23 +3481,23 @@ void F13(void)
         break;
     case 7:
         /*11.11 speed*/
-        if(ZPosi(0)<=(positiond-50*MianJi/DZC))
+        if(XYZPosi(0)>=(positiond-50*MianJi/DZC))
         {
-            if(ZPosi(0)<positiond)
+            if(XYZPosi(0)>positiond)
             {
                 Velocity=-100;
             }
             else
             {
-                Velocity=(100/(MianJi+10))*(ZPosi(0)-positiond)+100;
+                Velocity=(100/(MianJi+10))*(XYZPosi(0)-positiond)+100;
             }
             Velocity=abs(Velocity);
-            Velocity_control_z(-Velocity);
+            Velocity_control_xyz(-Velocity);
         }
         else
         {
-            Position_control_z(lhv-100/DZC);
-            if(ZPosi(0)>lhv)
+            Position_control_xyz(lhv-100/DZC);
+            if(XYZPosi(0)<lhv)
             {
                 if(F[7]==3)
                 {
@@ -3400,14 +3517,14 @@ void F13(void)
                     hth=0;
                 }
                 lhv=positiond-lh-hth;
-                Position_control_z(lhv-50/DZC);
+                Position_control_xyz(lhv-50/DZC);
                 F12_flag++;
             }
         }
         break;
     case 8:
         ShowFL(7);
-        if(ZPosi(0)<lhv+50/DZC)
+        if(XYZPosi(0)<lhv+50/DZC)
         {
             if(TF8)
             {
@@ -3461,7 +3578,7 @@ void F13(void)
             }
             if(!ERR_XY)
             {
-                Position_control_z(ldv);
+                Position_control_xyz(ldv);
             }
         }
         break;
