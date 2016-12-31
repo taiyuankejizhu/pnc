@@ -268,7 +268,7 @@ void Key(void)
 /*
         if(C[3]||C[4])
         {
-        		ShowMess(15);
+                ShowMess(15);
             return;
         }
 */
@@ -288,7 +288,7 @@ void Key(void)
 /*
         if(C[3]||C[4])
         {
-        		ShowMess(15);
+                ShowMess(15);
             return;
         }
 */
@@ -313,7 +313,7 @@ void Key(void)
 /*
         if(C[5]||C[6])
         {
-        		ShowMess(15);
+                ShowMess(15);
             return;
         }
 */
@@ -337,7 +337,7 @@ void Key(void)
 /*
         if(C[5]||C[6])
         {
-        		ShowMess(15);
+                ShowMess(15);
             return;
         }
 */
@@ -397,12 +397,12 @@ void Key(void)
         F11_flag=0;
     }
     
- 		if(!(UDK&0x08))
+        if(!(UDK&0x08))
     {
         if(PUMP_K==0)
         {
-        	PUMP_K=1;
-					SoundTime=SoundTIME;
+            PUMP_K=1;
+                    SoundTime=SoundTIME;
           F3();
           if(KEYL==0) ShowKey(1,2);
         }
@@ -611,7 +611,7 @@ void Key(void)
         }
         else
         {
-            if(KEYL==13&&k==aF7)
+            if(KEYL==13&&k==aF7||KEYL==16&&k==aF7)
             {
                 F6();
             }
@@ -686,7 +686,7 @@ void Key(void)
                     }
                     else
                     {
-											ShowMess(15);
+                                            ShowMess(15);
                     }
                     break;
                 }
@@ -721,8 +721,8 @@ void Key(void)
                     ShowKey(2,3);
                     break;
                 case aF4:
-										D6();
-										KEYL=16;
+                            			D6();
+                                    	KEYL=16;
                     ShowKey(12,0);
                     break;
                 case aF5:
@@ -753,9 +753,9 @@ void Key(void)
                     }
                     break;
                 case aF7:
-                		KEYL=14;
-                		ShowKey(10,0);
-                		break;
+                        KEYL=14;
+                        ShowKey(10,0);
+                        break;
                 case aF8:
                     KEYL=0;
                     ShowKey(1,0);
@@ -817,10 +817,10 @@ void Key(void)
                     ShowKey(3,3);
                     break;
                 case aF4:
-                		if(Muti_flag!=0){ShowMess(15);break;}
+                        if(Muti_flag!=0){ShowMess(15);break;}
                     KEYL=12;
                     ShowKey(11,0);
-										XX=0;
+                            			XX=0;
                     YY=0;
                     DispF6(0);
                     XX=0;
@@ -2184,9 +2184,9 @@ void Key(void)
                 ShowKey(9,6);
                 break;
             case aF7:
-            		F6();
+                    F6();
                 ShowKey(9,7);
-            		break;
+                    break;
             case aF8:
                 KEYL=1;
                 StopF5();
@@ -2196,108 +2196,108 @@ void Key(void)
             }
             break;
         case 14: /*X Y Z轴移动*/
-     			if(Fx){
-        		switch(k){
-        		case aF1:
+                if(Fx){
+                switch(k){
+                case aF1:
                 C1();
                 ShowKey(10,1);ShowKey(10,2);ShowKey(10,3);
                 break;
-        		case aF2:
+                case aF2:
                 C2();
                 ShowKey(10,1);ShowKey(10,2);ShowKey(10,3);
                 break;
-        		case aF3:
+                case aF3:
                 C3();
                 ShowKey(10,1);ShowKey(10,2);ShowKey(10,3);
                 break;
-        		case aF8:
+                case aF8:
                 KEYL=1;
-								if(C[0])Stop_x(0);
-    						else if(C[1])Stop_y(0);
-    						else if(C[2])Stop_z(0);
+                                if(C[0])Stop_x(0);
+                            else if(C[1])Stop_y(0);
+                            else if(C[2])Stop_z(0);
                 ClearC(10);
                 ShowKey(2,0);
                 break;
-        		}
-    			}
-    			else{
-        		if(!Fx&&k==0xd){
-            	if(C[0]){C1();ShowKey(10,1);ShowKey(10,2);ShowKey(10,3);}
-            	if(C[1]){C2();ShowKey(10,1);ShowKey(10,2);ShowKey(10,3);}
-            	if(C[2]){C3();ShowKey(10,1);ShowKey(10,2);ShowKey(10,3);}
-        		}
-    			}
-  				break;
+                }
+            	}
+                else{
+                if(!Fx&&k==0xd){
+                if(C[0]){C1();ShowKey(10,1);ShowKey(10,2);ShowKey(10,3);}
+                if(C[1]){C2();ShowKey(10,1);ShowKey(10,2);ShowKey(10,3);}
+                if(C[2]){C3();ShowKey(10,1);ShowKey(10,2);ShowKey(10,3);}
+                }
+            	}
+                break;
         case 15: /*加工轴设定*/
-     			if(Fx){
-        		switch(k){
-						case LEFT :
-							if(Y8Y==1) {
-								if(M[1]<=0)M[1]=2;
-								else M[1]--;
-							}
-							else K[8]=K[8]==0?1:0;
-							ShowF10(Y8Y);
-							break;
+                if(Fx){
+                switch(k){
+                        case LEFT :
+                            if(Y8Y==1) {
+                                if(M[1]<=0)M[1]=2;
+                                else M[1]--;
+                			}
+                            else K[8]=K[8]==0?1:0;
+                            ShowF10(Y8Y);
+                            break;
             case RIGHT:
-							if(Y8Y==1) {
-								if(M[1]>=2)M[1]=0;
-								else M[1]++;
-							}
-							else K[8]=K[8]==0?1:0;
-            	ShowF10(Y8Y);
-							break;
+                            if(Y8Y==1) {
+                                if(M[1]>=2)M[1]=0;
+                                else M[1]++;
+                			}
+                            else K[8]=K[8]==0?1:0;
+                ShowF10(Y8Y);
+                            break;
             case UP   :
-            	if(Y8Y>1)Y8Y--;
-            	else Y8Y=1;
-            	ShowF10(Y8Y);
-							break;
+                if(Y8Y>1)Y8Y--;
+                else Y8Y=1;
+                ShowF10(Y8Y);
+                            break;
             case DN   :
-            	if(Y8Y<2)Y8Y++;
-            	else Y8Y=2;
-							ShowF10(Y8Y);
-							break;
-        		case aF1:
-        			WriteSPI(0x120,M[1]);
-        			WriteSPI(0x125,K[8]);
-        			DispF11(3);
-							switch(M[1])
-							{
-							case 0:offset_xyz=offset_x;position_d=position_x;break;
-							case 1:offset_xyz=offset_y;position_d=position_y;break;
-							case 2:offset_xyz=offset_z;position_d=position_z;break;
-							default:break;
-							}
+                if(Y8Y<2)Y8Y++;
+                else Y8Y=2;
+                            ShowF10(Y8Y);
+                            break;
+                case aF1:
+                    WriteSPI(0x120,M[1]);
+                    WriteSPI(0x125,K[8]);
+                    DispF11(3);
+                            switch(M[1])
+                			{
+                            case 0:offset_xyz=offset_x;position_d=position_x;break;
+                            case 1:offset_xyz=offset_y;position_d=position_y;break;
+                            case 2:offset_xyz=offset_z;position_d=position_z;break;
+                            default:break;
+                			}
               KEYL=0;
               ShowKey(1,0);
-        			K9();
+                    K9();
               break;
-        		case aF2:
-        		case aF8:
-        			M[1]=ReadSPI(0x120);
-        			K[8]=ReadSPI(0x125);
-        			if(M[1]>2)M[1]=2;
-							if(M[1]<0)M[1]=0;
-							if(K[8]>1)K[8]=1;
-							if(K[8]<0)K[8]=0;
-							switch(M[1])
-							{
-							case 0:offset_xyz=offset_x;position_d=position_x;break;
-							case 1:offset_xyz=offset_y;position_d=position_y;break;
-							case 2:offset_xyz=offset_z;position_d=position_z;break;
-							default:break;
-							}
+                case aF2:
+                case aF8:
+                    M[1]=ReadSPI(0x120);
+                    K[8]=ReadSPI(0x125);
+                    if(M[1]>2)M[1]=2;
+                            if(M[1]<0)M[1]=0;
+                            if(K[8]>1)K[8]=1;
+                            if(K[8]<0)K[8]=0;
+                            switch(M[1])
+                			{
+                            case 0:offset_xyz=offset_x;position_d=position_x;break;
+                            case 1:offset_xyz=offset_y;position_d=position_y;break;
+                            case 2:offset_xyz=offset_z;position_d=position_z;break;
+                            default:break;
+                			}
               DispF11(3);
               KEYL=0;
               ShowKey(1,0);
               break;
-        		}
-    			}
-    			else{
-        		if(!Fx&&k==0xd){
-        		}
-    			}
-  				break;
+                }
+            	}
+                else{
+                if(!Fx&&k==0xd){
+                }
+            	}
+                break;
         case 16:  /*X+- Y+- Z+-放电归零*/
             switch(k)
             {
@@ -2380,9 +2380,9 @@ void Key(void)
                 ShowKey(12,6);
                 break;
             case aF7:
-            		F6();
+                    F6();
                 ShowKey(9,7);
-            		break;
+                    break;
             case aF8:
                 KEYL=1;
                 D6();
@@ -2446,7 +2446,7 @@ void Left(void)
         return;
     }
     lock_x=0;
-		if(!LF_K)
+        if(!LF_K)
     {
         RT_K=0;
         ClearKey(0);
@@ -2459,24 +2459,29 @@ void Left(void)
         ShowTB(0);
         switch(SWF_flag)
         {
-        case 0:
-            Velocity_control_x(0xffd0);
+case 0:
+            if(K[3]&&Dis_flag)
+                Velocity_control_x(0xff20);
+            else if(K[3])
+                Velocity_control_x(0xffc0);
+            else
+                Velocity_control_x(0xffb0);
             break;
         case 1:
-        	if(K[3]&&Dis_flag)
-        		Velocity_control_x(0xffd0);
-        	else if(K[3])
-        		Velocity_control_x(0xff00);
-        	else
-            Velocity_control_x(0xfc00);
+            if(K[3]&&Dis_flag)
+                Velocity_control_x(0xff00);
+            else if(K[3])
+                Velocity_control_x(0xfe00);
+            else
+                Velocity_control_x(0xfc00);
             break;
         case 2:
-        	if(K[3]&&Dis_flag)
-        		Velocity_control_x(0xffd0);
-        	else if(K[3])
-        		Velocity_control_x(0xfe00);
-        	else
-            Velocity_control_x(0xf800);
+            if(K[3]&&Dis_flag)
+                Velocity_control_x(0xfe00);
+            else if(K[3])
+                Velocity_control_x(0xfc00);
+            else
+                Velocity_control_x(0xf800);
             break;
         case 3:
             UDL=XPosi(0);
@@ -2507,7 +2512,7 @@ void Right(void)
         return;
     }
     lock_x=0;
-		if(!RT_K)
+        if(!RT_K)
     {
         LF_K=0;
         ClearKey(0);
@@ -2521,23 +2526,28 @@ void Right(void)
         switch(SWF_flag)
         {
         case 0:
-            Velocity_control_x(0x30);
+            if(K[3]&&Dis_flag)
+                Velocity_control_x(0x20);
+            else if(K[3])
+                Velocity_control_x(0x40);
+            else
+                Velocity_control_x(0x60);
             break;
         case 1:
-        	if(K[3]&&Dis_flag)
-        		Velocity_control_x(0x30);
-        	else if(K[3])
-        		Velocity_control_x(0x100);
-        	else
+            if(K[3]&&Dis_flag)
+                Velocity_control_x(0x100);
+            else if(K[3])
+                Velocity_control_x(0x200);
+            else
             Velocity_control_x(0x400);
             break;
         case 2:
-        	if(K[3]&&Dis_flag)
-        		Velocity_control_x(0x30);
-        	else if(K[3])
-        		Velocity_control_x(0x200);
-        	else
-            Velocity_control_x(0x800);
+            if(K[3]&&Dis_flag)
+                Velocity_control_x(0x200);
+            else if(K[3])
+                Velocity_control_x(0x400);
+            else
+                Velocity_control_x(0x800);
             break;
         case 3:
             UDL=XPosi(0);
@@ -2582,23 +2592,28 @@ void Front(void)
         switch(SWF_flag)
         {
         case 0:
-            Velocity_control_y(0xffd0);
+            if(K[3]&&Dis_flag)
+                Velocity_control_y(0xff20);
+            else if(K[3])
+                Velocity_control_y(0xffc0);
+            else
+                Velocity_control_y(0xffb0);
             break;
         case 1:
-        	if(K[3]&&Dis_flag)
-        		Velocity_control_y(0xffd0);
-        	else if(K[3])
-        		Velocity_control_y(0xff00);
-        	else
-            Velocity_control_y(0xfc00);
+            if(K[3]&&Dis_flag)
+                Velocity_control_y(0xff00);
+            else if(K[3])
+                Velocity_control_y(0xfe00);
+            else
+                Velocity_control_y(0xfc00);
             break;
         case 2:
-        	if(K[3]&&Dis_flag)
-        		Velocity_control_y(0xffd0);
-        	else if(K[3])
-        		Velocity_control_y(0xfe00);
-        	else
-            Velocity_control_y(0xf800);
+            if(K[3]&&Dis_flag)
+                Velocity_control_y(0xfed0);
+            else if(K[3])
+                Velocity_control_y(0xfc00);
+            else
+                Velocity_control_y(0xf800);
             break;
         case 3:
             UDL=YPosi(0);
@@ -2643,23 +2658,28 @@ void Back(void)
         switch(SWF_flag)
         {
         case 0:
-            Velocity_control_y(0x30);
+            if(K[3]&&Dis_flag)
+                Velocity_control_y(0x20);
+            else if(K[3])
+                Velocity_control_y(0x40);
+            else
+                Velocity_control_y(0x60);
             break;
         case 1:
-        	if(K[3]&&Dis_flag)
-        		Velocity_control_y(0x30);
-        	else if(K[3])
-        		Velocity_control_y(0x100);
-        	else
-            Velocity_control_y(0x400);
+            if(K[3]&&Dis_flag)
+                Velocity_control_y(0x100);
+            else if(K[3])
+                Velocity_control_y(0x200);
+            else
+                Velocity_control_y(0x400);
             break;
         case 2:
-        	if(K[3]&&Dis_flag)
-        		Velocity_control_y(0x30);
-        	else if(K[3])
-        		Velocity_control_y(0x200);
-        	else
-            Velocity_control_y(0x800);
+            if(K[3]&&Dis_flag)
+                Velocity_control_y(0x200);
+            else if(K[3])
+                Velocity_control_y(0x400);
+            else
+                Velocity_control_y(0x800);
             break;
         case 3:
             UDL=YPosi(0);
@@ -2703,13 +2723,28 @@ void Down(void)
         switch(SWF_flag)
         {
         case 0:
-            Velocity_control_z(0xffd0);
+            if(K[3]&&Dis_flag)
+                Velocity_control_z(0xff20);
+            else if(K[3])
+                Velocity_control_z(0xffc0);
+            else
+                Velocity_control_z(0xffb0);
             break;
         case 1:
-            Velocity_control_z(0xfc00);
+            if(K[3]&&Dis_flag)
+                Velocity_control_z(0xff00);
+            else if(K[3])
+                Velocity_control_z(0xfe00);
+            else
+                Velocity_control_z(0xfc00);
             break;
         case 2:
-            Velocity_control_z(0xf800);
+            if(K[3]&&Dis_flag)
+                Velocity_control_z(0xfed0);
+            else if(K[3])
+                Velocity_control_z(0xfc00);
+            else
+                Velocity_control_z(0xf800);
             break;
         case 3:
             UDL=ZPosi(0);
@@ -2749,13 +2784,28 @@ void Up(void)
         switch(SWF_flag)
         {
         case 0:
-            Velocity_control_z(0x30);
+            if(K[3]&&Dis_flag)
+                Velocity_control_z(0x20);
+            else if(K[3])
+                Velocity_control_z(0x40);
+            else
+                Velocity_control_z(0x60);
             break;
         case 1:
-            Velocity_control_z(0x400);
+            if(K[3]&&Dis_flag)
+                Velocity_control_z(0x100);
+            else if(K[3])
+                Velocity_control_z(0x200);
+            else
+                Velocity_control_z(0x400);
             break;
         case 2:
-            Velocity_control_z(0x800);
+            if(K[3]&&Dis_flag)
+                Velocity_control_z(0x200);
+            else if(K[3])
+                Velocity_control_z(0x400);
+            else
+                Velocity_control_z(0x800);
             break;
         case 3:
             UDL=ZPosi(0);
@@ -2951,13 +3001,13 @@ void X()
             SaveXYZ(0);
             position_px=position_x;
             offset_x=l;
-						switch(M[1])
-    				{
-						case 0:offset_xyz=offset_x;break;
-						case 1:offset_xyz=offset_y;break;
-						case 2:offset_xyz=offset_z;break;
-						default:break;
-    				}
+                        switch(M[1])
+                	{
+                        case 0:offset_xyz=offset_x;break;
+                        case 1:offset_xyz=offset_y;break;
+                        case 2:offset_xyz=offset_z;break;
+                        default:break;
+                	}
         }
         XYZ[0]=0;
         ClearKey(0);
@@ -2987,13 +3037,13 @@ void Y()
             SaveXYZ(0);
             position_py=position_y;
             offset_y=l;
-						switch(M[1])
-    				{
-						case 0:offset_xyz=offset_x;break;
-						case 1:offset_xyz=offset_y;break;
-						case 2:offset_xyz=offset_z;break;
-						default:break;
-    				}
+                        switch(M[1])
+                	{
+                        case 0:offset_xyz=offset_x;break;
+                        case 1:offset_xyz=offset_y;break;
+                        case 2:offset_xyz=offset_z;break;
+                        default:break;
+                	}
         }
         XYZ[1]=0;
         ClearKey(0);
@@ -3044,13 +3094,13 @@ void Z()
                 F12_flag=i;
             }
             SaveXYZ(0);
-						switch(M[1])
-    				{
-						case 0:offset_xyz=offset_x;break;
-						case 1:offset_xyz=offset_y;break;
-						case 2:offset_xyz=offset_z;break;
-						default:break;
-    				}
+                        switch(M[1])
+                	{
+                        case 0:offset_xyz=offset_x;break;
+                        case 1:offset_xyz=offset_y;break;
+                        case 2:offset_xyz=offset_z;break;
+                        default:break;
+                	}
         }
         XYZ[2]=0;
         ShowDP(1);
@@ -3198,7 +3248,7 @@ void SaveF7V()
     int current[3][3]= {{95,63,31},{191,63,31},{31,31,31}};
     if(KeyN!=0x7fffffff)
     {
-    	  curi=KeyN/1000;
+          curi=KeyN/1000;
         if(curi>current[cMaterial-1][cShape-1])
             curi=current[cMaterial-1][cShape-1];
         if(XX==2&&curi<=current[cMaterial-1][cShape-1])
@@ -3227,22 +3277,22 @@ void SaveF7V()
                   Table.Shendu[YY]=Table.Shendu[YY-1]+StrTable.Shendu[i];
               else
                   Table.Shendu[YY]=0+StrTable.Shendu[i];
-            	Table.Jixin[YY]=StrTable.Jixin[i];
-            	Table.Dianliu[YY]=StrTable.Dianliu[i];
-            	Table.Maikuan[YY]=StrTable.Maikuan[i];
-            	Table.Xiuzhi[YY]=StrTable.Xiuzhi[i];
-            	Table.Jianxi[YY]=StrTable.Jianxi[i];
-            	Table.Sudu[YY]=StrTable.Sudu[i];
-            	Table.Shenggao[YY]=StrTable.Shenggao[i];
-            	Table.Gongshi[YY]=StrTable.Gongshi[i];
-            	Table.LV[YY]=StrTable.LV[i];
-            	Table.Gaoya[YY]=StrTable.Gaoya[i];
-            	Table.PP[YY]=StrTable.PP[i];
-            	Table.WcLc[YY]=StrTable.WcLc[i];
+                Table.Jixin[YY]=StrTable.Jixin[i];
+                Table.Dianliu[YY]=StrTable.Dianliu[i];
+                Table.Maikuan[YY]=StrTable.Maikuan[i];
+                Table.Xiuzhi[YY]=StrTable.Xiuzhi[i];
+                Table.Jianxi[YY]=StrTable.Jianxi[i];
+                Table.Sudu[YY]=StrTable.Sudu[i];
+                Table.Shenggao[YY]=StrTable.Shenggao[i];
+                Table.Gongshi[YY]=StrTable.Gongshi[i];
+                Table.LV[YY]=StrTable.LV[i];
+                Table.Gaoya[YY]=StrTable.Gaoya[i];
+                Table.PP[YY]=StrTable.PP[i];
+                Table.WcLc[YY]=StrTable.WcLc[i];
             }
             else
             {
-            	  Table.Index[YY]=1;
+                  Table.Index[YY]=1;
                 /*Table.Shendu[YY]=StrTable.Shendu[i];*/
                 Table.Dianliu[YY]=StrTable.Dianliu[i];
                 Table.Maikuan[YY]=StrTable.Maikuan[i];
@@ -3250,7 +3300,7 @@ void SaveF7V()
             }
         }
         else if (XX==2&&curi>current[cMaterial-1][cShape-1]){}
-				else if (Table.Index[YY]!=1){
+                else if (Table.Index[YY]!=1){
             Table.Index[YY]=1;
             Table.Shendu[YY]=0+StrTable.Shendu[2];
             Table.Jixin[YY]=StrTable.Jixin[2];
