@@ -2302,6 +2302,7 @@ void Key(void)
             switch(k)
             {
             case aF1:
+            		if(Dis_flag){ShowMess(15);break;}
                 D[3]=D[3]==0?1:0;
                 ClearD(3);
                 DispZero(0);
@@ -2315,6 +2316,7 @@ void Key(void)
                 ShowKey(12,6);
                 break;
             case aF2:
+            		if(Dis_flag){ShowMess(15);break;}
                 D[4]=D[4]==0?1:0;
                 ClearD(4);
                 DispZero(0);
@@ -2328,6 +2330,7 @@ void Key(void)
                 ShowKey(12,6);
                 break;
             case aF3:
+            		if(Dis_flag){ShowMess(15);break;}
                 D[5]=D[5]==0?1:0;
                 ClearD(5);
                 DispZero(0);
@@ -2341,6 +2344,7 @@ void Key(void)
                 ShowKey(12,6);
                 break;
             case aF4:
+            		if(Dis_flag){ShowMess(15);break;}
                 D[6]=D[6]==0?1:0;
                 ClearD(6);
                 DispZero(0);
@@ -2354,6 +2358,7 @@ void Key(void)
                 ShowKey(12,6);
                 break;
             case aF5:
+            		if(Dis_flag){ShowMess(15);break;}
                 D[7]=D[7]==0?1:0;
                 ClearD(7);
                 DispZero(0);
@@ -2367,6 +2372,7 @@ void Key(void)
                 ShowKey(12,6);
                 break;
             case aF6:
+            		if(Dis_flag){ShowMess(15);break;}
                 D[8]=D[8]==0?1:0;
                 ClearD(8);
                 DispZero(0);

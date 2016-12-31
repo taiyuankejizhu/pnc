@@ -159,6 +159,8 @@ void main(int argc,char *argv[])
             if((abs(XPosi(0)-Node.x_pos[Dis_pos]+offset_x)>2 || abs(YPosi(0)-Node.y_pos[Dis_pos]+offset_y)>2)
                     && 1==Node.flag[Dis_pos] && P[12])
             {
+            		if(M[1]==2) {lock_x=0;lock_y=0;lock_z=0;}
+            		else {ShowMess(15);Muti_flag=0;break;}
                 Position_control_x(Node.x_pos[Dis_pos]-offset_x);
                 Position_control_y(Node.y_pos[Dis_pos]-offset_y);
             }
@@ -167,6 +169,10 @@ void main(int argc,char *argv[])
                 ZeroFlag=0;
                 F12_flag=0;
                 Dis_flag=1;
+								offset_rx=XPosi(0);
+								Position_control_x(offset_rx);
+								offset_ry=YPosi(0);
+								Position_control_y(offset_ry);
                 switch(M[1])
                 {
                 case 0:lock_x=0;lock_y=1;lock_z=1;break;
@@ -195,7 +201,7 @@ void main(int argc,char *argv[])
         case 3:
             if(1==Node.flag[Dis_pos])
             {
-                lock_z=0;
+            		lock_z=0;
                 if(ZPosi(0)!=Node.z_pos[Dis_pos-1]-offset_z)
                 {
                     Position_control_z(Node.z_pos[Dis_pos-1]-offset_z);
@@ -206,8 +212,8 @@ void main(int argc,char *argv[])
                 }
             }
             else
-            {  
-                lock_z=0;
+            {
+            		lock_z=0;
                 if(ZPosi(0)!=Node.z_pos[Dis_pos-1]-offset_z)
                 {
                     Position_control_z(Node.z_pos[Dis_pos-1]-offset_z);
@@ -226,6 +232,7 @@ void main(int argc,char *argv[])
                     	ExitTime=360;
                     	if(KEYL==4)ShowKey(5,4);
                 		}
+                		lock_z=1;lock_x=1;lock_y=1;
                 }
             }
             break;
@@ -752,7 +759,7 @@ void C1(void){
         C[0]=0;
     }
     else{
-        if(Dis_flag){ShowMess(17);return;}
+        if(Dis_flag){ShowMess(15);return;}
         ClearKey(0);
         MaxL=7;MaxN=9999999;MinN=-9999999;
         C[0]=1;
@@ -773,7 +780,7 @@ void C2(void){
         C[1]=0;
     }
     else {
-        if(Dis_flag){ShowMess(17);return;}
+        if(Dis_flag){ShowMess(15);return;}
         ClearKey(0);
         MaxL=7;MaxN=9999999;MinN=-9999999;
         C[1]=1;
@@ -781,7 +788,7 @@ void C2(void){
 }
 void C3(void){
     long ll;
-    if(Dis_flag){ShowMess(17);return;}
+    if(Dis_flag){ShowMess(15);return;}
     ClearC(2);
     if(C[2]){
         if(KeyN!=0x7fffffff){
@@ -794,7 +801,7 @@ void C3(void){
         ClearKey(0);
         C[2]=0;
     }else{
-        if(Dis_flag){ShowMess(17);return;}
+        if(Dis_flag){ShowMess(15);return;}
         ClearKey(0);
         MaxL=7;MaxN=9999999;MinN=-9999999;
         C[2]=1;
@@ -828,7 +835,7 @@ void C4(void)
     {
         if(Ck8255_flag&0x3||Dis_flag||!F[1])
         {
-            ShowMess(17);
+            ShowMess(15);
             return;
         }
         else
@@ -865,7 +872,7 @@ void C5(void)
     {
         if(Ck8255_flag&0x3||Dis_flag||!F[1])
         {
-            ShowMess(17);
+            ShowMess(15);
             return;
         }
         else
@@ -902,7 +909,7 @@ void C6(void)
     {
         if(Ck8255_flag&0x3||Dis_flag||!F[1])
         {
-            ShowMess(17);
+            ShowMess(15);
             return;
         }
         else
@@ -939,7 +946,7 @@ void C7(void)
     {
         if(Ck8255_flag&0x3||Dis_flag||!F[1])
         {
-            ShowMess(17);
+            ShowMess(15);
             return;
         }
         else
@@ -976,7 +983,7 @@ void C8(void)
     {
         if(Ck8255_flag&0x3||Dis_flag||!F[1])
         {
-            ShowMess(17);
+            ShowMess(15);
             return;
         }
         else
@@ -1013,7 +1020,7 @@ void C9(void)
     {
         if(Ck8255_flag&0x3||Dis_flag||!F[1])
         {
-            ShowMess(17);
+            ShowMess(15);
             return;
         }
         else
@@ -1375,7 +1382,7 @@ void Zero()
         else if(Voltage()<=1)
         {
             ZeroFlag= 1;
-            StopF5();
+						StopF5();
             SoundTime=0x7f;
             byte_2159=0;
             byte_215A=0;
@@ -1396,7 +1403,9 @@ void StopF5(void)   /* 停止归零 */
         C[4] =0;
 				D[3] = 0;
         D[4] =0;
-        Stop_x(0);
+    		offset_rx=XPosi(0);
+    		Position_control_x(offset_rx);
+        /*Stop_x(0);*/
     }
     else if(C[5]||C[6]||D[5]||D[6])
     {
@@ -1404,15 +1413,19 @@ void StopF5(void)   /* 停止归零 */
         C[6] =0;
 				D[5] = 0;
         D[6] =0;
-        Stop_y(0);
+    		offset_ry=YPosi(0);
+    		Position_control_y(offset_ry); 
+				/*Stop_y(0);*/
     }
     else if(C[7]||C[8]||D[7]||D[8])
     {
         C[7] = 0;
         C[8] =0;
 				D[7] = 0;
-        D[8] =0;        
-        Stop_z(0);
+        D[8] =0;
+        offset_rz=ZPosi(0);
+    		Position_control_z(offset_rz);     
+/*        Stop_z(0);*/
     }
     F[4]=0;
     ShowKey(9,1);
@@ -2988,10 +3001,9 @@ void F12(void)
                 Open_Elect();
                 TF8=0;
                 /*4.28 跳升不变化Bug*/
-                ld=Table.Dianliu[Dis_lines]/8+MianJi;/* +5 */
-                ld*=5/DZC;
-                lh=Table.Shenggao[Dis_lines]%100*20+ld+10;
-                lh*=5/DZC;
+                ld=Table.Dianliu[Dis_lines]/8+MianJi*50;/* +5 */
+                lh=Table.Shenggao[Dis_lines]%100*100+ld;
+                lh/=DZC;
                 TF8=0;
             }
             if(K[4])
@@ -3083,18 +3095,17 @@ void F13(void)
                 i=Dis_lines;
                 Dis_lines=Dis_start;
                 ShowTable(i+1);
-                SoundTime=SDST;
                 offset_d=-9999999/DZC*2;
                 offset_ds=0;
+                if(!P[12])
+                {
+                    SoundTime=SDST;
+                }
                 if(!Table.Index[Dis_lines])
                 {
                     ShowMess(32);
                     F11();
                     return;
-                }
-                else
-                {
-                    ShowMess(28);
                 }
                 if(!Dis_first)
                 {
@@ -3102,21 +3113,33 @@ void F13(void)
                     return;
                 }
                 F11();
-                offset_rxyz=XYZPosi(0);
-                if(K[1])
+                if(P[12])
                 {
+                    Muti_flag=3;
+                    Dis_pos++;
+                    WriteSPI(0x108,Dis_pos);
+                    offset_rz=ZPosi(0);
+                  	if(K[2])offset_rz+=((long)K_3*1000/DZC);
+                    return;
+                }
+                else
+                {
+                	offset_rxyz=XYZPosi(0);
+                	if(K[1])
+                	{
                     K[9]=1;
                     ExitTime=360;
                     if(KEYL==4)
                     {
                         ShowKey(5,4);
                     }
-                }
-                if(K[2])
-                {
+                	}
+                	if(K[2])
+                	{
                     offset_rxyz-=((long)K_3*1000/DZC);
-                }
-                Position_control_xyz(offset_rxyz);
+                	}
+                	Position_control_xyz(offset_rxyz);
+              	}
                 return;
             }
             if(Dis_lines<=Dis_end)
@@ -3126,9 +3149,8 @@ void F13(void)
                 DY=Table.Jianxi[Dis_lines]/2+41+
                    Table.Gaoya[Dis_lines]*2;
             }
-            ld=Table.Dianliu[Dis_lines]/8+MianJi;  /* +5 */
-            lh=Table.Shenggao[Dis_lines]%100*20-ld-10;
-            ld*=5/DZC;
+            ld=Table.Dianliu[Dis_lines]/8+MianJi*50;  /* +5 */
+            lh=Table.Shenggao[Dis_lines]%100*100+ld;
             lh*=5/DZC;
             F12_flag++;
             AI=0;
@@ -3341,10 +3363,9 @@ void F13(void)
                 ShowTable(0);
                 ShowTable(Dis_lines+1);
                 /*4.28 跳升不变化Bug*/
-                ld=Table.Dianliu[Dis_lines]/8+MianJi;/* +5 */
-                ld*=5/DZC;
-                lh=Table.Shenggao[Dis_lines]%100*20+ld+10;
-                lh*=5/DZC;
+                ld=Table.Dianliu[Dis_lines]/8+MianJi*50;/* +5 */
+                lh=Table.Shenggao[Dis_lines]%100*100+ld;
+                lh/=DZC;
             }
         }
         else
@@ -3418,10 +3439,9 @@ void F13(void)
                     ShowTable(Dis_lines+1);
                 }
                 /*4.28 跳升不变化Bug*/
-                ld=Table.Dianliu[Dis_lines]/8+MianJi;/* +5 */
-                ld*=5/DZC;
-                lh=Table.Shenggao[Dis_lines]%100*20+ld+10;
-                lh*=5/DZC;
+                ld=Table.Dianliu[Dis_lines]/8+MianJi*50;/* +5 */
+                lh=Table.Shenggao[Dis_lines]%100*100+ld;
+                lh/=DZC;
             }
         }
         else
@@ -3489,7 +3509,7 @@ void F13(void)
             }
             else
             {
-                Velocity=(100/(MianJi+10))*(XYZPosi(0)-positiond)+100;
+                Velocity=(100/(MianJi+10))*(positiond-XYZPosi(0))+100;
             }
             Velocity=abs(Velocity);
             Velocity_control_xyz(-Velocity);
@@ -3531,10 +3551,9 @@ void F13(void)
                 SetTable(Dis_lines);
                 Open_Elect();
                 /*4.28 跳升不变化Bug*/
-                ld=Table.Dianliu[Dis_lines]/8+MianJi;/* +5 */
-                ld*=5/DZC;
-                lh=Table.Shenggao[Dis_lines]%100*20+ld+10;
-                lh*=5/DZC;
+                ld=Table.Dianliu[Dis_lines]/8+MianJi*50;/* +5 */
+                lh=Table.Shenggao[Dis_lines]%100*100+ld;
+                lh/=DZC;
                 TF8=0;
             }
             if(K[4])
