@@ -71,6 +71,7 @@ void Init_IO()
     outportb(IO+3,IO3);
     outportb(IO+4,IO4);
 }
+
 void main(int argc,char *argv[])
 {
     register unsigned i;
@@ -83,7 +84,7 @@ void main(int argc,char *argv[])
     }
     Init_IO();
     Init_coordinate();
-    Position_control_z(ZPosi(0));
+		Position_control_z(ZPosi(0));
     Position_control_x(XPosi(0));
     Position_control_y(YPosi(0));
     ResetXYZ();
@@ -118,7 +119,7 @@ void main(int argc,char *argv[])
             }
             if(DIS_OK!=1&&!P[9])
             {
-                ShowMess(33);
+             /*   ShowMess(33);*/
                 if(Dis_flag)
                 {
                     F11();
@@ -1203,7 +1204,7 @@ void F8(char flag)
         else
         {
             ClearKey(0);
-            ShowMess(16);
+            ShowMess(62);
             F[7]=1;
             MaxL=2;
             MaxN=99;
@@ -1225,7 +1226,7 @@ void F8(char flag)
                 return;
             }
             ShowMess(0);
-            ShowMess(17);
+            ShowMess(63);
             MaxL=2;
             MaxN=99;
             MinN=1;
@@ -1534,11 +1535,13 @@ void K10b(void)
         offset_xx[1]=offset_x;
         offset_yy[1]=offset_y;
         offset_zz[1]=offset_z;
+        offset_ww[1]=offset_w;
         XYZGroup=2;
         WriteSPI(0x0e,XYZGroup);
         offset_x=offset_xx[2];
         offset_y=offset_yy[2];
         offset_z=offset_zz[2];
+        offset_w=offset_ww[2];
         ShowXYZ(0);
         offset_ds=0;
     }
@@ -1548,11 +1551,13 @@ void K10b(void)
         offset_xx[2]=offset_x;
         offset_yy[2]=offset_y;
         offset_zz[2]=offset_z;
+        offset_ww[2]=offset_w;
         XYZGroup=1;
         WriteSPI(0x0e,XYZGroup);
         offset_x=offset_xx[1];
         offset_y=offset_yy[1];
         offset_z=offset_zz[1];
+        offset_w=offset_ww[1];
         ShowXYZ(0);
     }
 }
@@ -1580,11 +1585,13 @@ void F10(void)
             offset_xx[XYZGroup]=offset_x;
             offset_yy[XYZGroup]=offset_y;
             offset_zz[XYZGroup]=offset_z;
+            offset_ww[XYZGroup]=offset_w;
             XYZGroup=(char)KeyN;
             WriteSPI(0x0e,XYZGroup);
             offset_x=offset_xx[XYZGroup];
             offset_y=offset_yy[XYZGroup];
             offset_z=offset_zz[XYZGroup];
+            offset_w=offset_ww[XYZGroup];
             XYPosition();
             position_d=position_z/*1999999*/;
             ShowXYZ(0);
@@ -3667,6 +3674,7 @@ void Init_coordinate(void)
     }
     outb((ICXaddr),0x01);
     outb((ICXaddr+1),IOX0);
+    
     if(sl2==1)
     {
         IOY0&=0xef;

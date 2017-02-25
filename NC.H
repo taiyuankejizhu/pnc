@@ -36,7 +36,7 @@ char Short;
 char WcL;
 char WcC;
 unsigned char PWS[17]= {1,5,9,13,2,6,10,14,3,7,11,15,4,8,12,0};
-unsigned char IO0,IO1,IO2,IO3,IO4,IO5,OTPS0,OTPS1,IOPS0,IOPZ0,OTPZ0,IOZ0,OTPZ1,IOX0,IOY0;/*OSC0 输出标志位，OSC1*/
+unsigned char IO0,IO1,IO2,IO3,IO4,IO5,OTPS0,OTPS1,IOPS0,IOPZ0,OTPZ0,IOZ0,OTPZ1,IOX0,IOY0,IOW0;/*OSC0 输出标志位，OSC1*/
 char OCSF=0;
 char ORgin=0;
 float MX=0;
@@ -107,14 +107,14 @@ char PassWordF=0x2d;
 int SoundTime=0;
 int ExitTime=0;
 long Oldtime=0,Velocity_Time=0;
-long ox,oy,oz,origin_z,origin_x,origin_y,diff_oz=0,diff_ox=0,diff_oy=0,lpz=0,s_OZh=0,s_OZl=0,F_positionz=0;
-long position_x = -9999999,position_y = -9999999,position_z =0x8fffffff,R_positionz=0x8fffffff,position_t =0,position_tt;
-long offset_x=0,offset_y=0,offset_z=0,offset_t=0,position_p=-9999999,position_d=9999999;
+long ox,oy,oz,ow,ou,origin_z,origin_x,origin_y,diff_oz=0,diff_ox=0,diff_oy=0,lpz=0,s_OZh=0,s_OZl=0,F_positionz=0;
+long position_x = -9999999,position_y = -9999999,position_z =0x8fffffff,position_w =0x8fffffff,R_positionz=0x8fffffff,position_t =0,position_tt;
+long offset_x=0,offset_y=0,offset_z=0,offset_w=0,offset_t=0,position_p=-9999999,position_d=9999999;
 long position_dx,position_dy,position_dz,position_px,position_py,position_pz;
-long offset_rx=0,offset_ry=0,offset_rz=0;
+long offset_rx=0,offset_ry=0,offset_rz=0,offset_rw=0;
 char lock_x=1,lock_y=1,lock_z=1;
 char lock_z_stop=0;
-long offset_xx[10],offset_yy[10],offset_zz[10];
+long offset_xx[10],offset_yy[10],offset_zz[10],offset_ww[10];
 long position_xdis,position_ydis,offset_d=1999999;
 char offset_ds=0;
 long lDeep=0;

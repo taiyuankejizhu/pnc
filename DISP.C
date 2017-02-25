@@ -918,7 +918,7 @@ void ShowXYZ(int flag)
     register i,j;
     int color;
     int bkcolor;
-    static long positionx=0x8ffffffa,positiony=0x8ffffffa,positionz=0x8ffffffa,positiont=0x8ffffffa;
+    static long positionx=0x8ffffffa,positiony=0x8ffffffa,positionz=0x8ffffffa,positionw=0x8ffffffa,positiont=0x8ffffffa;
     static int a=-1,v=-1,op=0;
     char xyzs[12],av[5],xyzss[12];
     char xyzs1[5]= {'.',48,48,48,0};
@@ -976,7 +976,7 @@ void ShowXYZ(int flag)
             Dispcbar(DX0+1,DY0+1+23*0,DX1-1,EY0+1+22*0+21,COLORD1,BKCOLORD,12,"机床坐标");
             Dispcbar(DX0+1,DY0+1+23*1,DX0+10,EY0+1+22*1+21,COLORD1,BKCOLORD,3,"X");
             Dispcbar(DX0+1,DY0+1+23*2,DX0+10,EY0+1+22*2+21,COLORD1,BKCOLORD,3,"Y");
-            Dispcbar(DX0+1,DY0+1+23*3,DX0+10,EY0+1+22*3+21,COLORD1,BKCOLORD,3,"Z");
+            Dispcbar(DX0+1,DY0+1+23*3,DX0+10,EY0+1+22*3+21,COLORD1,BKCOLORD,3,"W");
         }
     }
     if(positionx!=position_x)
@@ -1266,29 +1266,6 @@ void ShowXYZ(int flag)
         }
         diff_oz=oz-lpz;
         l=diff_oz*DZC;
-        if(l>=0)
-        {
-            xyzs[0]=' ';
-        }
-        else
-        {
-            xyzs[0]='-';
-        }
-        i=(long)l/1000;
-        i=abs(i);
-        itoa(i,xyzs+1,10);
-        if(strlen(xyzs)>5)
-        {
-            strcpy(xyzs+1,xyzs+2);
-        }
-        i=l%1000;
-        i=abs(i);
-        xyzs1[1]=i/100+'0';
-        i%=100;
-        xyzs1[2]=i/10+'0';
-        xyzs1[3]=i%10+'0';
-        strcat(xyzs,xyzs1);
-        Dispebar(DX0+13,DY0+1+23*3,DX1-1,EY0+1+23*3+21,COLORD,BKCOLORD,3,xyzs);
         ShowDP1(3);
         if(!Origin_Flag&&!(ORgin&0x80)&&ZPosi(0))
         {
@@ -1317,6 +1294,30 @@ void ShowXYZ(int flag)
             ORgin=0;
         }
     }
+    
+    if(positionw!=position_w)
+    {
+    	positionw=position_w;
+			l=ow*DZC;
+			if(l>=0)
+				xyzs[0]=' ';
+			else
+				xyzs[0]='-';
+			i=(long)l/1000;
+			i=abs(i);
+			itoa(i,xyzs+1,10);
+			if(strlen(xyzs)>5)
+				strcpy(xyzs+1,xyzs+2);
+			i=l%1000;
+			i=abs(i);
+			xyzs1[1]=i/100+'0';
+			i%=100;
+			xyzs1[2]=i/10+'0';
+			xyzs1[3]=i%10+'0';
+			strcat(xyzs,xyzs1);
+			Dispebar(DX0+13,DY0+1+23*3,DX1-1,EY0+1+23*3+21,COLORD,BKCOLORD,3,xyzs);
+    }
+    
     if(v!=V)
     {
         itoa(V,av,10);
@@ -1523,7 +1524,7 @@ void ShowVer(char *ver)
 void ShowMess(int value)
 {
     static oldvalue,oldvalue1;
-    char *showinput[60]=
+    char *showinput[65]=
     {
         "",
         "设定深度 \"-9999.999~9999.999\"",
@@ -1541,8 +1542,8 @@ void ShowMess(int value)
         "回路 电感 1关2低3高//电容 1~9",
         "",
         "无效操作",
-        "跳升高度 1~99(mm)",
-        "跳升次数 1~99",
+				"跳升高度	1~99(mm)",
+				"跳升次数	1~99",
         "组 1~50",
         "上升 1~99(mm)",
         "速度 5~50",         /* 20 */
@@ -1584,7 +1585,11 @@ void ShowMess(int value)
         "回路 电感 1关2低3高//电容 1~9",
         "未找到匹配数据!",
         "音量0~7",
-        "亮度0~7"
+        "亮度0~7",
+        "",/*60*/
+        "",
+				"跳升高度	1~99(mm)",
+				"跳升次数	1~99"
     };
     char * showinput1[9]=
     {
@@ -1966,6 +1971,19 @@ void ResetXYZ()
     offset_rz=ZPosi(0);
     R_positionz=ZPosi(0);
     offset_z=ll-offset_rz;
+    
+    ll=Read_spi(0x4c);
+    if(ll<-9999999/DZC)
+    {
+        ll=-9999999/DZC;
+    }
+    if(ll>9999999/DZC)
+    {
+        ll=9999999/DZC;
+    }
+    offset_rw=WPosi(0);
+    offset_w=ll-offset_rw;
+    
     position_t=Read_spi(0x30);
     position_tt=Read_spi(0x34);
     for(i=0; i<10; i++)
@@ -2001,6 +2019,16 @@ void ResetXYZ()
         }
         offset_zz[i]=ll-ZPosi(0);
         position[i]=ll;
+        ll=Read_spi(0x5c+i*16);
+        if(ll<-9999999/DZC)
+        {
+            ll=-9999999/DZC;
+        }
+        if(ll>9999999/DZC)
+        {
+            ll=9999999/DZC;
+        }
+        offset_ww[i]=ll-WPosi(0);
     }
     Group=ReadSPI(0x0d);
     ll=Read_spi(0x20);
@@ -2075,7 +2103,7 @@ void SaveXYZ(char flag)
     int i;
     long l,lt;
     register long ol;
-    static long positionx=0x7fffffff,positiony=0x7fffffff,positionz=0x7fffffff,positiont=0x7fffffff;
+    static long positionx=0x7fffffff,positiony=0x7fffffff,positionz=0x7fffffff,positionw=0x7fffffff,positiont=0x7fffffff;
     unsigned char a,ktime[6],temp[10];
     XYPosition();
     if(!flag||positionx!=position_x)
@@ -2152,6 +2180,18 @@ void SaveXYZ(char flag)
         oz=ZPosi(0);
         Write_spi(0x38,oz);
     }
+    if(!flag||positionw!=position_w)
+    {
+        ol=position_w-offset_w;
+        l=labs(positionw-position_w);
+        Write_spi(0x44,position_w);
+        for(i=0; i<10; i++)
+        {
+            Write_spi(0x5c+i*16,offset_ww[i]+ol);
+        }
+        positionw=position_w;
+        offset_ds=0;
+    }
     if(positiont!=position_t)
     {
         Write_spi(0x30,position_t);
@@ -2159,6 +2199,7 @@ void SaveXYZ(char flag)
         Write_spi(0x34,position_tt);
     }
 }
+
 long XPosi(char flag)   /*读取X轴计数器的数据*/
 {
     unsigned char   i0,i1,i2,i3;
@@ -2195,6 +2236,7 @@ long XPosi(char flag)   /*读取X轴计数器的数据*/
         return ll;
     }
 }
+
 long YPosi(char flag)   /*读取Y轴计数器的数据*/
 {
     unsigned char   i0,i1,i2,i3;
@@ -2231,6 +2273,7 @@ long YPosi(char flag)   /*读取Y轴计数器的数据*/
         return ll;
     }
 }
+
 long ZPosi(char flag)  /*读取Z轴计数器的数据*/
 {
     unsigned char   i0,i1,i2,i3;
@@ -2267,6 +2310,46 @@ long ZPosi(char flag)  /*读取Z轴计数器的数据*/
         return ll;
     }
 }
+
+long WPosi(char flag)   /*读取W轴计数器的数据*/
+{
+    unsigned char   i0,i1,i2,i3;
+    long    ll;
+    outb(ICWaddr,0x08);
+    i2=inportb(ICWaddr+3);
+    i1=inportb(ICWaddr+2);
+    i0=inportb(ICWaddr+1);
+    outb(ICWaddr,0xff);
+    if(i2&0x80)
+    {
+        i3=0xff;
+    }
+    else
+    {
+        i3=0;
+    }
+    ll=i3;
+    ll<<=8;
+    ll+=i2;
+    ll<<=8;
+    ll+=i1;
+    ll<<=8;
+    ll+=i0;
+    return ll;
+    if(ll>9999999||ll<-9999999)
+    {
+        return 0;
+    }
+    if(flag)
+    {
+        return ll;
+    }
+    else
+    {
+        return ll;
+    }
+}
+
 long OSCPosi4(char flag)
 {
     unsigned char   i0,i1,i2=0,i3;
@@ -2570,9 +2653,11 @@ void XYPosition()   /*设置X,Y轴,Z轴的位置*/
     ox=XPosi(0);
     oy=YPosi(0);
     oz=ZPosi(0);
+    ow=WPosi(0);
     position_x=ox+offset_x;
     position_y=oy+offset_y;
     position_z=offset_z+oz;
+    position_w=ow+offset_w;
     if(F12_flag>=1&&F12_flag<10)
     {
         pi=MK_FP(0x40,0x6c);

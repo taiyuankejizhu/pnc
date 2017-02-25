@@ -11,12 +11,13 @@
 #define VER "4.50"
 #define VERP 40 /*版本标识*/
 #endif
-#define spi 0x260
-#define IO  0x258
-#define Address_Z 0x248
 #define OSC 0x250
+#define IO  0x258
+#define spi 0x260
+#define Address_Z 0x248
 #define ICXaddr 0x240
 #define ICYaddr 0x244
+#define ICWaddr 0x24C
 #define UDKN 2
 #define IDS 0xd3b33C5A
 #define CLK0 0
@@ -201,11 +202,14 @@ extern long position_y; /*当前Y轴的位置*/
 extern long offset_y;   /*当前Y轴的辅助位置,POSITION=OFFSET+COUNTER*/
 extern long position_z,R_positionz; /*当前Z轴的位置*/
 extern long offset_z;   /*当前Z轴的辅助位置,POSITION=OFFSET+COUNTER*/
+extern long position_w; /*当前W轴的位置*/
+extern long offset_w;   /*当前W轴的辅助位置,POSITION=OFFSET+COUNTER*/
 extern long position_d; /*当前的最深深度*/
 extern long position_p; /*当前的目标深度*/
 extern long offset_rx;/*当前X轴寄存器坐标*/
 extern long offset_ry;
 extern long offset_rz;
+extern long offset_rw;
 extern long position_dx;
 extern long position_dy;
 extern long position_dz;
@@ -216,7 +220,7 @@ extern char lock_x,lock_y,lock_z;
 extern char lock_z_stop;
 extern long position_t;
 extern long position_tt;
-extern long offset_xx[],offset_yy[],offset_zz[];
+extern long offset_xx[],offset_yy[],offset_zz[],offset_ww[];
 extern char Dis_lines;   /*当前放电的行*/
 extern char Dis_start;  /*定段的首行*/
 extern char Dis_end;    /*定段的末行*/
@@ -252,6 +256,7 @@ extern unsigned int ProtectTime;
 extern char Error1100_flag;
 extern unsigned char IO0,IO1,IO2,IO3,IO4,IO5,OTPS0,OTPS1,IOPS1,IOZ0,OTPZ0,IOPZ1;
 extern unsigned char IOX0,IOY0,OTPBX0,OTPBX1,IOPBX0,OTPBY0,OTPBY1,IOPBY0;
+extern unsigned char IOW0;
 extern char OCSF;
 extern float MX;
 extern unsigned FS;/*风扇*/
@@ -330,7 +335,8 @@ char OilSwitch(void);
 void Stop_z(char flag);
 long XPosi(char flag);/*读取X轴计数器的数据*/
 long YPosi(char flag);/*读取Y轴计数器的数据*/
-long ZPosi(char flag);/*读取Y轴计数器的数据*/
+long ZPosi(char flag);/*读取Z轴计数器的数据*/
+long WPosi(char flag);/*读取W轴计数器的数据*/
 long ZPosi_origin(char flag);/*读取原点的值*/
 void XYPosition(void);/*设置X、Y轴的位置*/
 void ResetXYZ(void);
@@ -427,7 +433,7 @@ extern char oldpage;
 extern unsigned char buf[];
 extern unsigned char currents[3][3];
 extern int ExitTime;
-extern long ox,oy,oz,origin_z,origin_x,origin_y,diff_oz,diff_ox,diff_oy,lpz,s_OZh,s_OZl,F_positionz;
+extern long ox,oy,oz,ow,ou,origin_z,origin_x,origin_y,diff_oz,diff_ox,diff_oy,lpz,s_OZh,s_OZl,F_positionz;
 extern char ORgin;
 extern int SoundTime;
 extern char Ck8255_flag,Ck8256_flag;
